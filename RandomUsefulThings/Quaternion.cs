@@ -18,21 +18,14 @@ namespace RandomUsefulThings
 
         public float LengthSquared { get => (x * x) + (y * y) + (z * z) + (w * w); }
 
+        public float Length { get => (float)Math.Sqrt( LengthSquared ); }
+
         public Quaternion Inverse()
         {
             float lengthSquared = LengthSquared;
 
             // not sure if the `-` matters here.
             return new Quaternion( -x / lengthSquared, -y / lengthSquared, -z / lengthSquared, w / lengthSquared );
-        }
-
-        public static Quaternion operator *( Quaternion q1, Quaternion q2 )
-        {
-            return new Quaternion(
-                q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
-                q1.w * q2.y + q1.y * q2.w + q1.z * q2.x - q1.x * q2.z,
-                q1.w * q2.z + q1.z * q2.w + q1.x * q2.y - q1.y * q2.x,
-                q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z );
         }
 
         public Vector3 ToEulerAngles()
@@ -46,6 +39,40 @@ namespace RandomUsefulThings
 
             // Return the Euler angles as a Vector3
             return new Vector3( roll, pitch, yaw );
+        }
+
+        public static float Dot( Quaternion q1, Quaternion q2 )
+        {
+            return (q1.x * q2.x) + (q1.y * q2.y) + (q1.z * q2.z) + (q1.w * q2.w);
+        }
+
+        public Quaternion Normalized()
+        {
+            float length = this.Length;
+
+            return new Quaternion(
+                x / length,
+                y / length,
+                z / length,
+                w / length );
+        }
+
+        public float Angle( Quaternion other )
+        {
+            float dotProduct = Quaternion.Dot( this, other );
+            float absoluteDotProduct = Math.Abs( dotProduct );
+
+            // Don't go above 1.
+            float dotClamped = Math.Min( absoluteDotProduct, 1.0f );
+
+            const float eps = 0.000001f;
+
+            // Is the dot product of two quaternions within tolerance for them to be considered equal?
+            // Returns false in the presence of NaN values.
+            if( dotClamped > 1.0f - eps )
+                return 0.0f;
+            else
+                return (float)Math.Acos( dotClamped ) * 2.0f;
         }
 
         public static Quaternion FromEulerAngles( Vector3 euler )
@@ -70,6 +97,16 @@ namespace RandomUsefulThings
 
             // Return the calculated quaternion
             return new Quaternion( x, y, z, w );
+        }
+
+        // pseudo-cross product
+        public static Quaternion operator *( Quaternion q1, Quaternion q2 )
+        {
+            return new Quaternion(
+                (q1.w * q2.x) + (q1.x * q2.w) + (q1.y * q2.z) - (q1.z * q2.y),
+                (q1.w * q2.y) + (q1.y * q2.w) + (q1.z * q2.x) - (q1.x * q2.z),
+                (q1.w * q2.z) + (q1.z * q2.w) + (q1.x * q2.y) - (q1.y * q2.x),
+                (q1.w * q2.w) - (q1.x * q2.x) - (q1.y * q2.y) - (q1.z * q2.z) );
         }
     }
 }

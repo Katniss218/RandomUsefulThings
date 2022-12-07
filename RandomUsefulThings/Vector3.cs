@@ -15,14 +15,33 @@ namespace RandomUsefulThings
             this.z = z;
         }
 
-        public Vector3 Reflect( Vector3 normal )
+        public float LengthSquared { get => (x * x) + (y * y) + (z * z); }
+
+        public float Length { get => (float)Math.Sqrt( LengthSquared ); }
+
+        public Vector3 Normalized()
+        {
+            float length = this.Length;
+            return new Vector3( x / length, y / length, z / length );
+        }
+
+        public Vector3 Reflect( Vector3 planeNormal )
         {
             // Project the vector onto the plane defined by the normal
-            Vector3 projection = this - Vector3.Dot( this, normal ) * normal;
+            Vector3 projection = this - Vector3.Dot( this, planeNormal ) * planeNormal;
 
             // Reflect the vector off of the plane
             return projection * 2 - this;
         }
+
+        public Vector3 ProjectOntoPlane( Vector3 planeNormal )
+        {
+            // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
+            Vector3 orthogonalComponent = Vector3.Dot( this, planeNormal ) * planeNormal;
+
+            return this - orthogonalComponent;
+        }
+
         public static float Dot( Vector3 v1, Vector3 v2 )
         {
             return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
@@ -37,8 +56,8 @@ namespace RandomUsefulThings
         {
             return new Vector3( v.x * f, v.y * f, v.z * f );
         }
-        
-        public static Vector3 operator *( float f , Vector3 v)
+
+        public static Vector3 operator *( float f, Vector3 v )
         {
             return new Vector3( v.x * f, v.y * f, v.z * f );
         }
@@ -50,7 +69,7 @@ namespace RandomUsefulThings
             Quaternion r = q * vq * q.Inverse();
             return new Vector3( r.x, r.y, r.z );
         }
-        
+
         // cross-product
         public static Quaternion operator *( Vector3 v1, Vector3 v2 )
         {
