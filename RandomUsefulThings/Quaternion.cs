@@ -57,13 +57,13 @@ namespace RandomUsefulThings
                 w / length );
         }
 
-        public float Angle( Quaternion other )
+        public static float Angle( Quaternion q1, Quaternion q2 )
         {
-            float dotProduct = Quaternion.Dot( this, other );
+            float dotProduct = Quaternion.Dot( q1, q2 );
             float absoluteDotProduct = Math.Abs( dotProduct );
 
-            // Don't go above 1.
-            float dotClamped = Math.Min( absoluteDotProduct, 1.0f );
+            // Clamp to [-1, 1]
+            float dotClamped = Math.Clamp( absoluteDotProduct, -1.0f, 1.0f );
 
             const float eps = 0.000001f;
 

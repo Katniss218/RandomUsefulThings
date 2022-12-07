@@ -19,7 +19,7 @@ namespace RandomUsefulThings
             Quaternion q1 = Quaternion.FromEulerAngles( new Vector3( (float)ToRadians( 90 ), (float)ToRadians( 0 ), (float)ToRadians( 0 ) ) );
             Quaternion q2 = Quaternion.FromEulerAngles( new Vector3( (float)ToRadians( 0 ), (float)ToRadians( 90 ), (float)ToRadians( 0 ) ) );
 
-            float angle2 = (float)ToDegrees( q1.Angle( q2 ) );
+            float angle2 = (float)ToDegrees( Quaternion.Angle( q1, q2 ) );
 
             Console.WriteLine( "Hello World!" );
         }
