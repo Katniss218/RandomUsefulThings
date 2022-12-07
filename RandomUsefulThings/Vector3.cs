@@ -15,6 +15,34 @@ namespace RandomUsefulThings
             this.z = z;
         }
 
+        public Vector3 Reflect( Vector3 normal )
+        {
+            // Project the vector onto the plane defined by the normal
+            Vector3 projection = this - Vector3.Dot( this, normal ) * normal;
+
+            // Reflect the vector off of the plane
+            return projection * 2 - this;
+        }
+        public static float Dot( Vector3 v1, Vector3 v2 )
+        {
+            return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+        }
+
+        public static Vector3 operator -( Vector3 v1, Vector3 v2 )
+        {
+            return new Vector3( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z );
+        }
+
+        public static Vector3 operator *( Vector3 v, float f )
+        {
+            return new Vector3( v.x * f, v.y * f, v.z * f );
+        }
+        
+        public static Vector3 operator *( float f , Vector3 v)
+        {
+            return new Vector3( v.x * f, v.y * f, v.z * f );
+        }
+
         // rotate a vector by a quaternion (assuming origin is (0,0,0) ??)
         public static Vector3 operator *( Quaternion q, Vector3 v )
         {
