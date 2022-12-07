@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RandomUsefulThings
 {
-    public class Vector3
+    public struct Vector3
     {
         public float x, y, z;
 
