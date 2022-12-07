@@ -21,6 +21,9 @@ namespace RandomUsefulThings
 
             float angle2 = (float)ToDegrees( Quaternion.Angle( q1, q2 ) );
 
+            Vector3 v1 = new Vector3( 2, 1, 0 );
+            Vector3 vp = v1.ProjectOnto( new Vector3( 0, 1, 0 ) );
+
             Console.WriteLine( "Hello World!" );
         }
     }

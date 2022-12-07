@@ -6,23 +6,25 @@ namespace RandomUsefulThings
 {
     public struct Vector3
     {
-        public float x, y, z;
+        public float X { get; }
+        public float Y { get; }
+        public float Z { get; }
+
+        public float LengthSquared { get => (X * X) + (Y * Y) + (Z * Z); }
+
+        public float Length { get => (float)Math.Sqrt( LengthSquared ); }
 
         public Vector3( float x, float y, float z )
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
-
-        public float LengthSquared { get => (x * x) + (y * y) + (z * z); }
-
-        public float Length { get => (float)Math.Sqrt( LengthSquared ); }
 
         public Vector3 Normalized()
         {
             float length = this.Length;
-            return new Vector3( x / length, y / length, z / length );
+            return new Vector3( X / length, Y / length, Z / length );
         }
 
         public Vector3 Reflect( Vector3 planeNormal )
@@ -34,49 +36,61 @@ namespace RandomUsefulThings
             return projection * 2 - this;
         }
 
-        public Vector3 ProjectOntoPlane( Vector3 planeNormal )
+        public Vector3 ProjectOnto( Vector3 target )
+        {
+            throw new NotImplementedException( "I don't think this works right" );
+            float dotProduct = Vector3.Dot( this, target );
+
+            // Calculate the projection of the vector onto the other vector
+            float projection = dotProduct / target.Length;
+
+            // Return the projection as a Vector3
+            return new Vector3( projection * target.X, projection * target.Y, projection * target.Z );
+        }
+
+        public Vector3 ProjectOntoPlane( Vector3 targetNormal )
         {
             // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
-            Vector3 orthogonalComponent = Vector3.Dot( this, planeNormal ) * planeNormal;
+            Vector3 orthogonalComponent = Vector3.Dot( this, targetNormal ) * targetNormal;
 
             return this - orthogonalComponent;
         }
 
         public static float Dot( Vector3 v1, Vector3 v2 )
         {
-            return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
 
         public static Vector3 operator -( Vector3 v1, Vector3 v2 )
         {
-            return new Vector3( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z );
+            return new Vector3( v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z );
         }
 
         public static Vector3 operator *( Vector3 v, float f )
         {
-            return new Vector3( v.x * f, v.y * f, v.z * f );
+            return new Vector3( v.X * f, v.Y * f, v.Z * f );
         }
 
         public static Vector3 operator *( float f, Vector3 v )
         {
-            return new Vector3( v.x * f, v.y * f, v.z * f );
+            return new Vector3( v.X * f, v.Y * f, v.Z * f );
         }
 
         // rotate a vector by a quaternion (assuming origin is (0,0,0) ??)
         public static Vector3 operator *( Quaternion q, Vector3 v )
         {
-            Quaternion vq = new Quaternion( v.x, v.y, v.z, 0 );
+            Quaternion vq = new Quaternion( v.X, v.Y, v.Z, 0 );
             Quaternion r = q * vq * q.Inverse();
-            return new Vector3( r.x, r.y, r.z );
+            return new Vector3( r.X, r.Y, r.Z );
         }
 
         // cross-product
         public static Quaternion operator *( Vector3 v1, Vector3 v2 )
         {
             return new Quaternion(
-                v1.y * v2.z - v1.z * v2.y,
-                v1.z * v2.x - v1.x * v2.z,
-                v1.x * v2.y - v1.y * v2.x,
+                v1.Y * v2.Z - v1.Z * v2.Y,
+                v1.Z * v2.X - v1.X * v2.Z,
+                v1.X * v2.Y - v1.Y * v2.X,
                 0 );
         }
 
