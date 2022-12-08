@@ -36,7 +36,7 @@ namespace RandomUsefulThings
             return projection * 2 - this;
         }
 
-        [Obsolete]
+        [Obsolete( "Unconfirmed" )]
         public Vector3 ProjectOnto( Vector3 target )
         {
             throw new NotImplementedException( "I don't think this works right" );
@@ -55,6 +55,15 @@ namespace RandomUsefulThings
             Vector3 orthogonalComponent = Vector3.Dot( this, targetNormal ) * targetNormal;
 
             return this - orthogonalComponent;
+        }
+
+        public static Vector3 Multiply( Vector3 vector, Matrix4x4 matrix )
+        {
+            return new Vector3(
+                vector.X * matrix.M00 + vector.Y * matrix.M01 + vector.Z * matrix.M02 + matrix.M03,
+                vector.X * matrix.M10 + vector.Y * matrix.M11 + vector.Z * matrix.M12 + matrix.M13,
+                vector.X * matrix.M20 + vector.Y * matrix.M21 + vector.Z * matrix.M22 + matrix.M23
+            );
         }
 
         public static float Dot( Vector3 v1, Vector3 v2 )
@@ -98,5 +107,33 @@ namespace RandomUsefulThings
         // One of the main uses for this is getting the rotation between two rotations.
         // For example if you wanted to know the Quaternion that would get you from rotationA to rotationB you would do something like this:
         /// FromAtoB = Quaternion.Inverse(rotationA) * rotationB
+        /*public Quaternion RotationFromTo( Quaternion from, Quaternion to )
+        {
+            // Calculate the dot product of the two Quaternions
+            float dot = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
+
+            // If the dot product is negative, negate one of the Quaternions to ensure
+            // that the result is a valid rotation
+            if( dot < 0 )
+            {
+                from.x = -from.x;
+                from.y = -from.y;
+                from.z = -from.z;
+                from.w = -from.w;
+            }
+
+            // Calculate the Quaternion representing the rotation from the first Quaternion to the second one
+            Quaternion result = new Quaternion(
+                to.x - from.x,
+                to.y - from.y,
+                to.z - from.z,
+                to.w - from.w
+            );
+
+            // Normalize the Quaternion to ensure it is a valid rotation
+            result.Normalize();
+
+            return result;
+        }*/
     }
 }
