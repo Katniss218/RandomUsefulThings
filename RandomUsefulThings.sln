@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathMethods", "MathMethods\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Physics\Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeparatingAxisTheorem", "SeparatingAxisTheorem\SeparatingAxisTheorem.csproj", "{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry", "SeparatingAxisTheorem\Geometry.csproj", "{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
