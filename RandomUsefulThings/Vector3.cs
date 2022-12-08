@@ -36,6 +36,7 @@ namespace RandomUsefulThings
             return projection * 2 - this;
         }
 
+        [Obsolete]
         public Vector3 ProjectOnto( Vector3 target )
         {
             throw new NotImplementedException( "I don't think this works right" );
