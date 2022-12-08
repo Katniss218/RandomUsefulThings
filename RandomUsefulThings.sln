@@ -5,6 +5,14 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transformations", "RandomUsefulThings\Transformations.csproj", "{13574848-801B-438F-A193-90CA190D636D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveFunctionCollapse", "WaveFunctionCollapse\WaveFunctionCollapse.csproj", "{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathMethods", "MathMethods\MathMethods.csproj", "{B770880B-508A-40F0-B33D-70B9498B6E0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Physics\Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeparatingAxisTheorem", "SeparatingAxisTheorem\SeparatingAxisTheorem.csproj", "{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{13574848-801B-438F-A193-90CA190D636D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13574848-801B-438F-A193-90CA190D636D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13574848-801B-438F-A193-90CA190D636D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B770880B-508A-40F0-B33D-70B9498B6E0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B770880B-508A-40F0-B33D-70B9498B6E0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B770880B-508A-40F0-B33D-70B9498B6E0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B770880B-508A-40F0-B33D-70B9498B6E0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98BAB91-419D-420D-8644-42BEC66680D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98BAB91-419D-420D-8644-42BEC66680D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98BAB91-419D-420D-8644-42BEC66680D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98BAB91-419D-420D-8644-42BEC66680D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

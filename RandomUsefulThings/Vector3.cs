@@ -27,34 +27,42 @@ namespace RandomUsefulThings
             return new Vector3( X / length, Y / length, Z / length );
         }
 
-        public Vector3 Reflect( Vector3 planeNormal )
+        public static float Dot( Vector3 v1, Vector3 v2 )
         {
-            // Project the vector onto the plane defined by the normal
-            Vector3 projection = this - Vector3.Dot( this, planeNormal ) * planeNormal;
-
-            // Reflect the vector off of the plane
-            return projection * 2 - this;
+            return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public Vector3 ProjectOnto( Vector3 target )
+        // Method that adds a float value to a Vector3 value
+        public static Vector3 Add( Vector3 v, float f )
         {
-            throw new NotImplementedException( "I don't think this works right" );
-            float dotProduct = Vector3.Dot( this, target );
-
-            // Calculate the projection of the vector onto the other vector
-            float projection = dotProduct / target.Length;
-
-            // Return the projection as a Vector3
-            return new Vector3( projection * target.X, projection * target.Y, projection * target.Z );
+            return new Vector3( v.X + f, v.Y + f, v.Z + f );
         }
 
-        public Vector3 ProjectOntoPlane( Vector3 targetNormal )
+        public static Vector3 Add( Vector3 v1, Vector3 v2 )
         {
-            // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
-            Vector3 orthogonalComponent = Vector3.Dot( this, targetNormal ) * targetNormal;
+            return new Vector3( v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z );
+        }
 
-            return this - orthogonalComponent;
+
+        // Method that subtracts a float value from a Vector3 value
+        public static Vector3 Subtract( Vector3 v, float f )
+        {
+            return new Vector3( v.X - f, v.Y - f, v.Z - f );
+        }
+
+        public static Vector3 Subtract( Vector3 v1, Vector3 v2 )
+        {
+            return new Vector3( v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z );
+        }
+
+        public static Vector3 Multiply( Vector3 v, float f )
+        {
+            return new Vector3( v.X * f, v.Y * f, v.Z * f );
+        }
+        
+        public static Vector3 Divide( Vector3 v, float f )
+        {
+            return new Vector3( v.X / f, v.Y / f, v.Z / f );
         }
 
         public static Vector3 Multiply( Vector3 vector, Matrix4x4 matrix )
@@ -66,24 +74,92 @@ namespace RandomUsefulThings
             );
         }
 
-        public static float Dot( Vector3 v1, Vector3 v2 )
+        public Vector3 Reflect( Vector3 planeNormal )
         {
-            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+            // Project the vector onto the plane defined by the normal
+            Vector3 projection = this - Dot( this, planeNormal ) * planeNormal;
+
+            // Reflect the vector off of the plane
+            return projection * 2 - this;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public Vector3 ProjectOnto( Vector3 target )
+        {
+            throw new NotImplementedException( "I don't think this works right" );
+            float dotProduct = Dot( this, target );
+
+            // Calculate the projection of the vector onto the other vector
+            float projection = dotProduct / target.Length;
+
+            // Return the projection as a Vector3
+            return new Vector3( projection * target.X, projection * target.Y, projection * target.Z );
+        }
+
+        public Vector3 ProjectOntoPlane( Vector3 targetNormal )
+        {
+            // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
+            Vector3 orthogonalComponent = Dot( this, targetNormal ) * targetNormal;
+
+            return this - orthogonalComponent;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static Vector3 Slerp( Vector3 start, Vector3 end, float amount )
+        {
+            // Calculate the dot product of the start and end vectors.
+            float dot = Dot( start, end );
+
+            // Clamp the dot product to the range [-1, 1] to prevent any invalid calculations.
+            dot = Math.Clamp( dot, -1.0f, 1.0f );
+
+            // Calculate the angle between the two vectors.
+            float angle = (float)Math.Acos( dot ) * amount;
+
+            // Calculate the interpolated vector using a formula based on the angle and the start and end vectors.
+            Vector3 direction = end - start * dot;
+            direction = direction.Normalized();
+
+            return ((start * (float)Math.Cos( angle )) + (direction * (float)Math.Sin( angle ))).Normalized();
+        }
+
+        public static Vector3 operator +( float f, Vector3 v1 )
+        {
+            return Add( v1, f );
+        }
+        
+        public static Vector3 operator +( Vector3 v1, float f )
+        {
+            return Add( v1, f );
+        }
+        
+        public static Vector3 operator +( Vector3 v1, Vector3 v2 )
+        {
+            return Add( v1, v2 );
+        }
+
+        public static Vector3 operator -( Vector3 v1, float f )
+        {
+            return Subtract( v1, f );
+        }
+        public static Vector3 operator -( float f, Vector3 v1 )
+        {
+            return Subtract( v1, f );
         }
 
         public static Vector3 operator -( Vector3 v1, Vector3 v2 )
         {
-            return new Vector3( v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z );
+            return Subtract( v1, v2 );
         }
 
         public static Vector3 operator *( Vector3 v, float f )
         {
-            return new Vector3( v.X * f, v.Y * f, v.Z * f );
+            return Multiply( v, f );
         }
 
         public static Vector3 operator *( float f, Vector3 v )
         {
-            return new Vector3( v.X * f, v.Y * f, v.Z * f );
+            return Multiply( v, f );
         }
 
         // rotate a vector by a quaternion (assuming origin is (0,0,0) ??)
@@ -102,6 +178,16 @@ namespace RandomUsefulThings
                 v1.Z * v2.X - v1.X * v2.Z,
                 v1.X * v2.Y - v1.Y * v2.X,
                 0 );
+        }
+
+        public static Vector3 operator /( Vector3 v, float f )
+        {
+            return Divide( v, f );
+        }
+
+        public static Vector3 operator /( float f, Vector3 v )
+        {
+            return Divide( v, f );
         }
 
         // One of the main uses for this is getting the rotation between two rotations.

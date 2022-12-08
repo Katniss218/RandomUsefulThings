@@ -105,6 +105,75 @@ namespace RandomUsefulThings
                 return (float)Math.Acos( dotClamped ) * 2.0f;
         }
 
+        [Obsolete( "Unconfirmed" )]
+        public static Quaternion Slerp( Quaternion start, Quaternion end, float amount )
+        {
+            // Calculate the dot product of the start and end quaternions.
+            float dot = Dot( start, end );
+
+            // Clamp the dot product to the range [-1, 1] to prevent any invalid calculations.
+            dot = Math.Clamp( dot, -1.0f, 1.0f );
+
+            // Calculate the angle between the two quaternions.
+            float angle = (float)Math.Acos( dot ) * amount;
+
+            // Calculate the interpolated quaternion using a formula based on the angle and the start and end quaternions.
+            Quaternion direction = end - start * dot;
+            direction = direction.Normalized();
+            return ((start * (float)Math.Cos( angle )) + (direction * (float)Math.Sin( angle ))).Normalized();
+        }
+
+        public static Quaternion Add( Quaternion q1, Quaternion q2 )
+        {
+            return new Quaternion(
+                q1.X + q2.X,
+                q1.Y + q2.Y,
+                q1.Z + q2.Z,
+                q1.W + q2.W
+            );
+        }
+        
+        public static Quaternion Subtract( Quaternion q1, Quaternion q2 )
+        {
+            return new Quaternion(
+                q1.X - q2.X,
+                q1.Y - q2.Y,
+                q1.Z - q2.Z,
+                q1.W - q2.W
+            );
+        }
+
+        public static Quaternion Multiply( Quaternion q, float f )
+        {
+            return new Quaternion(
+                q.X * f,
+                q.Y * f,
+                q.Z * f,
+                q.W * f
+            );
+        }
+
+        public static Quaternion operator +( Quaternion q1, Quaternion q2 )
+        {
+            return Add( q1, q2 );
+        }
+        
+        public static Quaternion operator -( Quaternion q1, Quaternion q2 )
+        {
+            return Subtract( q1, q2 );
+        }
+        
+
+        public static Quaternion operator *( Quaternion q, float f )
+        {
+            return Multiply( q, f );
+        }
+
+        public static Quaternion operator *( float f, Quaternion q )
+        {
+            return Multiply( q, f );
+        }
+
         // pseudo-cross product
         public static Quaternion operator *( Quaternion q1, Quaternion q2 )
         {
