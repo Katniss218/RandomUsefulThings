@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MathMethods
 {
-    public class Point
+    public class CurvePoint
     {
         public float Key { get; set; }
         public float Value { get; set; }
 
-        public Point( float key, float value )
+        public CurvePoint( float key, float value )
         {
             Key = key;
             Value = value;
@@ -17,24 +17,25 @@ namespace MathMethods
     }
     public class Curve
     {
-        private List<Point> points;
+        private List<CurvePoint> points;
 
         public Curve()
         {
-            points = new List<Point>();
+            points = new List<CurvePoint>();
         }
 
         public void AddPoint( float key, float value )
         {
-            Point point = new Point( key, value );
+            CurvePoint point = new CurvePoint( key, value );
             points.Add( point );
         }
 
-        public List<Point> GetPoints()
+        public List<CurvePoint> GetPoints()
         {
             return points;
         }
-        public float CalculateCurveValueAt( float t, Point p1, Point p2 )
+
+        public float CalculateCurveValueAt( float t, CurvePoint p1, CurvePoint p2 )
         {
             // Calculate the value of the curve at t using cubic interpolation.
             float t0 = p1.Key;
@@ -63,8 +64,8 @@ namespace MathMethods
             }
 
             // Find the two points that surround t.
-            Point p1 = null;
-            Point p2 = null;
+            CurvePoint p1 = null;
+            CurvePoint p2 = null;
             for( int i = 0; i < points.Count - 1; i++ )
             {
                 if( points[i].Key <= t && t <= points[i + 1].Key )
