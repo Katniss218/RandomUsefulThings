@@ -70,13 +70,13 @@ namespace RandomUsefulThings
             // euler input in radians.
 
             // Calculate the quaternion from the Euler angles
-            float c1 = (float)Math.Cos( z / 2 );
-            float c2 = (float)Math.Cos( y / 2 );
             float c3 = (float)Math.Cos( x / 2 );
+            float c1 = (float)Math.Cos( y / 2 );
+            float c2 = (float)Math.Cos( z / 2 );
 
-            float s1 = (float)Math.Sin( z / 2 );
-            float s2 = (float)Math.Sin( y / 2 );
             float s3 = (float)Math.Sin( x / 2 );
+            float s1 = (float)Math.Sin( y / 2 );
+            float s2 = (float)Math.Sin( z / 2 );
 
             float qw = (c1 * c2 * c3) - (s1 * s2 * s3);
             float qx = (s1 * s2 * c3) + (c1 * c2 * s3);

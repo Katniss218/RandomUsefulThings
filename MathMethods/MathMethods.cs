@@ -97,7 +97,7 @@ namespace MathMethods
             return acc;
         }
 
-        public int SumOfDigits( int n )
+        public static int SumOfDigits( int n )
         {
             if( n < 0 )
             {

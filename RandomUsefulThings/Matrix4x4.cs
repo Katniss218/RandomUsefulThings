@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RandomUsefulThings
 {
@@ -32,7 +30,7 @@ namespace RandomUsefulThings
                 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
-                0, 0, 0, 1 
+                0, 0, 0, 1
             );
         }
 
@@ -72,51 +70,80 @@ namespace RandomUsefulThings
             );
         }
 
-        [Obsolete( "Unconfirmed" )]
         public float Determinant()
         {
-            // Compute the cofactors of the first row of the matrix.
-            float c00 = M11 * (M22 * M33 - M23 * M32)
-                      - M12 * (M21 * M33 - M23 * M31)
-                      + M13 * (M21 * M32 - M22 * M31);
-            float c01 = M12 * (M20 * M33 - M23 * M30)
-                      - M13 * (M20 * M32 - M22 * M30)
-                      + M10 * (M22 * M31 - M21 * M32);
-            float c02 = M13 * (M20 * M31 - M21 * M30)
-                      - M10 * (M22 * M31 - M21 * M32)
-                      + M11 * (M20 * M32 - M22 * M30);
-            float c03 = M10 * (M21 * M33 - M23 * M31)
-                      - M11 * (M20 * M33 - M23 * M30)
-                      + M12 * (M20 * M31 - M21 * M30);
+            float _00 = this.M00, _01 = this.M01, _02 = this.M02, _03 = this.M03;
+            float _10 = this.M10, _11 = this.M11, _12 = this.M12, _13 = this.M13;
+            float _20 = this.M20, _21 = this.M21, _22 = this.M22, _23 = this.M23;
+            float _30 = this.M30, _31 = this.M31, _32 = this.M32, _33 = this.M33;
 
-            // Return the determinant as the dot product of the first row
-            // and the vector of cofactors.
-            return M00 * c00 + M01 * c01 + M02 * c02 + M03 * c03;
+            float kp_lo = (_22 * _33) - (_23 * _32);
+            float jp_ln = (_21 * _33) - (_23 * _31);
+            float jo_kn = (_21 * _32) - (_22 * _31);
+            float ip_lm = (_20 * _33) - (_23 * _30);
+            float io_km = (_20 * _32) - (_22 * _30);
+            float in_jm = (_20 * _31) - (_21 * _30);
+
+            float a11 = +(_11 * kp_lo - _12 * jp_ln + _13 * jo_kn);
+            float a12 = -(_10 * kp_lo - _12 * ip_lm + _13 * io_km);
+            float a13 = +(_10 * jp_ln - _11 * ip_lm + _13 * in_jm);
+            float a14 = -(_10 * jo_kn - _11 * io_km + _12 * in_jm);
+
+            float det = (_00 * a11) + (_01 * a12) + (_02 * a13) + (_03 * a14);
+            return det;
         }
 
-        /*public Matrix4x4 Inverse()
+        public Matrix4x4 Invert()
         {
-            float determinant = Determinant();
-            if( determinant == 0 )
+            float _00 = this.M00, _01 = this.M01, _02 = this.M02, _03 = this.M03;
+            float _10 = this.M10, _11 = this.M11, _12 = this.M12, _13 = this.M13;
+            float _20 = this.M20, _21 = this.M21, _22 = this.M22, _23 = this.M23;
+            float _30 = this.M30, _31 = this.M31, _32 = this.M32, _33 = this.M33;
+
+            float kp_lo = (_22 * _33) - (_23 * _32);
+            float jp_ln = (_21 * _33) - (_23 * _31);
+            float jo_kn = (_21 * _32) - (_22 * _31);
+            float ip_lm = (_20 * _33) - (_23 * _30);
+            float io_km = (_20 * _32) - (_22 * _30);
+            float in_jm = (_20 * _31) - (_21 * _30);
+
+            float a11 = +(_11 * kp_lo - _12 * jp_ln + _13 * jo_kn);
+            float a12 = -(_10 * kp_lo - _12 * ip_lm + _13 * io_km);
+            float a13 = +(_10 * jp_ln - _11 * ip_lm + _13 * in_jm);
+            float a14 = -(_10 * jo_kn - _11 * io_km + _12 * in_jm);
+
+            float det = (_00 * a11) + (_01 * a12) + (_02 * a13) + (_03 * a14);
+
+            if( Math.Abs( det ) < float.Epsilon )
             {
-                throw new InvalidOperationException( "Matrix is not invertible." );
+                throw new Exception( "Matrix is not invertible" );
             }
 
-            float invDet = 1 / determinant;
+            float invDet = 1.0f / det;
+
+            float gp_ho = _12 * _33 - _13 * _32;
+            float fp_hn = _11 * _33 - _13 * _31;
+            float fo_gn = _11 * _32 - _12 * _31;
+            float ep_hm = _10 * _33 - _13 * _30;
+            float eo_gm = _10 * _32 - _12 * _30;
+            float en_fm = _10 * _31 - _11 * _30;
+
+            float gl_hk = _12 * _23 - _13 * _22;
+            float fl_hj = _11 * _23 - _13 * _21;
+            float fk_gj = _11 * _22 - _12 * _21;
+            float el_hi = _10 * _23 - _13 * _20;
+            float ek_gi = _10 * _22 - _12 * _20;
+            float ej_fi = _10 * _21 - _11 * _20;
+
             return new Matrix4x4(
-                invDet * (M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 - M11 * M23 * M32 - M12 * M21 * M33 - M13 * M22 * M31),
-                invDet * (M01 * M23 * M32 + M02 * M21 * M33 + M03 * M22 * M31 - M01 * M22 * M33 - M02 * M23 * M31 - M03 * M21 * M32),
-                invDet * (M01 * M12 * M33 + M02 * M13 * M31 + M03 * M11 * M32 - M01 * M13 * M32 - M02 * M11 * M33 - M03 * M12 * M31),
-                invDet * (M01 * M13 * M22 + M02 * M11 * M23 + M03 * M12 * M21 - M01 * M12 * M23 - M02 * M13 * M21 - M03 * M11 * M22),
-                invDet * (M10 * M23 * M32 + M12 * M20 * M33 + M13 * M22 * M30 - M10 * M22 * M33 - M12 * M23 * M30 - M13 * M20 * M32),
-                invDet * (M00 * M22 * M33 + M02 * M23 * M30 + M03 * M20 * M32 - M00 * M23 * M32 - M02 * M
-            
-            // AI failed here.
+                a11 * invDet, -(_01 * kp_lo - _02 * jp_ln + _03 * jo_kn) * invDet, +(_01 * gp_ho - _02 * fp_hn + _03 * fo_gn) * invDet, -(_01 * gl_hk - _02 * fl_hj + _03 * fk_gj) * invDet,
+                a12 * invDet, +(_00 * kp_lo - _02 * ip_lm + _03 * io_km) * invDet, -(_00 * gp_ho - _02 * ep_hm + _03 * eo_gm) * invDet, +(_00 * gl_hk - _02 * el_hi + _03 * ek_gi) * invDet,
+                a13 * invDet, -(_00 * jp_ln - _01 * ip_lm + _03 * in_jm) * invDet, +(_00 * fp_hn - _01 * ep_hm + _03 * en_fm) * invDet, -(_00 * fl_hj - _01 * el_hi + _03 * ej_fi) * invDet,
+                a14 * invDet, +(_00 * jo_kn - _01 * io_km + _02 * in_jm) * invDet, -(_00 * fo_gn - _01 * eo_gm + _02 * en_fm) * invDet, +(_00 * fk_gj - _01 * ek_gi + _02 * ej_fi) * invDet
+            );
+        }
 
-                );
-        }*/
-
-        public static Matrix4x4 Translate( Vector3 translation )
+        public static Matrix4x4 Translation( Vector3 translation )
         {
             return new Matrix4x4(
                 1, 0, 0, translation.X,
@@ -136,8 +163,7 @@ namespace RandomUsefulThings
             );
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static Matrix4x4 Rotate( Quaternion rotation )
+        public static Matrix4x4 Rotation( Quaternion rotation )
         {
             float xSq = rotation.X * rotation.X;
             float ySq = rotation.Y * rotation.Y;
@@ -161,8 +187,8 @@ namespace RandomUsefulThings
         [Obsolete( "Unconfirmed" )]
         public static Matrix4x4 Transform( Vector3 translation, Quaternion rotation, Vector3 scale )
         {
-            var translationMatrix = Translate( translation );
-            var rotationMatrix = Rotate( rotation );
+            var translationMatrix = Translation( translation );
+            var rotationMatrix = Rotation( rotation );
             var scaleMatrix = Scale( scale );
 
             // Multiply the matrices in the correct order to obtain the final transformation matrix
@@ -202,6 +228,26 @@ namespace RandomUsefulThings
                 (m1.M30 * m2.M01) + (m1.M31 * m2.M11) + (m1.M32 * m2.M21) + (m1.M33 * m2.M31),
                 (m1.M30 * m2.M02) + (m1.M32 * m2.M12) + (m1.M32 * m2.M22) + (m1.M33 * m2.M32),
                 (m1.M30 * m2.M03) + (m1.M33 * m2.M13) + (m1.M32 * m2.M23) + (m1.M33 * m2.M33)
+            );
+        }
+
+        // Transforms a position by this matrix, without a perspective divide. (fast)
+        public Vector3 MultiplyPoint3x4( Vector3 v )
+        {
+            return new Vector3(
+                this.M00 * v.X + this.M01 * v.Y + this.M02 * v.Z + this.M03,
+                this.M10 * v.X + this.M11 * v.Y + this.M12 * v.Z + this.M13,
+                this.M20 * v.X + this.M21 * v.Y + this.M22 * v.Z + this.M23
+            );
+        }
+
+        // Transforms a direction by this matrix.
+        public Vector3 MultiplyVector( Vector3 v )
+        {
+            return new Vector3(
+                this.M00 * v.X + this.M01 * v.Y + this.M02 * v.Z,
+                this.M10 * v.X + this.M11 * v.Y + this.M12 * v.Z,
+                this.M20 * v.X + this.M21 * v.Y + this.M22 * v.Z
             );
         }
 
