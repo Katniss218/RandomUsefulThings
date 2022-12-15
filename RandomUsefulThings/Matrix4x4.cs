@@ -92,6 +92,30 @@ namespace RandomUsefulThings
             float det = (_00 * a11) + (_01 * a12) + (_02 * a13) + (_03 * a14);
             return det;
         }
+        /*public float Example4() // validate if this returns the same value for a wide array of different matrices.
+        {
+            float _00 = this.M00, _01 = this.M01, _02 = this.M02, _03 = this.M03;
+            float _10 = this.M10, _11 = this.M11, _12 = this.M12, _13 = this.M13;
+            float _20 = this.M20, _21 = this.M21, _22 = this.M22, _23 = this.M23;
+            float _30 = this.M30, _31 = this.M31, _32 = this.M32, _33 = this.M33;
+
+            float a11 = _00 * _11 - _01 * _10;
+            float a12 = _00 * _12 - _02 * _10;
+            float a13 = _00 * _13 - _03 * _10;
+            float a14 = _01 * _12 - _02 * _11;
+            float a15 = _01 * _13 - _03 * _11;
+            float a16 = _02 * _13 - _03 * _12;
+
+            float a21 = _20 * _31 - _21 * _30;
+            float a22 = _20 * _32 - _22 * _30;
+            float a23 = _20 * _33 - _23 * _30;
+            float a24 = _21 * _32 - _22 * _31;
+            float a25 = _21 * _33 - _23 * _31;
+            float a26 = _22 * _33 - _23 * _32;
+
+            float x = a11 * a26 - a12 * a25 + a13 * a24 + a14 * a23 - a15 * a22 + a16 * a21;
+            return x;
+        }*/
 
         public Matrix4x4 Invert()
         {

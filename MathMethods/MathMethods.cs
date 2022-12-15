@@ -28,6 +28,21 @@ namespace MathMethods
             return from + (to - from) * t;
         }
 
+        public static float LengthSquared( float x, float y )
+        {
+            return (x * x) + (y * y);
+        }
+
+        public static float Length( float x, float y )
+        {
+            return (float)Math.Sqrt( LengthSquared( x, y ) );
+        }
+
+        public static float Dot( float v1x, float v1y, float v2x, float v2y )
+        {
+            return (v1x * v2x) + (v1y * v2y);
+        }
+
         // returns where in between the 2 values the current value is (returns the t factor in linear interpolation).
         // inverse lerp kind of.
         public static double InverseLerp( double value, double min, double max )
@@ -114,21 +129,13 @@ namespace MathMethods
             return sum;
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static double Hermite( double from, double to, double t )
-        {
-            double clampedT = Math.Clamp( t, 0, 1 );
-            return LerpUnclamped( from, to, clampedT * clampedT * (3 - 2 * clampedT) );
-        }
-
-        [Obsolete( "Unconfirmed" )]
+        /// <summary>
+        /// Performs a hermite interpolation.
+        /// </summary>
         public static float Smoothstep( float edge0, float edge1, float x )
         {
-            // Clamp x to the range [edge0, edge1]
-            x = Math.Clamp( x, edge0, edge1 );
-
-            // Calculate the smooth step value
-            return LerpUnclamped( edge0, edge1, x * x * (3 - 2 * x) );
+            float t = (float)Math.Clamp( (x - edge0) / (edge1 - edge0), 0.0, 1.0 );
+            return t * t * (3.0f - 2.0f * t);
         }
 
         public static Color LerpColor( Color from, Color to, double t )
