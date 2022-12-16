@@ -210,5 +210,33 @@ namespace Noise
             return fract((p4.xxyz+p4.yzzw)*p4.zywx);
         }
         */
+
+
+        /*  Good for simplex.
+         *  
+        // discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3
+        vec2 random2(vec2 c)
+        {
+	        float j = 4096.0*sin(dot(c,vec2(17.0, 59.4)));
+	        vec2 r;
+	        r.y = fract(512.0*j);
+	        j *= .125;
+	        r.x = fract(512.0*j);
+	        return r-0.5;
+        }
+
+        // discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3
+        vec3 random3(vec3 c)
+        {
+	        float j = 4096.0*sin(dot(c,vec3(17.0, 59.4, 15.0)));
+	        vec3 r;
+	        r.z = fract(512.0*j);
+	        j *= .125;
+	        r.x = fract(512.0*j);
+	        j *= .125;
+	        r.y = fract(512.0*j);
+	        return r-0.5;
+        }
+        */
     }
 }
