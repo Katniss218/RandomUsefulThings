@@ -21,3 +21,7 @@ float avg( vec2 vmin, vec2 vmax, float stepSize )
     
     return avg.x;
 }
+
+
+// noise distribution shader.
+// https://www.shadertoy.com/view/4ssXRX

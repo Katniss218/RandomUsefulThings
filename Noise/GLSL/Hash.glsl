@@ -1,7 +1,10 @@
-﻿ float hash21_FractSin( in vec2 position )
+﻿
+// - ret uniformly distributed in [0 to 1] with average at 0.5
+float nrand( in vec2 position )
 {
     return fract( sin( dot( position, vec2( 12.9898, 78.233 ) ) ) * 43758.5453 );
 }
+
 
 //https://www.shadertoy.com/view/MsV3z3
 float hash21_2DWeyl( in ivec2 position )
@@ -22,6 +25,8 @@ float hash21_IQ3( in uvec2 position )
 }
 
 //https://www.shadertoy.com/view/4djSRW
+// repeats in gradients from bottom-left to top-right
+// - ret uniformly distributed in [0 to 1]
 float hash21_different( in vec2 position )
 {
     vec3 p3 = fract( vec3( position.xyx ) * .1031 );
@@ -42,7 +47,8 @@ float hash11(in float position)
     return fract(position);
 }
 
-// - ret in [0 to 1] with average at 0.5
+// repeats in gradients from bottom-left to top-right
+// - ret uniformly distributed in [0 to 1]
 float hash21(in vec2 position)
 {
     vec3 p3  = fract(vec3(position.xyx) * .1031);
@@ -164,12 +170,11 @@ vec4 hash44(in vec4 position)
 // - ret.xy uniformly distributed in [-0.5 to 0.5]
 vec2 random2(in vec2 position)
 {
-	float j = 4096.0 * sin(dot(position, vec2(17.0, 59.4)));
+	float j = 12.9898 * sin(dot(position, vec2(17.0, 59.4)));
 	vec2 r;
-
-	r.y = fract(512.0 * j);
-	j *= .125;
-	r.x = fract(512.0 * j);
+    
+	r.y = fract(2707.2707 * j);
+	r.x = fract(3023.3023 * j);
 
 	return r - 0.5; // bring the value from [0 to 1] to [-0.5 to 0.5]
 }
@@ -177,14 +182,12 @@ vec2 random2(in vec2 position)
 // - ret.xyz uniformly distributed in [-0.5 to 0.5]
 vec3 random3(in vec3 position)
 {
-	float j = 4096.0 * sin(dot(position, vec3(17.0, 59.4, 15.0)));
+	float j = 12.9898 * sin(dot(position, vec3(17.0, 59.4, 15.0)));
 	vec3 r;
-
-	r.z = fract(512.0 * j);
-	j *= .125;
-	r.x = fract(512.0 * j);
-	j *= .125;
-	r.y = fract(512.0 * j);
+    
+	r.y = fract(2707.2707 * j);
+	r.x = fract(3023.3023 * j);
+	r.z = fract(3361.3361 * j);
 
 	return r - 0.5; // bring the value from [0 to 1] to [-0.5 to 0.5]
 }
@@ -192,16 +195,13 @@ vec3 random3(in vec3 position)
 // - ret.xyzw in [-0.5 to 0.5]
 vec4 random4(in vec4 position)
 {
-	float j = 4096.0 * sin(dot(position, vec4(17.0, 59.4, 15.0, 33.7)));
+	float j = 12.9898 * sin(dot(position, vec4(17.0, 59.4, 15.0, 33.7)));
 	vec4 r;
-
-	r.z = fract(512.0 * j);
-	j *= .125;
-	r.x = fract(512.0 * j);
-	j *= .125;
-	r.y = fract(512.0 * j);
-	j *= .125;
-	r.w = fract(512.0 * j);
+    
+	r.y = fract(2707.2707 * j);
+	r.x = fract(3023.3023 * j);
+	r.z = fract(3361.3361 * j);
+	r.w = fract(3677.3677 * j);
 
 	return r - 0.5; // bring the value from [0 to 1] to [-0.5 to 0.5]
 }

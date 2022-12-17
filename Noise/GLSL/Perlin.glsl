@@ -1,4 +1,5 @@
 ﻿// https://marketplace.visualstudio.com/items?itemName=DanielScherzer.GLSL
+// https://adrianb.io/2014/08/09/perlinnoise.html
 
 #include "Hash.glsl"
 
