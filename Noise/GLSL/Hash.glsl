@@ -1,30 +1,30 @@
-﻿ float hash_FractSin( vec2 p )
+﻿ float hash21_FractSin( in vec2 position )
 {
-    return fract( sin( dot( p, vec2( 12.9898, 78.233 ) ) ) * 43758.5453 );
+    return fract( sin( dot( position, vec2( 12.9898, 78.233 ) ) ) * 43758.5453 );
 }
 
 //https://www.shadertoy.com/view/MsV3z3
-float hash_2DWeyl( ivec2 c )
+float hash21_2DWeyl( in ivec2 position )
 {
-    int x = 0x3504f333 * c.x * c.x + c.y;
-    int y = 0xf1bbcdcb * c.y * c.y + c.x;
+    int x = 0x3504f333 * position.x * position.x + position.y;
+    int y = 0xf1bbcdcb * position.y * position.y + position.x;
 
     return float( x * y ) * (2.0 / 8589934592.0) + 0.5;
 }
 
 //https://www.shadertoy.com/view/4tXyWN
-float hash_IQ3( uvec2 x )
+float hash21_IQ3( in uvec2 position )
 {
-    uvec2 q = 1103515245U * ((x >> 1U) ^ (x.yx));
+    uvec2 q = 1103515245U * ((position >> 1U) ^ (position.yx));
     uint n = 1103515245U * ((q.x) ^ (q.y >> 3U));
 
     return float( n ) * (1.0 / float( 0xffffffffU ));
 }
 
 //https://www.shadertoy.com/view/4djSRW
-float hash_WithoutSine( vec2 p )
+float hash21_different( in vec2 position )
 {
-    vec3 p3 = fract( vec3( p.xyx ) * .1031 );
+    vec3 p3 = fract( vec3( position.xyx ) * .1031 );
     p3 += dot( p3, p3.yzx + 19.19 );
 
     return fract( (p3.x + p3.y) * p3.z );
@@ -32,131 +32,131 @@ float hash_WithoutSine( vec2 p )
 
 // @#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@
 
-// - ret in [0 to 1] with average at 0.5
-float hash11(float p)
+// - ret in [0 to 1]
+float hash11(in float position)
 {
-    p = fract(p * .1031);
-    p *= p + 33.33;
-    p *= p + p;
+    position = fract(position * .1031);
+    position *= position + 33.33;
+    position *= position + position;
 
-    return fract(p);
+    return fract(position);
 }
 
 // - ret in [0 to 1] with average at 0.5
-float hash21(vec2 p)
+float hash21(in vec2 position)
 {
-    vec3 p3  = fract(vec3(p.xyx) * .1031);
+    vec3 p3  = fract(vec3(position.xyx) * .1031);
     p3 += dot(p3, p3.yzx + 33.33);
 
     return fract((p3.x + p3.y) * p3.z);
 }
 
 // - ret in [0 to 1] with average at 0.5
-float hash31(vec3 p3)
+float hash31(in vec3 position)
 {
-    p3  = fract(p3 * .1031);
-    p3 += dot(p3, p3.zyx + 31.32);
+    position  = fract(position * .1031);
+    position += dot(position, position.zyx + 31.32);
 
-    return fract((p3.x + p3.y) * p3.z);
+    return fract((position.x + position.y) * position.z);
 }
 
 // - ret in [0 to 1] with average at 0.5
-float hash41(vec4 p4)
+float hash41(in vec4 position)
 {
-    p4 = fract(p4  * vec4(.1031, .1030, .0973, .1099));
-    p4 += dot(p4, p4.wzxy + 33.33);
+    position = fract(position  * vec4(.1031, .1030, .0973, .1099));
+    position += dot(position, position.wzxy + 33.33);
 
-    return fract((p4.x + p4.y) * (p4.z + p4.w));
+    return fract((position.x + position.y) * (position.z + position.w));
 }
 
-// - ret.xy in [0 to 1] with average at 0.5
-vec2 hash12(float p)
+// - ret.xy in [0 to 1]
+vec2 hash12(in float position)
 {
-    vec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));
+    vec3 p3 = fract(vec3(position) * vec3(.1031, .1030, .0973));
     p3 += dot(p3, p3.yzx + 33.33);
 
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
 // - ret.xy in [0 to 1] with average at 0.5
-vec2 hash22(vec2 p)
+vec2 hash22(in vec2 position)
 {
-    vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
+    vec3 p3 = fract(vec3(position.xyx) * vec3(.1031, .1030, .0973));
     p3 += dot(p3, p3.yzx + 33.33);
 
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
 // - ret.xy in [0 to 1] with average at 0.5
-vec2 hash32(vec3 p3)
+vec2 hash32(in vec3 position)
 {
-    p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yzx + 33.33);
+    position = fract(position * vec3(.1031, .1030, .0973));
+    position += dot(position, position.yzx + 33.33);
 
-    return fract((p3.xx + p3.yz) * p3.zy);
+    return fract((position.xx + position.yz) * position.zy);
 }
 
-// - ret.xyz in [0 to 1] with average at 0.5
-vec3 hash13(float p)
+// - ret.xyz in [0 to 1]
+vec3 hash13(in float position)
 {
-    vec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));
+    vec3 p3 = fract(vec3(position) * vec3(.1031, .1030, .0973));
     p3 += dot(p3, p3.yzx + 33.33);
 
     return fract((p3.xxy + p3.yzz) * p3.zyx); 
 }
 
 // - ret.xyz in [0 to 1] with average at 0.5
-vec3 hash23(vec2 p)
+vec3 hash23(vec2 position)
 {
-    vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
+    vec3 p3 = fract(vec3(position.xyx) * vec3(.1031, .1030, .0973));
     p3 += dot(p3, p3.yxz + 33.33);
 
     return fract((p3.xxy + p3.yzz) * p3.zyx);
 }
 
 // - ret.xyz in [0 to 1] with average at 0.5
-vec3 hash33(vec3 p3)
+vec3 hash33(in vec3 position)
 {
-    p3 = fract(p3 * vec3(.1031, .1030, .0973));
-    p3 += dot(p3, p3.yxz + 33.33);
+    position = fract(position * vec3(.1031, .1030, .0973));
+    position += dot(position, position.yxz + 33.33);
 
-    return fract((p3.xxy + p3.yxx) * p3.zyx);
+    return fract((position.xxy + position.yxx) * position.zyx);
 }
 
-// - ret.xyzw in [0 to 1] with average at 0.5
-vec4 hash14(float p)
+// - ret.xyzw in [0 to 1]
+vec4 hash14(in float position)
 {
-    vec4 p4 = fract(vec4(p) * vec4(.1031, .1030, .0973, .1099));
+    vec4 p4 = fract(vec4(position) * vec4(.1031, .1030, .0973, .1099));
     p4 += dot(p4, p4.wzxy + 33.33);
 
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
 // - ret.xyzw in [0 to 1] with average at 0.5
-vec4 hash24(vec2 p)
+vec4 hash24(in vec2 position)
 {
-    vec4 p4 = fract(vec4(p.xyxy) * vec4(.1031, .1030, .0973, .1099));
+    vec4 p4 = fract(vec4(position.xyxy) * vec4(.1031, .1030, .0973, .1099));
     p4 += dot(p4, p4.wzxy + 33.33);
 
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
 // - ret.xyzw in [0 to 1] with average at 0.5
-vec4 hash34(vec3 p)
+vec4 hash34(in vec3 position)
 {
-    vec4 p4 = fract(vec4(p.xyzx)  * vec4(.1031, .1030, .0973, .1099));
+    vec4 p4 = fract(vec4(position.xyzx)  * vec4(.1031, .1030, .0973, .1099));
     p4 += dot(p4, p4.wzxy + 33.33);
 
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
 // - ret.xyzw in [0 to 1] with average at 0.5
-vec4 hash44(vec4 p4)
+vec4 hash44(in vec4 position)
 {
-    p4 = fract(p4  * vec4(.1031, .1030, .0973, .1099));
-    p4 += dot(p4, p4.wzxy + 33.33);
+    position = fract(position  * vec4(.1031, .1030, .0973, .1099));
+    position += dot(position, position.wzxy + 33.33);
 
-    return fract((p4.xxyz + p4.yzzw) * p4.zywx);
+    return fract((position.xxyz + position.yzzw) * position.zywx);
 }
 
 // @#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@
