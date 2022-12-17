@@ -32,7 +32,7 @@ float hash_WithoutSine( vec2 p )
 
 // @#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@
 
-// - ret uniformly distributed in [0 to 1] with average at 0.5
+// - ret in [0 to 1] with average at 0.5
 float hash11(float p)
 {
     p = fract(p * .1031);
@@ -42,7 +42,7 @@ float hash11(float p)
     return fract(p);
 }
 
-// - ret uniformly distributed in [0 to 1] with average at 0.5
+// - ret in [0 to 1] with average at 0.5
 float hash21(vec2 p)
 {
     vec3 p3  = fract(vec3(p.xyx) * .1031);
@@ -51,7 +51,7 @@ float hash21(vec2 p)
     return fract((p3.x + p3.y) * p3.z);
 }
 
-// - ret uniformly distributed in [0 to 1] with average at 0.5
+// - ret in [0 to 1] with average at 0.5
 float hash31(vec3 p3)
 {
     p3  = fract(p3 * .1031);
@@ -60,7 +60,7 @@ float hash31(vec3 p3)
     return fract((p3.x + p3.y) * p3.z);
 }
 
-// - ret uniformly distributed in [0 to 1] with average at 0.5
+// - ret in [0 to 1] with average at 0.5
 float hash41(vec4 p4)
 {
     p4 = fract(p4  * vec4(.1031, .1030, .0973, .1099));
@@ -69,7 +69,7 @@ float hash41(vec4 p4)
     return fract((p4.x + p4.y) * (p4.z + p4.w));
 }
 
-// - ret.xy uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xy in [0 to 1] with average at 0.5
 vec2 hash12(float p)
 {
     vec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));
@@ -78,7 +78,7 @@ vec2 hash12(float p)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
-// - ret.xy uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xy in [0 to 1] with average at 0.5
 vec2 hash22(vec2 p)
 {
     vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
@@ -87,7 +87,7 @@ vec2 hash22(vec2 p)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
-// - ret.xy uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xy in [0 to 1] with average at 0.5
 vec2 hash32(vec3 p3)
 {
     p3 = fract(p3 * vec3(.1031, .1030, .0973));
@@ -96,7 +96,7 @@ vec2 hash32(vec3 p3)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
-// - ret.xyz uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyz in [0 to 1] with average at 0.5
 vec3 hash13(float p)
 {
     vec3 p3 = fract(vec3(p) * vec3(.1031, .1030, .0973));
@@ -105,7 +105,7 @@ vec3 hash13(float p)
     return fract((p3.xxy + p3.yzz) * p3.zyx); 
 }
 
-// - ret.xyz uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyz in [0 to 1] with average at 0.5
 vec3 hash23(vec2 p)
 {
     vec3 p3 = fract(vec3(p.xyx) * vec3(.1031, .1030, .0973));
@@ -114,7 +114,7 @@ vec3 hash23(vec2 p)
     return fract((p3.xxy + p3.yzz) * p3.zyx);
 }
 
-// - ret.xyz uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyz in [0 to 1] with average at 0.5
 vec3 hash33(vec3 p3)
 {
     p3 = fract(p3 * vec3(.1031, .1030, .0973));
@@ -123,7 +123,7 @@ vec3 hash33(vec3 p3)
     return fract((p3.xxy + p3.yxx) * p3.zyx);
 }
 
-// - ret.xyzw uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash14(float p)
 {
     vec4 p4 = fract(vec4(p) * vec4(.1031, .1030, .0973, .1099));
@@ -132,7 +132,7 @@ vec4 hash14(float p)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
-// - ret.xyzw uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash24(vec2 p)
 {
     vec4 p4 = fract(vec4(p.xyxy) * vec4(.1031, .1030, .0973, .1099));
@@ -141,7 +141,7 @@ vec4 hash24(vec2 p)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
-// - ret.xyzw uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash34(vec3 p)
 {
     vec4 p4 = fract(vec4(p.xyzx)  * vec4(.1031, .1030, .0973, .1099));
@@ -150,7 +150,7 @@ vec4 hash34(vec3 p)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
-// - ret.xyzw uniformly distributed in [0 to 1] with average at 0.5
+// - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash44(vec4 p4)
 {
     p4 = fract(p4  * vec4(.1031, .1030, .0973, .1099));
