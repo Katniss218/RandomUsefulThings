@@ -6,9 +6,6 @@ namespace Noise
 {
     public static class Hash
     {
-        const float M1 = 1597334677; //1719413*929
-        const float M2 = 3812015801; //140473*2467*11
-
         public static float Hash1( float n )
         {
             return n - (float)Math.Floor( Math.Sin( n ) * 43758.5453 );
@@ -24,6 +21,9 @@ namespace Noise
 
             return (sinD1 - (float)Math.Floor( sinD1 ), sinD2 - (float)Math.Floor( sinD2 ));
         }
+
+        const float M1 = 1597334677; // 1719413 * 929
+        const float M2 = 3812015801; // 140473 * 2467 * 11
 
         public static float Get( float x, float y )
         {

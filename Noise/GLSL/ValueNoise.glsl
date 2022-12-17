@@ -13,10 +13,10 @@ float noise2d(vec2 position, float amp, float freq)
     vec2 p10 = vec2(p11.x, p00.y);
     
     // Random values at each grid point.
-    float v00 = hash12(p00);
-    float v01 = hash12(p01);
-    float v10 = hash12(p10);
-    float v11 = hash12(p11);
+    float v00 = hash21(p00);
+    float v01 = hash21(p01);
+    float v10 = hash21(p10);
+    float v11 = hash21(p11);
     
     // Mix the random values together.
     float n0 = mix(v00, v10, pOff.x);
