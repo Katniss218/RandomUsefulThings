@@ -8,36 +8,6 @@ namespace Noise
 {
     public class ValueNoise
     {
-        /* HLSL
-        
-        float noise( float x, float y, float amp, float freq )
-        {    
-            x *= freq;
-            y *= freq;
-
-            float x0 = floor(x);
-            float x1 = x0 + 1.f;
-            float y0 = floor(y);
-            float y1 = y0 + 1.f;
-    
-            float v00 = hash(uvec2(x0,y0));
-            float v01 = hash(uvec2(x0,y1));
-            float v10 = hash(uvec2(x1,y0));
-            float v11 = hash(uvec2(x1,y1));
-    
-    
-            float sx = x - x0;
-            float sy = y - y0;
-            float n0 = mix(v00, v10, sx);
-            float n1 = mix(v01, v11, sx);
-            float v = mix(n0, n1, sy);
-
-            float result = v * amp;
-    
-            return result;
-        }
-        */
-
         /// <summary>
         /// Returns a single layer of noise at the given coordinates.
         /// </summary>
@@ -67,5 +37,7 @@ namespace Noise
 
             return result;
         }
+
+        // It's possible to take less samples and interpolate the results of the noise.
     }
 }
