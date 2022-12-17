@@ -5,6 +5,12 @@ namespace MathMethods
 {
     public class MathMethods
     {
+        [Obsolete("Unconfirmed")]
+        public static float Modulo( float a, float b )
+        {
+            return a - b * (float)Math.Floor( a / b );
+        }
+
         public static float Lerp( float from, float to, float t )
         {
             // This function linearly interpolates between two values, start and end, by the amount amount.

@@ -24,30 +24,33 @@ float hash21_IQ3( in uvec2 position )
     return float( n ) * (1.0 / float( 0xffffffffU ));
 }
 
-//https://www.shadertoy.com/view/4djSRW
-// repeats in gradients from bottom-left to top-right
-// - ret uniformly distributed in [0 to 1]
-float hash21_different( in vec2 position )
-{
-    vec3 p3 = fract( vec3( position.xyx ) * .1031 );
-    p3 += dot( p3, p3.yzx + 19.19 );
-
-    return fract( (p3.x + p3.y) * p3.z );
-}
-
 // @#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@
 
-// - ret in [0 to 1]
+// - ret uniformly distributed in [0 to 1]
 float hash11(in float position)
 {
-    position = fract(position * .1031);
-    position *= position + 33.33;
+    position = fract(position * 8.103142);
+    position *= position + 33.13123;
     position *= position + position;
 
     return fract(position);
 }
 
-// repeats in gradients from bottom-left to top-right
+// Useful for small ranges.
+// - ret uniformly distributed in [0 to 1]
+float hash21_small(in vec2 position)
+{
+    float p = position.x + (position.y * 7.36762545);
+
+    p = fract(p * 8.103142); // The formula can probably be improved.
+    p *= p + 33.13123;
+    p *= p + p;
+
+    return fract(position);
+}
+
+// repeats in gradients from bottom-left to top-right.
+// Useful for large ranges.
 // - ret uniformly distributed in [0 to 1]
 float hash21(in vec2 position)
 {
@@ -57,6 +60,7 @@ float hash21(in vec2 position)
     return fract((p3.x + p3.y) * p3.z);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret in [0 to 1] with average at 0.5
 float hash31(in vec3 position)
 {
@@ -66,6 +70,7 @@ float hash31(in vec3 position)
     return fract((position.x + position.y) * position.z);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret in [0 to 1] with average at 0.5
 float hash41(in vec4 position)
 {
@@ -75,6 +80,7 @@ float hash41(in vec4 position)
     return fract((position.x + position.y) * (position.z + position.w));
 }
 
+// repeats in gradients
 // - ret.xy in [0 to 1]
 vec2 hash12(in float position)
 {
@@ -84,6 +90,7 @@ vec2 hash12(in float position)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xy in [0 to 1] with average at 0.5
 vec2 hash22(in vec2 position)
 {
@@ -93,6 +100,7 @@ vec2 hash22(in vec2 position)
     return fract((p3.xx + p3.yz) * p3.zy);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xy in [0 to 1] with average at 0.5
 vec2 hash32(in vec3 position)
 {
@@ -102,6 +110,7 @@ vec2 hash32(in vec3 position)
     return fract((position.xx + position.yz) * position.zy);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyz in [0 to 1]
 vec3 hash13(in float position)
 {
@@ -111,6 +120,7 @@ vec3 hash13(in float position)
     return fract((p3.xxy + p3.yzz) * p3.zyx); 
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyz in [0 to 1] with average at 0.5
 vec3 hash23(vec2 position)
 {
@@ -120,6 +130,7 @@ vec3 hash23(vec2 position)
     return fract((p3.xxy + p3.yzz) * p3.zyx);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyz in [0 to 1] with average at 0.5
 vec3 hash33(in vec3 position)
 {
@@ -129,6 +140,7 @@ vec3 hash33(in vec3 position)
     return fract((position.xxy + position.yxx) * position.zyx);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyzw in [0 to 1]
 vec4 hash14(in float position)
 {
@@ -138,6 +150,7 @@ vec4 hash14(in float position)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash24(in vec2 position)
 {
@@ -147,6 +160,7 @@ vec4 hash24(in vec2 position)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash34(in vec3 position)
 {
@@ -156,6 +170,7 @@ vec4 hash34(in vec3 position)
     return fract((p4.xxyz + p4.yzzw) * p4.zywx);
 }
 
+// repeats in gradients from bottom-left to top-right
 // - ret.xyzw in [0 to 1] with average at 0.5
 vec4 hash44(in vec4 position)
 {
@@ -204,4 +219,16 @@ vec4 random4(in vec4 position)
 	r.w = fract(3677.3677 * j);
 
 	return r - 0.5; // bring the value from [0 to 1] to [-0.5 to 0.5]
+}
+
+// Tileable hash.
+// Can be used with basically any noise.
+// To use with FBM, the scale needs to be set proportionally to frequency.
+
+float Hash(in vec2 p, in float scale)
+{
+	// This is tiling part, adjusts with the scale...
+	p = mod(p, scale);
+
+	return fract(sin(dot(p, vec2(27.16898, 38.90563))) * 5151.5473453);
 }
