@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GLSL\NormalmapShadow.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="GLSL\NormalmapShadow.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MathMethods\MathMethods.csproj" />
   </ItemGroup>
 
