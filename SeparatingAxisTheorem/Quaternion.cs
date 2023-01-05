@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RandomUsefulThings
+namespace Geometry
 {
     public struct Quaternion
     {

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MathMethods
 {
-    class Quicksort
+    public static class QuicksortAlg
     {
         // A utility function to swap two elements
-        static void Swap( int[] arr, int i, int j )
+        [MethodImpl( MethodImplOptions.AggressiveInlining )]
+        private static void Swap( int[] arr, int i, int j )
         {
             int temp = arr[i];
             arr[i] = arr[j];
@@ -19,7 +21,7 @@ namespace MathMethods
              array, and places all smaller (smaller than pivot)
              to left of pivot and all greater elements to right
              of pivot */
-        static int Partition( int[] arr, int low, int high )
+        private static int Partition( int[] arr, int low, int high )
         {
 
             // pivot
@@ -53,7 +55,7 @@ namespace MathMethods
                     low --> Starting index,
                     high --> Ending index
            */
-        public static void Run( int[] arr, int low, int high )
+        public static void Quicksort( this int[] arr, int low, int high )
         {
             if( low < high )
             {
@@ -64,8 +66,8 @@ namespace MathMethods
 
                 // Separately sort elements before
                 // partition and after partition
-                Run( arr, low, pi - 1 );
-                Run( arr, pi + 1, high );
+                Quicksort( arr, low, pi - 1 );
+                Quicksort( arr, pi + 1, high );
             }
         }
     }

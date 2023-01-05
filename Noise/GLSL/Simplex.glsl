@@ -25,9 +25,9 @@ float simplex2d( in vec2 position )
 
     // calculate s and x
 	vec2 s = floor(position + dot(position, vec2(F2))); //- generalizes to higher dimensions
-                                                        //vec2 s = floor( position + (position.x + position.y) * F3 ); -- this is interchangeable.
+                                                        //vec2 s = floor( position + (position.x + position.y) * F2 ); -- this is interchangeable.
     vec2 x1 = position - s + dot(s, vec2(G2));          //- generalizes to higher dimensions
-                                                        //vec2 x1 = position - s + (s.x + s.y) * G3;
+                                                        //vec2 x1 = position - s + (s.x + s.y) * G2;
     
     // calculate i1
     float e = step(x1.y, x1.x);

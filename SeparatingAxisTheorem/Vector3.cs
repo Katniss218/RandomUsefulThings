@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RandomUsefulThings
+namespace Geometry
 {
     public struct Vector3
     {
@@ -14,11 +14,28 @@ namespace RandomUsefulThings
 
         public float Length { get => (float)Math.Sqrt( LengthSquared ); }
 
+        public float this[int i]
+        {
+            get
+            {
+                if( i == 0 ) return this.X;
+                if( i == 1 ) return this.Y;
+                if( i == 2 ) return this.Z;
+                throw new IndexOutOfRangeException( "The index was out of the range for Vector2 - [0 to 2]." );
+            }
+        }
         public Vector3( float x, float y, float z )
         {
             this.X = x;
             this.Y = y;
             this.Z = z;
+        }
+
+        public Vector3( Vector3 from, Vector3 to )
+        {
+            this.X = to.X - from.X;
+            this.Y = to.Y - from.Y;
+            this.Z = to.Z - from.Z;
         }
 
         public Vector3 Normalized()
@@ -30,6 +47,26 @@ namespace RandomUsefulThings
         public static float Dot( Vector3 v1, Vector3 v2 )
         {
             return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
+        }
+
+        public static Vector3 Cross( Vector3 v1, Vector3 v2 )
+        {
+            // Calculate the cross product of the two vectors
+            float x = (v1.Y * v2.Z) - (v1.Z * v2.Y);
+            float y = (v1.Z * v2.X) - (v1.X * v2.Z);
+            float z = (v1.X * v2.Y) - (v1.Y * v2.X);
+
+            // Return the result as a new Vector3 object
+            return new Vector3( x, y, z );
+        }
+
+        public static float Distance( Vector3 v1, Vector3 v2 )
+        {
+            float dx = v2.X - v1.X;
+            float dy = v2.Y - v1.Y;
+            float dz = v2.Z - v1.Z;
+
+            return (float)Math.Sqrt( (dx * dx) + (dy * dy) + (dz * dz) );
         }
 
         // Method that adds a float value to a Vector3 value
@@ -59,7 +96,7 @@ namespace RandomUsefulThings
         {
             return new Vector3( v.X * f, v.Y * f, v.Z * f );
         }
-        
+
         public static Vector3 Divide( Vector3 v, float f )
         {
             return new Vector3( v.X / f, v.Y / f, v.Z / f );
@@ -77,7 +114,7 @@ namespace RandomUsefulThings
         public Vector3 Reflect( Vector3 planeNormal )
         {
             // Project the vector onto the plane defined by the normal
-            Vector3 projection = this - Dot( this, planeNormal ) * planeNormal;
+            Vector3 projection = ProjectOntoPlane( planeNormal );
 
             // Reflect the vector off of the plane
             return projection * 2 - this;
@@ -127,12 +164,12 @@ namespace RandomUsefulThings
         {
             return Add( v1, f );
         }
-        
+
         public static Vector3 operator +( Vector3 v1, float f )
         {
             return Add( v1, f );
         }
-        
+
         public static Vector3 operator +( Vector3 v1, Vector3 v2 )
         {
             return Add( v1, v2 );

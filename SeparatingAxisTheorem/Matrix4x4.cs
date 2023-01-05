@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RandomUsefulThings
+namespace Geometry
 {
     public struct Matrix4x4
     {

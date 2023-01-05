@@ -1,5 +1,4 @@
-﻿using RandomUsefulThings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,6 +13,46 @@ namespace Geometry
         {
             this.min = min;
             this.max = max;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static bool LineSegmentIntersectsBoundingBox( Vector3 min, Vector3 max, Vector3 p1, Vector3 p2 )
+        {
+            Vector3 d = p2 - p1;
+            Vector3 e = max - min;
+            Vector3 m = p1 - min;
+            float tmin = 0.0f;
+            float tmax = 1.0f;
+
+            for( int i = 0; i < 3; i++ )
+            {
+                float p = d[i];
+                float q = m[i];
+                float r = e[i];
+
+                if( p == 0 && q < 0 )
+                {
+                    return false;
+                }
+
+                float t = q / p;
+
+                if( p < 0 )
+                {
+                    tmax = Math.Min( tmax, t );
+                }
+                else
+                {
+                    tmin = Math.Max( tmin, t );
+                }
+
+                if( tmax < tmin )
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         [Obsolete( "Unconfirmed" )]

@@ -1,4 +1,13 @@
 ﻿
+float angle(vec2 uv, vec2 p)
+{
+    // Returns angle in range [-pi, pi]
+    // min/max is on the right (+Y), decreases counterclockwise around the point.
+    
+    vec2 d = p - uv;
+    return atan(d.y, d.x);
+}
+
 // outputs average color.
 float avg( vec2 vmin, vec2 vmax, float stepSize )
 {
