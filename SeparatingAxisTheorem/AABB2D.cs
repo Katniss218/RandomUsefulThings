@@ -64,9 +64,39 @@ namespace Geometry
 
         }
 
+        [Obsolete( "Unconfirmed" )]
         public bool Intersects( Ray2D Ray )
         {
+            // Slab method, separate intervals for x and y slabs.
+            Vector2 min = Min;
+            Vector2 max = Max;
 
+            float tMin = (min.X - Ray.Origin.X) / Ray.Direction.X;
+            float tMax = (max.X - Ray.Origin.X) / Ray.Direction.X;
+            if( tMin > tMax )
+            {
+                float temp = tMin;
+                tMin = tMax;
+                tMax = temp;
+            }
+
+            float tyMin = (min.Y - Ray.Origin.Y) / Ray.Direction.Y;
+            float tyMax = (max.Y - Ray.Origin.Y) / Ray.Direction.Y;
+            if( tyMin > tyMax )
+            {
+                float temp = tyMin;
+                tyMin = tyMax;
+                tyMax = temp;
+            }
+
+            if( tMin > tyMax || tyMin > tMax )
+            {
+                return false;
+            }
+
+            tMin = Math.Max( tMin, tyMin );
+            tMax = Math.Min( tMax, tyMax );
+            return tMin < 1 && tMax > 0;
         }
 
         [Obsolete( "Unconfirmed" )]
@@ -94,6 +124,7 @@ namespace Geometry
             return new AABB2D( center, size );
         }
 
+        [Obsolete( "Unconfirmed" )]
         public static AABB2D Intersection( AABB2D a, AABB2D b )
         {
             Vector2 min = Vector2.Max( a.Center - a.Size / 2, b.Center - b.Size / 2 );

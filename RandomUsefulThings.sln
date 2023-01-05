@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transformations", "RandomUsefulThings\Transformations.csproj", "{13574848-801B-438F-A193-90CA190D636D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveFunctionCollapse", "WaveFunctionCollapse\WaveFunctionCollapse.csproj", "{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathMethods", "MathMethods\MathMethods.csproj", "{B770880B-508A-40F0-B33D-70B9498B6E0B}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{13574848-801B-438F-A193-90CA190D636D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13574848-801B-438F-A193-90CA190D636D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13574848-801B-438F-A193-90CA190D636D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13574848-801B-438F-A193-90CA190D636D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU

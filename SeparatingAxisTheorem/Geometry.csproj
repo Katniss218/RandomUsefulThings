@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RandomUsefulThings\Transformations.csproj" />
+    <ProjectReference Include="..\MathMethods\MathMethods.csproj" />
   </ItemGroup>
 
 </Project>
