@@ -4,15 +4,22 @@ using System.Text;
 
 namespace Geometry
 {
-    public class AABB3D
+    public struct AABB3D
     {
-        public Vector3 min;
-        public Vector3 max;
+        public Vector3 Center { get; }
 
-        public AABB3D( Vector3 min, Vector3 max )
+        public Vector3 Size { get; }
+
+        public Vector3 HalfSize { get => Size / 2.0f; }
+
+        public Vector3 Min { get => Center - HalfSize; }
+
+        public Vector3 Max { get => Center + HalfSize; }
+
+        public AABB3D( Vector3 center, Vector3 size )
         {
-            this.min = min;
-            this.max = max;
+            this.Center = center;
+            this.Size = size;
         }
 
         [Obsolete( "Unconfirmed" )]
@@ -58,34 +65,44 @@ namespace Geometry
         [Obsolete( "Unconfirmed" )]
         public bool Intersects( AABB3D other )
         {
+            Vector3 min = Min;
+            Vector3 max = Max;
+            Vector3 otherMin = other.Min;
+            Vector3 otherMax = other.Max;
+
             // Check if the min and max of one box are inside the other box
-            return min.X <= other.max.X && max.X >= other.min.X &&
-                   min.Y <= other.max.Y && max.Y >= other.min.Y &&
-                   min.Z <= other.max.Z && max.Z >= other.min.Z;
+            return min.X <= otherMax.X && max.X >= otherMin.X &&
+                   min.Y <= otherMax.Y && max.Y >= otherMin.Y &&
+                   min.Z <= otherMax.Z && max.Z >= otherMin.Z;
         }
 
         [Obsolete( "Unconfirmed" )]
         public Vector3 GetMinimumSeparationVector( AABB3D other )
         {
+            Vector3 min = Min;
+            Vector3 max = Max;
+            Vector3 otherMin = other.Min;
+            Vector3 otherMax = other.Max;
+
             // Calculate the separation vector
             var separationX = 0f;
             var separationY = 0f;
             var separationZ = 0f;
 
-            if( min.X > other.max.X )
-                separationX = min.X - other.max.X;
-            else if( max.X < other.min.X )
-                separationX = max.X - other.min.X;
+            if( min.X > otherMax.X )
+                separationX = min.X - otherMax.X;
+            else if( max.X < otherMin.X )
+                separationX = max.X - otherMin.X;
 
-            if( min.Y > other.max.Y )
-                separationY = min.Y - other.max.Y;
-            else if( max.Y < other.min.Y )
-                separationY = max.Y - other.min.Y;
+            if( min.Y > otherMax.Y )
+                separationY = min.Y - otherMax.Y;
+            else if( max.Y < otherMin.Y )
+                separationY = max.Y - otherMin.Y;
 
-            if( min.Z > other.max.Z )
-                separationZ = min.Z - other.max.Z;
-            else if( max.Z < other.min.Z )
-                separationZ = max.Z - other.min.Z;
+            if( min.Z > otherMax.Z )
+                separationZ = min.Z - otherMax.Z;
+            else if( max.Z < otherMin.Z )
+                separationZ = max.Z - otherMin.Z;
 
             return new Vector3( separationX, separationY, separationZ );
         }

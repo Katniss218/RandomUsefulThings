@@ -213,6 +213,16 @@ namespace Geometry
             return new Vector2( (p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2 );
         }
 
+        public float Slope()
+        {
+
+        }
+
+        public static Vector2 FromSlope( float slope )
+        {
+
+        }
+
         private static Vector2 Add( Vector2 v1, Vector2 v2 )
         {
             return new Vector2( v1.X + v2.X, v1.Y + v2.Y );

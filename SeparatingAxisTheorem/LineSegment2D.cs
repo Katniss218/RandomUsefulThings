@@ -5,20 +5,29 @@ using System.Text;
 
 namespace Geometry
 {
-    public class LineSegment2D
+    public struct LineSegment2D
     {
-        public Vector2 P1 { get; }
-        public Vector2 P2 { get; }
+        public Vector2 Point1 { get; }
+        public Vector2 Point2 { get; }
+
+        public Vector2 Midpoint { get => Vector2.Midpoint( Point1, Point2 ); }
+
+        public float Slope { get => ; }
 
         public LineSegment2D( Vector2 p1, Vector2 p2 )
         {
-            this.P1 = p1;
-            this.P2 = p2;
+            this.Point1 = p1;
+            this.Point2 = p2;
         }
 
         [Obsolete( "Unconfirmed" )]
-        public static bool DoLineSegmentsIntersect( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4 )
+        public static bool DoLineSegmentsIntersect( LineSegment2D l1, LineSegment2D l2 )
         {
+            Vector2 p1 = l1.Point1;
+            Vector2 p2 = l1.Point2;
+            Vector2 p3 = l2.Point1;
+            Vector2 p4 = l2.Point2;
+
             // Calculate the direction vectors of the line segments
             Vector2 v1 = new Vector2( p2.X - p1.X, p2.Y - p1.Y );
             Vector2 v2 = new Vector2( p4.X - p3.X, p4.Y - p3.Y );
@@ -57,20 +66,20 @@ namespace Geometry
         [Obsolete( "Unconfirmed" )]
         public Vector2 ClosestPoint( Vector2 point )
         {
-            Vector2 v1 = point - P1;
-            Vector2 v2 = P2 - P1;
+            Vector2 v1 = point - Point1;
+            Vector2 v2 = Point2 - Point1;
 
             float t = Vector2.Dot( v1, v2 ) / Vector2.Dot( v2, v2 );
 
             if( t < 0 )
             {
-                return P1;
+                return Point1;
             }
             if( t > 1 )
             {
-                return P2;
+                return Point2;
             }
-            return new Vector2( MathMethods.MathMethods.LerpUnclamped( P1.X, P2.X, t ), MathMethods.MathMethods.LerpUnclamped( P1.Y, P2.Y, t ) );
+            return new Vector2( MathMethods.MathMethods.LerpUnclamped( Point1.X, Point2.X, t ), MathMethods.MathMethods.LerpUnclamped( Point1.Y, Point2.Y, t ) );
         }
     }
 }

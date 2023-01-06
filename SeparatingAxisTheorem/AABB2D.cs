@@ -22,27 +22,32 @@ namespace Geometry
         /// <summary>
         /// Returns the top-left point (-X, +Y).
         /// </summary>
-        public Vector2 TopLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y + HalfSize.Y); }
+        public Vector2 TopLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y + HalfSize.Y ); }
 
         /// <summary>
         /// Returns the top-right point (+X, +Y).
         /// </summary>
-        public Vector2 TopRight { get => new Vector2( Center.X + HalfSize.X, Center.Y + HalfSize.Y); }
+        public Vector2 TopRight { get => new Vector2( Center.X + HalfSize.X, Center.Y + HalfSize.Y ); }
 
         /// <summary>
         /// Returns the bottom-left point (-X, -Y).
         /// </summary>
-        public Vector2 BottomLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y - HalfSize.Y); }
+        public Vector2 BottomLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y - HalfSize.Y ); }
 
         /// <summary>
         /// Returns the bottom-right point (+X, -Y).
         /// </summary>
-        public Vector2 BottomRight { get => new Vector2( Center.X + HalfSize.X, Center.Y - HalfSize.Y); }
+        public Vector2 BottomRight { get => new Vector2( Center.X + HalfSize.X, Center.Y - HalfSize.Y ); }
 
         public AABB2D( Vector2 center, Vector2 size )
         {
             this.Center = center;
             this.Size = size;
+        }
+
+        public static AABB2D FromMinMax( Vector2 min, Vector2 max )
+        {
+
         }
 
         public float Area()
@@ -112,7 +117,7 @@ namespace Geometry
                 && (min1.Y <= max2.Y && max1.Y >= min2.Y);
         }
 
-        [Obsolete("Unconfirmed")]
+        [Obsolete( "Unconfirmed" )]
         public static AABB2D Enclose( AABB2D a, AABB2D b )
         {
             Vector2 min = Vector2.Min( a.Center - a.Size / 2, b.Center - b.Size / 2 );
