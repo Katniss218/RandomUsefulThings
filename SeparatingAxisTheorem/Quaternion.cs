@@ -6,17 +6,31 @@ namespace Geometry
 {
     public struct Quaternion
     {
+        /// <summary>
+        /// First imaginary coefficient ('b' from 'a + bi + cj + dk').
+        /// </summary>
         public float X { get; }
+
+        /// <summary>
+        /// First imaginary coefficient ('c' from 'a + bi + cj + dk').
+        /// </summary>
         public float Y { get; }
+
+        /// <summary>
+        /// First imaginary coefficient ('d' from 'a + bi + cj + dk').
+        /// </summary>
         public float Z { get; }
 
         /// <summary>
-        /// The real coefficient of the quaternion.
+        /// The real coefficient of the quaternion ('a' from 'a + bi + cj + dk').
         /// </summary>
         public float W { get; }
 
         public float LengthSquared { get => (X * X) + (Y * Y) + (Z * Z) + (W * W); }
 
+        /// <summary>
+        /// Returns the length (norm) of the quaternion.
+        /// </summary>
         public float Length { get => (float)Math.Sqrt( LengthSquared ); }
 
         public Quaternion( float x, float y, float z, float w )
@@ -27,6 +41,11 @@ namespace Geometry
             this.W = w;
         }
 
+        public static Quaternion Identity { get => new Quaternion( 0.0f, 0.0f, 0.0f, 1.0f ); }
+
+        /// <summary>
+        /// Returns a quaternion with its length (norm) set to 1.
+        /// </summary>
         public Quaternion Normalized()
         {
             float length = this.Length;
@@ -38,17 +57,25 @@ namespace Geometry
                 W / length );
         }
 
+        /// <summary>
+        /// Returns the quaternion with its imaginary coefficients flipped.
+        /// </summary>
         public static Quaternion Conjugate( Quaternion q )
         {
             return new Quaternion( -q.X, -q.Y, -q.Z, q.W );
         }
 
+        /// <summary>
+        /// Returns the square root of the sum of the coefficients squared (i.e. length).
+        /// </summary>
         public float Norm()
         {
-            // Norm is defined as the square root of the sum of the coefficients squared (i.e. length).
             return this.Length;
         }
 
+        /// <summary>
+        /// Calculates the inverse of a quaternion (a quatarnion that represents a rotation that is the reverse of the original).
+        /// </summary>
         public Quaternion Inverse()
         {
             // q^(-1) = conjugate(q) / norm(q)^2
@@ -66,11 +93,17 @@ namespace Geometry
         /// <summary>
         /// Performs a "dot product", treating the quaternion as if it was a 4-dimensional vector.
         /// </summary>
-        public static float Dot( Quaternion q1, Quaternion q2 )
+        public static float Dot( in Quaternion q1, in Quaternion q2 )
         {
             return (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
         }
 
+        /// <summary>
+        /// Converts the quaternion back into Euler Angles (same rotation order as in Unity 2022.1).
+        /// </summary>
+        /// <remarks>
+        /// This method is the inverse of <see cref="Quaternion.FromEulerAngles(Vector3)"/>.
+        /// </remarks>
         public Vector3 ToEulerAngles()
         {
             // returns euler angles in Radians
@@ -99,19 +132,31 @@ namespace Geometry
             }
             */
 
-            float x = (float)Math.Asin( 2f * (this.W * this.X - this.Y * this.Z) );                                                        // Yaw
-            float y = (float)Math.Atan2( 2f * this.W * this.Y + 2f * this.Z * this.X, 1 - 2f * (this.X * this.X + this.Y * this.Y) );      // Pitch
-            float z = (float)Math.Atan2( 2f * this.W * this.Z + 2f * this.X * this.Y, 1 - 2f * (this.Z * this.Z + this.X * this.X) );      // Roll
+            float x = (float)Math.Asin( 2.0f * (this.W * this.X - this.Y * this.Z) );                                                               // Yaw
+            float y = (float)Math.Atan2( 2.0f * this.W * this.Y + 2.0f * this.Z * this.X, 1.0f - 2.0f * (this.X * this.X + this.Y * this.Y) );      // Pitch
+            float z = (float)Math.Atan2( 2.0f * this.W * this.Z + 2.0f * this.X * this.Y, 1.0f - 2.0f * (this.Z * this.Z + this.X * this.X) );      // Roll
 
             return new Vector3( x, y, z );
-            
+
         }
 
-        public static Quaternion FromEulerAngles( Vector3 euler )
+        /// <summary>
+        /// Converts Euler Angles into a quaternion (same rotation order as in Unity 2022.1).
+        /// </summary>
+        /// <remarks>
+        /// This method is the inverse of <see cref="Quaternion.ToEulerAngles"/>.
+        /// </remarks>
+        public static Quaternion FromEulerAngles( in Vector3 euler )
         {
             return FromEulerAngles( euler.X, euler.Y, euler.Z );
         }
 
+        /// <summary>
+        /// Converts Euler Angles into a quaternion (same rotation order as in Unity 2022.1).
+        /// </summary>
+        /// <remarks>
+        /// This method is the inverse of <see cref="Quaternion.ToEulerAngles"/>.
+        /// </remarks>
         public static Quaternion FromEulerAngles( float x, float y, float z )
         {
             // euler input in radians.
@@ -125,13 +170,13 @@ namespace Geometry
 
             // Calculate the quaternion from the Euler angles
             // Division by 2 because Quaternions use half-angles to represent rotations.
-            float cosX = (float)Math.Cos( x / 2 );
-            float cosY = (float)Math.Cos( y / 2 );
-            float cosZ = (float)Math.Cos( z / 2 );
+            float cosX = (float)Math.Cos( x * 0.5f );
+            float cosY = (float)Math.Cos( y * 0.5f );
+            float cosZ = (float)Math.Cos( z * 0.5f );
 
-            float sinX = (float)Math.Sin( x / 2 );
-            float sinY = (float)Math.Sin( y / 2 );
-            float sinZ = (float)Math.Sin( z / 2 );
+            float sinX = (float)Math.Sin( x * 0.5f );
+            float sinY = (float)Math.Sin( y * 0.5f );
+            float sinZ = (float)Math.Sin( z * 0.5f );
 
             float qx = (cosX * sinY * sinZ) + (sinX * cosY * cosZ); // Unity.
             float qy = (cosX * sinY * cosZ) - (sinX * cosY * sinZ); // Unity.
@@ -139,10 +184,10 @@ namespace Geometry
             float qw = (cosX * cosY * cosZ) + (sinX * sinY * sinZ); // Unity.
 
             // Return the calculated quaternion
-            return new Quaternion( qx, qy, qz, qw );
+            return new Quaternion( qx, qy, qz, qw ); // possibly needs normalizing??
         }
 
-        public static float Angle( Quaternion q1, Quaternion q2 )
+        public static float Angle( in Quaternion q1, in Quaternion q2 )
         {
             float dotProduct = Quaternion.Dot( q1, q2 );
             float absoluteDotProduct = Math.Abs( dotProduct );
@@ -162,6 +207,41 @@ namespace Geometry
             {
                 return (float)Math.Acos( dotClamped ) * 2.0f;
             }
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static Quaternion AngleAxis( in Vector3 axis, float radians )
+        {
+            if( axis.LengthSquared == 0.0f )
+            {
+                return Quaternion.Identity;
+            }
+
+            radians *= 0.5f; // Quaternions use half angles.
+            Vector3 axisSin = axis.Normalized() * (float)Math.Sin( radians );
+
+            return new Quaternion( axisSin.X, axisSin.Y, axisSin.Z, (float)Math.Cos( radians ) ).Normalized();
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public void ToAxisAngleRad( out Vector3 axis, out float angle )
+        {
+            //if( Math.Abs( this.W ) > 1.0f )
+            //    q.Normalize();
+
+            const float epsilon = 0.0001f;
+
+            angle = 2.0f * (float)Math.Acos( this.W ); // angle
+            float den = (float)Math.Sqrt( 1.0 - (this.W * this.W) );
+
+            if( den < epsilon )
+            {
+                // This occurs when the angle is zero. Not a problem, just set an arbitrary normalized axis.
+                axis = Vector3.Forward;
+                return;
+            }
+
+            axis = new Vector3( this.X / den, this.Y / den, this.Z / den );
         }
 
         [Obsolete( "Unconfirmed" )]

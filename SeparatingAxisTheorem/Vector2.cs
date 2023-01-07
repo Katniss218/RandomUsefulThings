@@ -23,6 +23,12 @@ namespace Geometry
             }
         }
 
+        public Vector2( float value )
+        {
+            this.X = value;
+            this.Y = value;
+        }
+
         public Vector2( float x, float y )
         {
             this.X = x;

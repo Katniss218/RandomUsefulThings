@@ -24,6 +24,14 @@ namespace Geometry
                 throw new IndexOutOfRangeException( "The index was out of the range for Vector2 - [0 to 2]." );
             }
         }
+
+        public Vector3( float value )
+        {
+            this.X = value;
+            this.Y = value;
+            this.Z = value;
+        }
+
         public Vector3( float x, float y, float z )
         {
             this.X = x;
@@ -31,11 +39,20 @@ namespace Geometry
             this.Z = z;
         }
 
-        public Vector3( Vector3 from, Vector3 to )
+        public static Vector3 Zero { get => new Vector3( 0.0f, 0.0f, 0.0f ); }
+        public static Vector3 Forward { get => new Vector3( 0.0f, 0.0f, 1.0f ); }
+        public static Vector3 Right { get => new Vector3( 1.0f, 0.0f, 0.0f ); }
+        public static Vector3 Up { get => new Vector3( 0.0f, 1.0f, 0.0f ); }
+        public static Vector3 One { get => new Vector3( 1.0f, 1.0f, 1.0f ); }
+
+        public static Vector3 PointingAt( Vector3 fromPoint, Vector3 toPoint )
         {
-            this.X = to.X - from.X;
-            this.Y = to.Y - from.Y;
-            this.Z = to.Z - from.Z;
+            // A to B = B - A
+
+            return new Vector3(
+                toPoint.X - fromPoint.X,
+                toPoint.Y - fromPoint.Y,
+                toPoint.Z - fromPoint.Z );
         }
 
         public Vector3 Normalized()
