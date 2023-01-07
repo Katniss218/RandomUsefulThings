@@ -1,8 +1,6 @@
-﻿using Transformations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Transformations;
 
 namespace Geometry
 {

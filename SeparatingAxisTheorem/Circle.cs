@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Transformations;
 
 namespace Geometry
 {
@@ -21,7 +20,7 @@ namespace Geometry
 
         public Vector2 ClosestPointOnCircle( Vector2 point )
         {
-            Vector2 direction = new Vector2( Center, point ).Normalized();
+            Vector2 direction = Vector2.PointingAt( Center, point ).Normalized();
 
             return Center + (direction * Radius);
         }

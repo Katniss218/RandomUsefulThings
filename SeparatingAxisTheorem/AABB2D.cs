@@ -47,7 +47,7 @@ namespace Geometry
 
         public static AABB2D FromMinMax( Vector2 min, Vector2 max )
         {
-
+            throw new NotImplementedException();
         }
 
         public float Area()
@@ -66,7 +66,7 @@ namespace Geometry
 
         public bool Intersects( Line2D line )
         {
-
+            throw new NotImplementedException();
         }
 
         [Obsolete( "Unconfirmed" )]
@@ -76,13 +76,13 @@ namespace Geometry
             Vector2 min = Min;
             Vector2 max = Max;
 
-            float tMin = (min.X - Ray.Origin.X) / Ray.Direction.X;
-            float tMax = (max.X - Ray.Origin.X) / Ray.Direction.X;
-            if( tMin > tMax )
+            float txMin = (min.X - Ray.Origin.X) / Ray.Direction.X;
+            float txMax = (max.X - Ray.Origin.X) / Ray.Direction.X;
+            if( txMin > txMax )
             {
-                float temp = tMin;
-                tMin = tMax;
-                tMax = temp;
+                float temp = txMin;
+                txMin = txMax;
+                txMax = temp;
             }
 
             float tyMin = (min.Y - Ray.Origin.Y) / Ray.Direction.Y;
@@ -94,14 +94,14 @@ namespace Geometry
                 tyMax = temp;
             }
 
-            if( tMin > tyMax || tyMin > tMax )
+            if( txMin > tyMax || tyMin > txMax )
             {
                 return false;
             }
 
-            tMin = Math.Max( tMin, tyMin );
-            tMax = Math.Min( tMax, tyMax );
-            return tMin < 1 && tMax > 0;
+            txMin = Math.Max( txMin, tyMin );
+            txMax = Math.Min( txMax, tyMax );
+            return txMin < 1 && txMax > 0;
         }
 
         [Obsolete( "Unconfirmed" )]
@@ -120,6 +120,7 @@ namespace Geometry
         [Obsolete( "Unconfirmed" )]
         public static AABB2D Enclose( AABB2D a, AABB2D b )
         {
+            // The smallest AABB needed to contain 2 AABBs.
             Vector2 min = Vector2.Min( a.Center - a.Size / 2, b.Center - b.Size / 2 );
             Vector2 max = Vector2.Max( a.Center + a.Size / 2, b.Center + b.Size / 2 );
 
@@ -146,7 +147,10 @@ namespace Geometry
             return new AABB2D( center, size );
         }
 
-        public AABB2D Expanded( float amount )
+        /// <summary>
+        /// Expands the bounds of the AABB by a fixed amount in all directions.
+        /// </summary>
+        public AABB2D ExpandedBy( float amount )
         {
             Vector2 newSize = Size + new Vector2( amount * 2, amount * 2 );
             return new AABB2D( Center, newSize );
@@ -204,7 +208,7 @@ namespace Geometry
             return true;
         }
 
-        [Obsolete( "Unconfirmed" )]
+        /*[Obsolete( "Unconfirmed" )]
         public static bool DoLineSegmentIntersectBoundingBox( Vector2 p1, Vector2 p2, float minX, float minY, float maxX, float maxY )
         {
             // Check if the line segment is fully inside the bounding box
@@ -224,6 +228,6 @@ namespace Geometry
             }
 
             return false;
-        }
+        }*/
     }
 }

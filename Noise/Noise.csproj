@@ -5,15 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="GLSL\Blending.glsl" />
+    <None Remove="GLSL\Bracketing.glsl" />
+    <None Remove="GLSL\Distance.glsl" />
+    <None Remove="GLSL\Hash.glsl" />
     <None Remove="GLSL\NormalmapShadow.glsl" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="GLSL\NormalmapShadow.glsl" />
+    <None Remove="GLSL\Perlin.glsl" />
+    <None Remove="GLSL\Simplex.glsl" />
+    <None Remove="GLSL\TextureTiling.glsl" />
+    <None Remove="GLSL\Utilities.glsl" />
+    <None Remove="GLSL\ValueNoise.glsl" />
+    <None Remove="GLSL\Voronoi.glsl" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MathMethods\MathMethods.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GLSL\" />
   </ItemGroup>
 
 </Project>

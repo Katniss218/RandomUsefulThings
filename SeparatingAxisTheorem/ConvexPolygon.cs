@@ -79,7 +79,7 @@ namespace Geometry
                 Vector2 normal = new Vector2( -edge.Y, edge.X );
 
                 // Normalize the normal vector
-                normal.Normalize();
+                normal = normal.Normalized();
 
                 // Calculate the minimum and maximum dot products for the first polygon
                 float min1 = float.MaxValue;
@@ -137,7 +137,7 @@ namespace Geometry
                 Vector2 normal = new Vector2( -edge.Y, edge.X );
 
                 // Normalize the normal vector
-                normal.Normalize();
+                normal = normal.Normalized();
 
                 // Calculate the minimum and maximum dot products for the first polygon
                 float min1 = float.MaxValue;

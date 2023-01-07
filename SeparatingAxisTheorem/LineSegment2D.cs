@@ -12,7 +12,7 @@ namespace Geometry
 
         public Vector2 Midpoint { get => Vector2.Midpoint( Point1, Point2 ); }
 
-        public float Slope { get => ; }
+        public float Slope { get => throw new NotImplementedException(); }
 
         public LineSegment2D( Vector2 p1, Vector2 p2 )
         {

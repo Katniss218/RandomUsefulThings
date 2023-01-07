@@ -215,12 +215,12 @@ namespace Geometry
 
         public float Slope()
         {
-
+            throw new NotImplementedException();
         }
 
         public static Vector2 FromSlope( float slope )
         {
-
+            throw new NotImplementedException();
         }
 
         private static Vector2 Add( Vector2 v1, Vector2 v2 )

@@ -60,54 +60,77 @@ namespace Geometry
             return new Vector3( x, y, z );
         }
 
-        public static float Distance( Vector3 v1, Vector3 v2 )
+        public static float DistanceSquared( Vector3 v1, Vector3 v2 )
         {
             float dx = v2.X - v1.X;
             float dy = v2.Y - v1.Y;
             float dz = v2.Z - v1.Z;
 
-            return (float)Math.Sqrt( (dx * dx) + (dy * dy) + (dz * dz) );
+            return (dx * dx) + (dy * dy) + (dz * dz);
         }
 
-        // Method that adds a float value to a Vector3 value
+        public static float Distance( Vector3 v1, Vector3 v2 )
+        {
+            return (float)Math.Sqrt( DistanceSquared( v1, v2 ) );
+        }
+
+        /// <summary>
+        /// Adds a scalar value to each component of the vector.
+        /// </summary>
         public static Vector3 Add( Vector3 v, float f )
         {
             return new Vector3( v.X + f, v.Y + f, v.Z + f );
         }
 
+        /// <summary>
+        /// Adds the corresponding components of 2 vectors.
+        /// </summary>
         public static Vector3 Add( Vector3 v1, Vector3 v2 )
         {
             return new Vector3( v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z );
         }
 
-
-        // Method that subtracts a float value from a Vector3 value
+        /// <summary>
+        /// Subtracts a scalar value from each component of the vector.
+        /// </summary>
         public static Vector3 Subtract( Vector3 v, float f )
         {
             return new Vector3( v.X - f, v.Y - f, v.Z - f );
         }
 
+        /// <summary>
+        /// Subtracts the corresponding components of 2 vectors (ret = v1 - v2).
+        /// </summary>
         public static Vector3 Subtract( Vector3 v1, Vector3 v2 )
         {
             return new Vector3( v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z );
         }
 
+        /// <summary>
+        /// Multiplies each component of the vector by a scalar value.
+        /// </summary>
         public static Vector3 Multiply( Vector3 v, float f )
         {
             return new Vector3( v.X * f, v.Y * f, v.Z * f );
         }
 
+        /// <summary>
+        /// Divides each component of the vector by a scalar value.
+        /// </summary>
         public static Vector3 Divide( Vector3 v, float f )
         {
             return new Vector3( v.X / f, v.Y / f, v.Z / f );
         }
 
+        /// <summary>
+        /// Transforms a point by a matrix.
+        /// </summary>
         public static Vector3 Multiply( Vector3 vector, Matrix4x4 matrix )
         {
             return new Vector3(
-                vector.X * matrix.M00 + vector.Y * matrix.M01 + vector.Z * matrix.M02 + matrix.M03,
-                vector.X * matrix.M10 + vector.Y * matrix.M11 + vector.Z * matrix.M12 + matrix.M13,
-                vector.X * matrix.M20 + vector.Y * matrix.M21 + vector.Z * matrix.M22 + matrix.M23
+                (vector.X * matrix.M00) + (vector.Y * matrix.M01) + (vector.Z * matrix.M02) + matrix.M03, // transforming a direction would be without the last addition, I *think*.
+                (vector.X * matrix.M10) + (vector.Y * matrix.M11) + (vector.Z * matrix.M12) + matrix.M13,
+                (vector.X * matrix.M20) + (vector.Y * matrix.M21) + (vector.Z * matrix.M22) + matrix.M23
             );
         }
 
@@ -133,10 +156,13 @@ namespace Geometry
             return new Vector3( projection * target.X, projection * target.Y, projection * target.Z );
         }
 
-        public Vector3 ProjectOntoPlane( Vector3 targetNormal )
+        /// <summary>
+        /// Projects the vector onto a plane defined by its normal.
+        /// </summary>
+        public Vector3 ProjectOntoPlane( Vector3 planeNormal )
         {
             // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
-            Vector3 orthogonalComponent = Dot( this, targetNormal ) * targetNormal;
+            Vector3 orthogonalComponent = Dot( this, planeNormal ) * planeNormal;
 
             return this - orthogonalComponent;
         }
@@ -207,9 +233,9 @@ namespace Geometry
             return new Vector3( r.X, r.Y, r.Z );
         }
 
-        // cross-product
         public static Quaternion operator *( Vector3 v1, Vector3 v2 )
         {
+            // cross-product ?? returns a quaternion, wtf?
             return new Quaternion(
                 v1.Y * v2.Z - v1.Z * v2.Y,
                 v1.Z * v2.X - v1.X * v2.Z,

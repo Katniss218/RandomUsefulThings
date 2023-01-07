@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Transformations;
 
 namespace Geometry
 {
@@ -30,8 +29,8 @@ namespace Geometry
             this.Vertices = verticesArray;
         }
 
-        [Obsolete("Unconfirmed")]
-        public static bool DoLineSegmentIntersectPolygon( Vector2 p1, Vector2 p2, List<Vector2> vertices )
+        //[Obsolete("Unconfirmed")]
+        /*public static bool DoLineSegmentIntersectPolygon( Vector2 p1, Vector2 p2, List<Vector2> vertices )
         {
             // Check if either of the points of the line segment is inside the polygon
             if( IsPointInPolygon( p1, vertices ) || IsPointInPolygon( p2, vertices ) )
@@ -51,6 +50,6 @@ namespace Geometry
             }
 
             return false;
-        }
+        }*/
     }
 }
