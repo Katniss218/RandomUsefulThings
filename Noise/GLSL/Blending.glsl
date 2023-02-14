@@ -18,7 +18,7 @@ float overlayNRM(float x, float y)
 
 
 //
-//
+// s - base layer, d - overlay layer.
 //
 
 vec3 darken( vec3 s, vec3 d )

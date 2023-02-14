@@ -75,6 +75,13 @@ namespace MathMethods
             return a;
         }
 
+        // least common multiple
+        [Obsolete("Unconfirmed, but by looking at it, it makes sense")]
+        public static int LCM( int a, int b )
+        {
+            return (a * b) / GCD( a, b );
+        }
+
         // sum of first n numbers that are 1 or larger. Also the 3-sided figurate number.
         public static int Triangular( int n )
         {
@@ -116,6 +123,28 @@ namespace MathMethods
                 acc += FigurateRing( sides, n );
             }
             return acc;
+        }
+
+        /// <summary>
+        /// Returns the factorial of a given number (the product of all the natural numbers less than or equal to it).
+        /// </summary>
+        public static long Factorial( int value )
+        {
+            if( value < 0 )
+            {
+                throw new ArgumentException( "Factorial of a negative number is not defined." );
+            }
+            if( value == 0 )
+            {
+                return 1;
+            }
+
+            long result = 1;
+            for( int i = 2; i <= value; i++ ) // could be optimized by a while loop.
+            {
+                result *= i;
+            }
+            return result;
         }
 
         public static int SumOfDigits( int n )
@@ -211,6 +240,25 @@ namespace MathMethods
 
             // Calculate the smooth interpolation value
             return a + Smoothstep( 0, 1, t ) * (b - a);
+        }
+
+        /// <summary>
+        /// Rounds the value to the nearest multiple of the specified number.
+        /// </summary>
+        public static float RoundToMultiple( float value, float multiple )
+        {
+            return multiple * (float)Math.Round( value / multiple );
+        }
+
+        /// <summary>
+        /// Returns the scale that makes the object appear to have a constant angular size no matter the distance.
+        /// </summary>
+        /// <param name="fixedSize">Controls the size of the object.</param>
+        public static float GetScaleToFixSize( float distance, float fov, float fixedSize )
+        {
+            float size = distance * fixedSize * fov;
+
+            return size;
         }
     }
 }

@@ -229,6 +229,17 @@ namespace Geometry
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Rounds each component to the nearest multiple of the specified value.
+        /// </summary>
+        public static Vector2 RoundToMultiple( Vector2 value, float multiple )
+        {
+            return new Vector2(
+                MathMethods.MathMethods.RoundToMultiple( value.X, multiple ),
+                MathMethods.MathMethods.RoundToMultiple( value.Y, multiple )
+                );
+        }
+
         private static Vector2 Add( Vector2 v1, Vector2 v2 )
         {
             return new Vector2( v1.X + v2.X, v1.Y + v2.Y );
@@ -276,6 +287,16 @@ namespace Geometry
         public static Vector2 operator /( float scalar, Vector2 v )
         {
             return Divide( v, scalar );
+        }
+
+        public static bool operator ==( Vector2 v1, Vector2 v2 )
+        {
+            return v1.X == v2.X && v1.Y == v2.Y;
+        }
+
+        public static bool operator !=( Vector2 v1, Vector2 v2 )
+        {
+            return v1.X != v2.X || v1.Y != v2.Y;
         }
     }
 }

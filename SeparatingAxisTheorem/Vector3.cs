@@ -92,6 +92,18 @@ namespace Geometry
         }
 
         /// <summary>
+        /// Rounds each component to the nearest multiple of the specified value.
+        /// </summary>
+        public static Vector3 RoundToMultiple( Vector3 value, float multiple )
+        {
+            return new Vector3(
+                MathMethods.MathMethods.RoundToMultiple( value.X, multiple ),
+                MathMethods.MathMethods.RoundToMultiple( value.Y, multiple ),
+                MathMethods.MathMethods.RoundToMultiple( value.Z, multiple )
+                );
+        }
+
+        /// <summary>
         /// Adds a scalar value to each component of the vector.
         /// </summary>
         public static Vector3 Add( Vector3 v, float f )
@@ -301,5 +313,14 @@ namespace Geometry
 
             return result;
         }*/
+        public static bool operator ==( Vector3 v1, Vector3 v2 )
+        {
+            return v1.X == v2.X && v1.Y == v2.Y && v1.Z == v2.Z;
+        }
+
+        public static bool operator !=( Vector3 v1, Vector3 v2 )
+        {
+            return v1.X != v2.X || v1.Y != v2.Y || v1.Z != v2.Z;
+        }
     }
 }
