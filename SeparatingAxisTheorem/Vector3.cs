@@ -172,17 +172,18 @@ namespace Geometry
             return projection * 2 - this;
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public Vector3 ProjectOnto( Vector3 target )
+        /// <summary>
+        /// Projects a vector onto another vector (onto the line defined by its direction).
+        /// </summary>
+        public Vector3 Project( Vector3 lineDirection )
         {
-            throw new NotImplementedException( "I don't think this works right" );
-            float dotProduct = Dot( this, target );
+            return lineDirection * Dot( this, lineDirection ) / lineDirection.LengthSquared;
+        }
 
-            // Calculate the projection of the vector onto the other vector
-            float projection = dotProduct / target.Length;
-
-            // Return the projection as a Vector3
-            return new Vector3( projection * target.X, projection * target.Y, projection * target.Z );
+        public static Vector3 Exclude( Vector3 sourceVector, Vector3 vectorToExclude )
+        {
+            // Leaves the sourceVector without the component that lied along the vectorToExclude.
+            return sourceVector - sourceVector.Project( vectorToExclude );
         }
 
         /// <summary>
