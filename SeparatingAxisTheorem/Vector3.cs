@@ -183,11 +183,12 @@ namespace Geometry
         public static Vector3 Exclude( Vector3 sourceVector, Vector3 vectorToExclude )
         {
             // Leaves the sourceVector without the component that lied along the vectorToExclude.
+            // This is somewhat equivalent to the ProjectOntoPlane, excelt that projectOntoPlane is expected to take in unit vectors.
             return sourceVector - sourceVector.Project( vectorToExclude );
         }
 
         /// <summary>
-        /// Projects the vector onto a plane defined by its normal.
+        /// Projects the vector onto a plane defined by its normal. Works with unit vectors.
         /// </summary>
         public Vector3 ProjectOntoPlane( Vector3 planeNormal )
         {
