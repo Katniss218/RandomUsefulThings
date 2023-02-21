@@ -193,6 +193,7 @@ namespace Geometry
         public Vector3 ProjectOntoPlane( Vector3 planeNormal )
         {
             // The projection of vector onto a plane can be calculated by subtracting the component of the vector that is orthogonal to the plane from the original vector.
+            // orthogonal component is calculated by first calculating the length, then multiplying the unit direction by the length.
             Vector3 orthogonalComponent = Dot( this, planeNormal ) * planeNormal;
 
             return this - orthogonalComponent;
