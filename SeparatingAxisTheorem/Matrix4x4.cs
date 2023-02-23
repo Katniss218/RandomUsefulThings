@@ -57,6 +57,8 @@ namespace Geometry
             this.M33 = m33;
         }
 
+        public float Trace { get => M00 + M11 + M22 + M33; }
+
         public Matrix4x4 Transposed()
         {
             // To transpose a matrix, we simply swap the elements at positions (i, j) and (j, i) for all possible values of i and j.

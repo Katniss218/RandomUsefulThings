@@ -82,7 +82,7 @@ namespace MathMethods
             return value;
         }
     }
-
+    /*
     public static class BSplineToBezier
     {
         // not tested at all, but chat gave me this, might be helpful??
@@ -463,5 +463,5 @@ namespace MathMethods
 
             return tempPoints[0];
         }
-    }
+    }*/
 }

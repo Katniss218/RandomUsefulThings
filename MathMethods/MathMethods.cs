@@ -256,9 +256,21 @@ namespace MathMethods
         /// <param name="fixedSize">Controls the size of the object.</param>
         public static float GetScaleToFixSize( float distance, float fov, float fixedSize )
         {
-            float size = distance * fixedSize * fov;
+            float scale = distance * fixedSize * fov;
 
-            return size;
+            return scale;
+        }
+
+        /// <summary>
+        /// Returns the FoV needed to make an object appear a constant angular size.
+        /// </summary>
+        /// <param name="fixedSize">Controls the size of the object.</param>
+        public static float GetFovToFixSize( float distance, float fixedSize )
+        {
+            const float SCALE = 1.0f;
+            float fov = SCALE / (distance * fixedSize);
+
+            return fov;
         }
     }
 }

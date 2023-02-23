@@ -8,10 +8,16 @@
     ".NETCoreApp,Version=v3.1": {
       "TestConsole/1.0.0": {
         "dependencies": {
+          "DifferentialEquations": "1.0.0",
           "Geometry": "1.0.0"
         },
         "runtime": {
           "TestConsole.dll": {}
+        }
+      },
+      "DifferentialEquations/1.0.0": {
+        "runtime": {
+          "DifferentialEquations.dll": {}
         }
       },
       "Geometry/1.0.0": {
@@ -31,6 +37,11 @@
   },
   "libraries": {
     "TestConsole/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DifferentialEquations/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

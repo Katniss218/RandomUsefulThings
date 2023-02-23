@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DifferentialEquations\DifferentialEquations.csproj" />
     <ProjectReference Include="..\SeparatingAxisTheorem\Geometry.csproj" />
   </ItemGroup>
 
