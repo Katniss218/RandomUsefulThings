@@ -132,6 +132,40 @@ namespace TestConsole
             rk4b = new RK4IntegratorBetter( new[] { 5.0f, 5.0f }, 0.0f );
             rk4b.Integrate( 0.02f, 100, eqSystem2 );
 
+            const float gamma = 1.4f;
+
+            Func<float, float[], float[]> nozzleEquations = ( x, vars ) =>
+            {
+                float rho = vars[0];
+                float v = vars[1];
+                float p = vars[2];
+
+                float dvdx = (p / rho) - (1 / rho) * nozzleProfile( x, v );
+                float drhodx = -rho * nozzleProfile( x, dvdx );
+                float dpdx = -gamma * p * nozzleProfile( x, v );
+
+                return new float[] { drhodx, dvdx, dpdx };
+            };
+
+            rk4b = new RK4IntegratorBetter( new[] { 1.0f, 100.0f, 10000.0f }, 0.0f );
+            rk4b.Integrate( 0.2f, 20, nozzleEquations );
+
+        }
+
+        public static float nozzleProfile( float x, float v )
+        {
+            if( x < 0.5f )
+            {
+                return 2.0f;
+            }
+            else if( x < 1.5f )
+            {
+                return 2.0f - 0.5f * (x - 0.5f);
+            }
+            else
+            {
+                return 1.5f;
+            }
         }
     }
 }

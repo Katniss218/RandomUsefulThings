@@ -178,19 +178,19 @@ namespace DifferentialEquations
                 MultiplyInPlace( ref k1, stepSize );
 
                 float[] k1i = Multiply( k1, 0.5f );
-                AddInPlace( ref k1i, _variables ); // should be variables[] + k1[] / 2
+                AddInPlace( ref k1i, _variables ); // k1i should == variables[] + k1[] / 2
 
                 float[] k2 = systemOfEquations( t + stepSize / 2, k1i );
                 MultiplyInPlace( ref k2, stepSize );
 
                 float[] k2i = Multiply( k2, 0.5f );
-                AddInPlace( ref k2i, _variables ); // should be variables[] + k2[] / 2
+                AddInPlace( ref k2i, _variables ); // k2i should == variables[] + k2[] / 2
 
                 float[] k3 = systemOfEquations( t + stepSize / 2, k2i );
                 MultiplyInPlace( ref k3, stepSize );
 
                 float[] k3i = Copy( k3 );
-                AddInPlace( ref k3i, _variables ); // should be variables[] + k2[] / 2
+                AddInPlace( ref k3i, _variables ); // k3i should == variables[] + k3[]
 
                 float[] k4 = systemOfEquations( t + stepSize, k3i );
                 MultiplyInPlace( ref k4, stepSize );
