@@ -292,5 +292,42 @@ namespace Geometry
         {
             return Multiply( m1, m2 );
         }
+
+
+        // matrix-vector multiplication is basically:
+        // take the matrix, take the vector in matrix form (x, y, z, ...) arranged horizontally, like this.
+        // slide the vector across the matrix vertically, and multiply each element of each column with its corresponding vector element.
+        // sum each row together to produce the resulting vector. the components are arranged vertically, x on top, then y below, then z, etc.
+
+        // matrix-matrix is equivalent but you copy the original matrix, and split the 2nd matrix into its column vectors, rotate them 90 deg counterclockwise.
+        // the result will be an array of column vectors, which form the columns of the new matrix.
+
+        // NOT TESTED, but it's from wikipedia, so should work.
+        public static Matrix4x4 OrthoProjection( float left, float right, float top, float bottom, float near, float far )
+        {
+            // in model * view * projection, this is the projection matrix.
+            // it transforms camera-space to clip-space.
+
+            return new Matrix4x4(
+                2.0f / (left - right), 0, 0, -((right + left) / (right - left)),
+                0, 2.0f / (top - bottom), 0, -((top + bottom) / (top - bottom)),
+                0, 0, -2.0f / (far - near), -((far + near) / (far - near)),
+                0, 0, 0, 1.0f
+            );
+        }
+
+        // NOT TESTED, but it's from wikipedia, so should work.
+        public static Matrix4x4 InverseOrthoProjection( float left, float right, float top, float bottom, float near, float far )
+        {
+            // in model * view * projection, this is the projection matrix.
+            // it transforms camera-space to clip-space.
+
+            return new Matrix4x4(
+                (left - right) / 2.0f, 0, 0, ((right + left) / 2),
+                0, (top - bottom) / 2.0f, 0, ((top + bottom) / 2),
+                0, 0, (far - near) / -2.0f, -((far + near) / 2),
+                0, 0, 0, 1.0f
+            );
+        }
     }
 }

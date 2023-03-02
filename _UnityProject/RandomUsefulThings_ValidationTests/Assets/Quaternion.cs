@@ -4,78 +4,187 @@ using System.Text;
 
 namespace Geometry
 {
-    public struct Line2D
+    [System.Serializable]
+    public struct Circle
     {
-        public Vector2 Point { get; }
-        public Vector2 Direction { get; }
+        public Vector2 Center;
+
+        public float Radius;
+
+        public float Diameter { get => Radius * 2; }
+
+        public Circle( Vector2 center, float radius )
+        {
+            this.Center = center;
+            this.Radius = radius;
+        }
+        public float Circumference
+        {
+            get { return 2.0f * (float)(Math.PI * Radius); }
+        }
+
+        public float Area
+        {
+            get { return (float)(Math.PI * (Radius * Radius)); }
+        }
+
+        public Vector2 ClosestPointOnCircle( Vector2 point )
+        {
+            // closest point on a circle is simply that point projected onto the circle, in the direction of the circle's center.
+            Vector2 direction = Vector2.PointingAt( Center, point ).Normalized();
+
+            return Center + (direction * Radius);
+        }
+
+        public bool ContainsPoint( Vector2 point )
+        {
+            return Vector2.Distance( Center, point ) < Radius;
+        }
+
+        public static bool Intersects( Circle c1, Circle c2 )
+        {
+            // For small-ish circles. this can theoretically be optimized by squaring the sum of radii instead of square-rooting when taking the distance.
+            return Vector2.Distance( c1.Center, c2.Center ) < (c1.Radius + c2.Radius);
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public bool IntersectsLine( Vector2 p1, Vector2 p2 )
+        {
+            // Find the closest point on the line to the center of the circle
+            Vector2 intersection = Line2D.ClosestPointOnLine( Center, p1, p2 );
+
+            // Check if that point is within the radius of the circle
+            return ContainsPoint( intersection );
+        }
+
+        public static Circle FromDiameter( Vector2 center, float diameter )
+        {
+            return new Circle( center, diameter * 0.5f );
+        }
+
+        public static Circle FromCircumference( Vector2 center, float circumference )
+        {
+            // C = pi * 2 * r
+            return new Circle( center, circumference / (2 * (float)Math.PI) );
+        }
+
+        public static Circle FromArea( Vector2 center, float area )
+        {
+            // A = pi * r * r
+            return new Circle( center, (float)Math.Sqrt( area / Math.PI ) );
+        }
 
         /// <summary>
-        /// Returns the slope (y / x) of the line.
+        /// Makes a circle from 2 points that lie on its opposite ends.
         /// </summary>
-        public float Slope { get => Direction.Y / Direction.X; }
-
-        public Line2D( Vector2 point1, Vector2 point2 )
+        public static Circle FromTwoPoints( Vector2 p1, Vector2 p2 )
         {
-            this.Point = point1;
-            this.Direction = Vector2.PointingAt( point1, point2 );
+            Vector2 center = Vector2.Midpoint( p1, p2 );
+            float radius = Vector2.Distance( p1, p2 ) * 0.5f;
+
+            return new Circle( center, radius );
         }
 
-        public static Line2D FromPointDirection( Vector2 point, Vector2 direction )
+        [Obsolete( "Unconfirmed" )]
+        public static Circle? FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 )
         {
-            return new Line2D( point, point + direction );
+            // Find the perpendicular bisectors of the line segments connecting the points
+            Vector2 mid1 = (p1 + p2) / 2;
+            Vector2 bisector1 = new Vector2( -(p2.Y - p1.Y), p2.X - p1.X );
+            Vector2 mid2 = (p2 + p3) / 2;
+            Vector2 bisector2 = new Vector2( -(p3.Y - p2.Y), p3.X - p2.X );
+
+            // Find the intersection of the two bisectors to get the center of the circle
+            Vector2? center = Line2D.LineLineIntersection( new Line2D( mid1, mid1 + bisector1 ), new Line2D( mid2, mid2 + bisector2 ) );
+            if( center == null )
+            {
+                return null;
+            }
+
+            float radius = Vector2.Distance( center.Value, p1 );
+            return new Circle( center.Value, radius );
         }
 
-        public static Vector2 ClosestPointOnLine( Vector2 p, Vector2 p1, Vector2 p2 )
+        public Vector2[] GetPoints( int numPoints )
         {
-            Vector2 line = p2 - p1;
-            Vector2 lineToPoint = p - p1;
-            float t = Vector2.Dot( lineToPoint, line ) / line.LengthSquared;
-            if( t < 0 )
-                return p1;
-            else if( t > 1 )
-                return p2;
+            Vector2[] points = new Vector2[numPoints];
+            double angleIncrement = 2 * Math.PI / numPoints;
+            for( int i = 0; i < numPoints; i++ )
+            {
+                double angle = i * angleIncrement;
+                double x = Center.X + Radius * Math.Cos( angle );
+                double y = Center.Y + Radius * Math.Sin( angle );
+                points[i] = new Vector2( (float)x, (float)y );
+            }
+            return points;
+        }
+
+        public Circle Offset( Vector2 offset )
+        {
+            return new Circle( Center + offset, Radius );
+        }
+
+        public Circle Scaled( float scale )
+        {
+            return new Circle( Center, Radius * scale );
+        }
+
+        public Circle Inflated( float amount )
+        {
+            return new Circle( Center, Radius + amount );
+        }
+
+        public Circle Deflated( float amount )
+        {
+            return new Circle( Center, Radius - amount );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static Vector2[] GetIntersections( Circle c1, Circle c2 )
+        {
+            float distance = Vector2.Distance( c1.Center, c2.Center );
+
+            // circles do not overlap.
+            if( distance > c1.Radius + c2.Radius )
+            {
+                return new Vector2[] { };
+            }
+
+            // does some weird stuff with trigonometry, apparently. who knows
+            float a = (c1.Radius * c1.Radius - c2.Radius * c2.Radius + distance * distance) / (2 * distance);
+            float h = (float)Math.Sqrt( c1.Radius * c1.Radius - a * a );
+            Vector2 p2 = c1.Center + a * (c2.Center - c1.Center) / distance;
+            Vector2 p3 = new Vector2( p2.X + h * (c2.Center.Y - c1.Center.Y) / distance, p2.Y - h * (c2.Center.X - c1.Center.X) / distance );
+            Vector2 p4 = new Vector2( p2.X - h * (c2.Center.Y - c1.Center.Y) / distance, p2.Y + h * (c2.Center.X - c1.Center.X) / distance );
+            if( p3 == p4 )
+                return new Vector2[] { p3 };
             else
-                return p1 + t * line;
+                return new Vector2[] { p3, p4 };
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public bool OnLine( Vector2 point )
+        public override bool Equals( object obj )
         {
-            Vector2 pointToVector = Vector2.PointingAt( Point, point );
+            if( obj is Circle )
+            {
+                return this == (Circle)obj;
+            }
 
-            return Vector2.Cross( pointToVector, Direction ) == 0;
+            return false;
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static bool LineLineIntersection( Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, out Vector2 intersection ) // an implementation uses specific points, might be required.
+        public override int GetHashCode()
         {
-            intersection = Vector2.Zero;
+            return Center.GetHashCode() ^ Radius.GetHashCode();
+        }
 
-            Vector2 p13 = p1 - p3;
-            Vector2 p43 = p4 - p3;
-            Vector2 p21 = p2 - p1;
+        public static bool operator ==( Circle c1, Circle c2 )
+        {
+            return c1.Center == c2.Center && c1.Radius == c2.Radius;
+        }
 
-            float d1343 = p13.X * p43.Y - p13.Y * p43.X;
-            float d4321 = p43.X * p21.Y - p43.Y * p21.X;
-            float d1321 = p13.X * p21.Y - p13.Y * p21.X;
-            float d4343 = p43.X * p43.Y - p43.Y * p43.X;
-            float d2121 = p21.X * p21.Y - p21.Y * p21.X;
-
-            float denom = d2121 * d4343 - d4321 * d4321;
-            if( Math.Abs( denom ) < float.Epsilon )
-                return false;
-
-            float numer = d1343 * d4321 - d1321 * d4343;
-
-            float mua = numer / denom;
-            float mub = (d1343 + d4321 * (mua)) / d4343; // uhh, not used later????
-
-            intersection = new Vector2(
-                p1.X + mua * p21.X,
-                p1.Y + mua * p21.Y
-                );
-
-            return true;
+        public static bool operator !=( Circle c1, Circle c2 )
+        {
+            return c1.Center != c2.Center || c1.Radius != c2.Radius;
         }
     }
 }

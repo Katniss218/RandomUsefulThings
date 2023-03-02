@@ -8,7 +8,7 @@ namespace Miscellaneous
     public static class RandomEx
     {
         [Obsolete("Unconfirmed")]
-        public static Vector2 RandomPointOnCircle( this Random rand, Vector2 center, float radius )
+        public static Vector2 RandomPointOnCircle( this System.Random rand, Vector2 center, float radius )
         {
             double angle = rand.NextDouble() * 2 * Math.PI;
             double x = center.X + radius * Math.Cos( angle );

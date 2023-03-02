@@ -59,6 +59,7 @@
     <Compile Include="Assets\test.cs" />
     <Compile Include="Assets\Vector2.cs" />
     <Compile Include="Assets\Quaternion.cs" />
+    <Compile Include="Assets\Line2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

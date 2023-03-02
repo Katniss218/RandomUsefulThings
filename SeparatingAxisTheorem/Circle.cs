@@ -29,6 +29,7 @@ namespace Geometry
 
         public Vector2 ClosestPointOnCircle( Vector2 point )
         {
+            // closest point on a circle is simply that point projected onto the circle, in the direction of the circle's center.
             Vector2 direction = Vector2.PointingAt( Center, point ).Normalized();
 
             return Center + (direction * Radius);
@@ -41,6 +42,7 @@ namespace Geometry
 
         public static bool Intersects( Circle c1, Circle c2 )
         {
+            // For small-ish circles. this can theoretically be optimized by squaring the sum of radii instead of square-rooting when taking the distance.
             return Vector2.Distance( c1.Center, c2.Center ) < (c1.Radius + c2.Radius);
         }
 
@@ -54,29 +56,31 @@ namespace Geometry
             return ContainsPoint( intersection );
         }
 
-        [Obsolete( "Unconfirmed" )]
         public static Circle FromDiameter( Vector2 center, float diameter )
         {
-            return new Circle( center, diameter / 2 );
+            return new Circle( center, diameter * 0.5f );
         }
 
-        [Obsolete( "Unconfirmed" )]
         public static Circle FromCircumference( Vector2 center, float circumference )
         {
+            // C = pi * 2 * r
             return new Circle( center, circumference / (2 * (float)Math.PI) );
         }
 
-        [Obsolete( "Unconfirmed" )]
         public static Circle FromArea( Vector2 center, float area )
         {
+            // A = pi * r * r
             return new Circle( center, (float)Math.Sqrt( area / Math.PI ) );
         }
 
-        [Obsolete( "Unconfirmed" )]
+        /// <summary>
+        /// Makes a circle from 2 points that lie on its opposite ends.
+        /// </summary>
         public static Circle FromTwoPoints( Vector2 p1, Vector2 p2 )
         {
-            Vector2 center = (p1 + p2) / 2;
-            float radius = Vector2.Distance( p1, p2 ) / 2;
+            Vector2 center = Vector2.Midpoint( p1, p2 );
+            float radius = Vector2.Distance( p1, p2 ) * 0.5f;
+
             return new Circle( center, radius );
         }
 
@@ -88,8 +92,7 @@ namespace Geometry
             }
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static Circle FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 )
+        public static Circle? FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 ) // works.
         {
             // Find the perpendicular bisectors of the line segments connecting the points
             Vector2 mid1 = (p1 + p2) / 2;
@@ -98,16 +101,20 @@ namespace Geometry
             Vector2 bisector2 = new Vector2( -(p3.Y - p2.Y), p3.X - p2.X );
 
             // Find the intersection of the two bisectors to get the center of the circle
-            bool intersects = Line2D.LineLineIntersection( mid1, mid1 + bisector1, mid2, mid2 + bisector2, out Vector2 center );
-            if( !intersects )
-                throw new Exception( "The three points do not form a circle." );
+            Vector2? center = Line2D.LineLineIntersection( new Line2D( mid1, mid1 + bisector1 ), new Line2D( mid2, mid2 + bisector2 ) );
+            if( center == null )
+            {
+                return null;
+            }
 
-            float radius = Vector2.Distance( center, p1 );
-            return new Circle( center, radius );
+            float radius = Vector2.Distance( center.Value, p1 );
+            return new Circle( center.Value, radius );
         }
 
         public Vector2[] GetPoints( int numPoints )
         {
+            // First point starts at X+, then next goes to Y+, then X-, then Y-, and repeat.
+
             Vector2[] points = new Vector2[numPoints];
             double angleIncrement = 2 * Math.PI / numPoints;
             for( int i = 0; i < numPoints; i++ )

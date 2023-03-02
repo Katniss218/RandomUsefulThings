@@ -62,13 +62,13 @@ namespace Geometry
         /// Computes a vector pointing from one point to another.
         /// </summary>
         /// <returns>The vector representing the displacement from 'from' to 'to'.</returns>
-        public static Vector2 PointingAt( Vector2 fromPoint, Vector2 toPoint )
+        public static Vector2 PointingAt( Vector2 origin, Vector2 target )
         {
             // A pointing at B equals to `B - A`
 
             return new Vector2(
-                toPoint.X - fromPoint.X,
-                toPoint.Y - fromPoint.Y );
+                target.X - origin.X,
+                target.Y - origin.Y );
         }
 
         public Vector2 Normalized()

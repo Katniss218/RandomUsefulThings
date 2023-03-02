@@ -1,0 +1,11 @@
+﻿To determine which vertices of a procedurally generated sphere should get affected and how much by a 2D heightmap decal with its center mapped to a point on that sphere, you can follow these steps:
+
+1. Compute the distance between each vertex of the sphere and the center point of the decal. You can use the Euclidean distance formula for this:
+distance = sqrt((x_vertex - x_decal_center)^2 + (y_vertex - y_decal_center)^2 + (z_vertex - z_decal_center)^2)
+
+2. Determine the radius of the decal. You can use the maximum value in the heightmap as the radius.
+
+3. For each vertex that is within the radius of the decal, compute the amount of displacement by sampling the heightmap at the appropriate 2D position. 
+You can use a bilinear interpolation to get a smooth transition between neighboring pixels in the heightmap.
+
+4. Apply the displacement to the affected vertices by moving them along their normal vectors by the computed amount.

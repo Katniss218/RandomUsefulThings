@@ -1,36 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class test : MonoBehaviour
 {
-    public Geometry.Vector2 v1;
-    public Geometry.Vector2 v2;
-    public Geometry.Vector2 v3;
-    public  Geometry.Vector2 v4;
+    public Geometry.Circle c;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public int num = 5;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void OnDrawGizmos()
     {
-        v4 = Geometry.Line2D.ClosestPointOnLine( v1, v2, v3 );
+        var points = c.GetPoints( num );
+        int i = 0;
+        foreach( var point in points )
+        {
+            Gizmos.color = new Color( (float)i / points.Length, 0.2f, 0.2f );
+            Gizmos.DrawSphere( point, 0.1f );
+            i++;
+        }
+        /*c = Geometry.Circle.FromThreePoints( v1, v2, v3 );
+
         Gizmos.color = Color.red;
         Gizmos.DrawSphere( v1, 0.1f );
 
         Gizmos.color = Color.green;
-        Gizmos.DrawLine( v2, v3 );
+        Gizmos.DrawSphere( v2, 0.1f );
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere( v4, 0.1f );
+        Gizmos.DrawSphere( v3, 0.1f );
+
+        Gizmos.color = Color.white;
+        if( c != null )
+        {
+            Gizmos.DrawSphere( c.Value.Center, c.Value.Radius );
+        }*/
     }
 }
