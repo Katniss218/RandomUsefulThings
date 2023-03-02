@@ -199,7 +199,6 @@ namespace Geometry
             return this - orthogonalComponent;
         }
 
-        [Obsolete( "Unconfirmed" )]
         public static Vector3 Slerp( Vector3 start, Vector3 end, float amount )
         {
             // Calculate the dot product of the start and end vectors.

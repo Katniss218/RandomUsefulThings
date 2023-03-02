@@ -187,7 +187,7 @@ namespace Geometry
             return new Quaternion( qx, qy, qz, qw ); // possibly needs normalizing??
         }
 
-        public static float Angle( in Quaternion q1, in Quaternion q2 )
+        public static float Angle( Quaternion q1, Quaternion q2 )
         {
             float dotProduct = Quaternion.Dot( q1, q2 );
             float absoluteDotProduct = Math.Abs( dotProduct );
@@ -209,8 +209,7 @@ namespace Geometry
             }
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static Quaternion AngleAxis( in Vector3 axis, float radians )
+        public static Quaternion AngleAxis( Vector3 axis, float radians )
         {
             if( axis.LengthSquared == 0.0f )
             {
@@ -223,8 +222,7 @@ namespace Geometry
             return new Quaternion( axisSin.X, axisSin.Y, axisSin.Z, (float)Math.Cos( radians ) ).Normalized();
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public void ToAxisAngleRad( out Vector3 axis, out float angle )
+        public void ToAxisAngleRad( out Vector3 axis, out float angle ) // works.
         {
             //if( Math.Abs( this.W ) > 1.0f )
             //    q.Normalize();
@@ -244,8 +242,7 @@ namespace Geometry
             axis = new Vector3( this.X / den, this.Y / den, this.Z / den );
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static Quaternion Slerp( Quaternion start, Quaternion end, float amount )
+        public static Quaternion Slerp( Quaternion start, Quaternion end, float amount ) // seems to work.
         {
             // Calculate the dot product of the start and end quaternions.
             float dot = Dot( start, end );
@@ -301,7 +298,7 @@ namespace Geometry
         /// <summary>
         /// Combines the rotations in order: q1, then q2.
         /// </summary>
-        public static Quaternion Multiply( Quaternion q1, Quaternion q2 )
+        public static Quaternion Multiply( Quaternion q1, Quaternion q2 ) // works.
         {
             return new Quaternion(
                 (q1.W * q2.X) + (q1.X * q2.W) + (q1.Y * q2.Z) - (q1.Z * q2.Y),

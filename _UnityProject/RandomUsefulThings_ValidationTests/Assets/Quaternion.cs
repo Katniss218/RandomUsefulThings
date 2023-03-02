@@ -6,14 +6,7 @@ namespace Geometry
 {
     public struct Line2D
     {
-        /// <summary>
-        /// The point that defines the position of the line in 2D space.
-        /// </summary>
         public Vector2 Point { get; }
-
-        /// <summary>
-        /// The direction of the line. Note that this may not necessarily be normalized.
-        /// </summary>
         public Vector2 Direction { get; }
 
         /// <summary>
@@ -27,17 +20,9 @@ namespace Geometry
             this.Direction = Vector2.PointingAt( point1, point2 );
         }
 
-        public Vector2 LerpAlong( float t )
-        {
-            // If the line represents an edge, and the Direction is not normalized,
-            // then each 1.0 step in t will increase in multiples of direction.
-            // I know it's basic, but it's an important property, useful e.g. for clamping line intersections to only part of the line between 2 points.
-            return Point + Direction * t;
-        }
-
         public static Line2D FromPointDirection( Vector2 point, Vector2 direction )
         {
-            return new Line2D( point, direction );
+            return new Line2D( point, point + direction );
         }
 
         public static Vector2 ClosestPointOnLine( Vector2 p, Vector2 p1, Vector2 p2 )
