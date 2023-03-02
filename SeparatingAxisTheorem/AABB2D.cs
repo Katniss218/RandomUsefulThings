@@ -64,20 +64,14 @@ namespace Geometry
                 && (point.Y >= min.Y && point.Y <= max.Y);
         }
 
-        public bool Intersects( Line2D line )
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete( "Unconfirmed" )]
-        public bool Intersects( Ray2D Ray )
+        private bool IntersectsLineSlab( Vector2 point, Vector2 direction, out float txMin, out float txMax ) // works
         {
             // Slab method, separate intervals for x and y slabs.
             Vector2 min = Min;
             Vector2 max = Max;
 
-            float txMin = (min.X - Ray.Origin.X) / Ray.Direction.X;
-            float txMax = (max.X - Ray.Origin.X) / Ray.Direction.X;
+            txMin = (min.X - point.X) / direction.X;
+            txMax = (max.X - point.X) / direction.X;
             if( txMin > txMax )
             {
                 float temp = txMin;
@@ -85,8 +79,8 @@ namespace Geometry
                 txMax = temp;
             }
 
-            float tyMin = (min.Y - Ray.Origin.Y) / Ray.Direction.Y;
-            float tyMax = (max.Y - Ray.Origin.Y) / Ray.Direction.Y;
+            float tyMin = (min.Y - point.Y) / direction.Y;
+            float tyMax = (max.Y - point.Y) / direction.Y;
             if( tyMin > tyMax )
             {
                 float temp = tyMin;
@@ -101,10 +95,35 @@ namespace Geometry
 
             txMin = Math.Max( txMin, tyMin );
             txMax = Math.Min( txMax, tyMax );
-            return txMin < 1 && txMax > 0;
+            return true;
         }
 
-        [Obsolete( "Unconfirmed" )]
+        public bool Intersects( Ray2D ray )
+        {
+            Vector2 point = ray.Origin;
+            Vector2 direction = ray.Direction;
+
+            // This could be optimized by first testing if the AABB intersects the infinite AABB that is defined as the quadrant that contains the ray.
+            if( IntersectsLineSlab( point, direction, out float txMin, out float txMax ) )
+            {
+                return txMax > 0; // rays must have the intersection in front of the ray.
+            }
+            return false;
+        }
+
+        public bool Intersects( LineSegment2D line )
+        {
+            Vector2 point = line.Point1;
+            Vector2 direction = point - line.Point2;
+
+            // This could be optimized by first testing if the AABB intersects the bounding box of the line segment.
+            if( IntersectsLineSlab( point, direction, out float txMin, out float txMax ) )
+            {
+                return txMin < 1 && txMax > 0;
+            }
+            return false;
+        }
+
         public static bool Intersects( AABB2D self, AABB2D other )
         {
             Vector2 min1 = self.Min;
@@ -117,10 +136,11 @@ namespace Geometry
                 && (min1.Y <= max2.Y && max1.Y >= min2.Y);
         }
 
-        [Obsolete( "Unconfirmed" )]
+        /// <summary>
+        /// Returns the smallest AABB2D that fully encloses (contains) the 2 specified AABBs.
+        /// </summary>
         public static AABB2D Enclose( AABB2D a, AABB2D b )
         {
-            // The smallest AABB needed to contain 2 AABBs.
             Vector2 min = Vector2.Min( a.Center - a.Size / 2, b.Center - b.Size / 2 );
             Vector2 max = Vector2.Max( a.Center + a.Size / 2, b.Center + b.Size / 2 );
 

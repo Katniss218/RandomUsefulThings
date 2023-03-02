@@ -42,11 +42,12 @@ namespace Geometry
 
         public static bool Intersects( Circle c1, Circle c2 )
         {
+            // Circles intersect when the distance between their centers is smaller than the sum of their radii.
+
             // For small-ish circles. this can theoretically be optimized by squaring the sum of radii instead of square-rooting when taking the distance.
             return Vector2.Distance( c1.Center, c2.Center ) < (c1.Radius + c2.Radius);
         }
 
-        [Obsolete( "Unconfirmed" )]
         public bool IntersectsLine( Vector2 p1, Vector2 p2 )
         {
             // Find the closest point on the line to the center of the circle
@@ -147,8 +148,7 @@ namespace Geometry
             return new Circle( Center, Radius - amount );
         }
 
-        [Obsolete("Unconfirmed")]
-        public static Vector2[] GetIntersections( Circle c1, Circle c2 )
+        public static Vector2[] GetIntersections( Circle c1, Circle c2 ) // works.
         {
             float distance = Vector2.Distance( c1.Center, c2.Center );
 

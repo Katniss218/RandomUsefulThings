@@ -3,38 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class test : MonoBehaviour
+namespace Geometry
 {
-    public Geometry.Circle c;
-
-    public int num = 5;
-
-
-    private void OnDrawGizmos()
+    public class test : MonoBehaviour
     {
-        var points = c.GetPoints( num );
-        int i = 0;
-        foreach( var point in points )
+        public AABB2D c1;
+
+        public Vector2 p;
+        public Vector2 d;
+
+        public bool intersects;
+        public bool intersects2;
+
+        private void OnDrawGizmos()
         {
-            Gizmos.color = new Color( (float)i / points.Length, 0.2f, 0.2f );
-            Gizmos.DrawSphere( point, 0.1f );
-            i++;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube( c1.Center, c1.Size );
+
+            intersects2 = c1.Intersects( new Ray2D( p, d ) );
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine( p, p + d );
+            Gizmos.DrawSphere( p + d, 0.1f );
+            /*c = Geometry.Circle.FromThreePoints( v1, v2, v3 );
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere( v1, 0.1f );
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere( v2, 0.1f );
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere( v3, 0.1f );
+
+            Gizmos.color = Color.white;
+            if( c != null )
+            {
+                Gizmos.DrawSphere( c.Value.Center, c.Value.Radius );
+            }*/
         }
-        /*c = Geometry.Circle.FromThreePoints( v1, v2, v3 );
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere( v1, 0.1f );
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere( v2, 0.1f );
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere( v3, 0.1f );
-
-        Gizmos.color = Color.white;
-        if( c != null )
-        {
-            Gizmos.DrawSphere( c.Value.Center, c.Value.Radius );
-        }*/
     }
 }

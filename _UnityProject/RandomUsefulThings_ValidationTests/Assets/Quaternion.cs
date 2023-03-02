@@ -5,186 +5,241 @@ using System.Text;
 namespace Geometry
 {
     [System.Serializable]
-    public struct Circle
+    /// <summary>
+    /// Represents a 2-dimensional Axis-Aligned Bounding Box (a rectangle).
+    /// </summary>
+    public struct AABB2D
     {
         public Vector2 Center;
 
-        public float Radius;
+        public Vector2 Size;
 
-        public float Diameter { get => Radius * 2; }
+        public Vector2 HalfSize { get => Size / 2.0f; }
 
-        public Circle( Vector2 center, float radius )
+        public Vector2 Min { get => Center - HalfSize; }
+
+        public Vector2 Max { get => Center + HalfSize; }
+
+        /// <summary>
+        /// Returns the top-left point (-X, +Y).
+        /// </summary>
+        public Vector2 TopLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y + HalfSize.Y ); }
+
+        /// <summary>
+        /// Returns the top-right point (+X, +Y).
+        /// </summary>
+        public Vector2 TopRight { get => new Vector2( Center.X + HalfSize.X, Center.Y + HalfSize.Y ); }
+
+        /// <summary>
+        /// Returns the bottom-left point (-X, -Y).
+        /// </summary>
+        public Vector2 BottomLeft { get => new Vector2( Center.X - HalfSize.X, Center.Y - HalfSize.Y ); }
+
+        /// <summary>
+        /// Returns the bottom-right point (+X, -Y).
+        /// </summary>
+        public Vector2 BottomRight { get => new Vector2( Center.X + HalfSize.X, Center.Y - HalfSize.Y ); }
+
+        public AABB2D( Vector2 center, Vector2 size )
         {
             this.Center = center;
-            this.Radius = radius;
-        }
-        public float Circumference
-        {
-            get { return 2.0f * (float)(Math.PI * Radius); }
+            this.Size = size;
         }
 
-        public float Area
+        public static AABB2D FromMinMax( Vector2 min, Vector2 max )
         {
-            get { return (float)(Math.PI * (Radius * Radius)); }
+            throw new NotImplementedException();
         }
 
-        public Vector2 ClosestPointOnCircle( Vector2 point )
+        public float Area()
         {
-            // closest point on a circle is simply that point projected onto the circle, in the direction of the circle's center.
-            Vector2 direction = Vector2.PointingAt( Center, point ).Normalized();
-
-            return Center + (direction * Radius);
+            return Size.X * Size.Y;
         }
 
-        public bool ContainsPoint( Vector2 point )
+        public bool Contains( Vector2 point )
         {
-            return Vector2.Distance( Center, point ) < Radius;
+            Vector2 min = this.Min;
+            Vector2 max = this.Max;
+
+            return (point.X >= min.X && point.X <= max.X)
+                && (point.Y >= min.Y && point.Y <= max.Y);
         }
 
-        public static bool Intersects( Circle c1, Circle c2 )
+        public bool Intersects( Line2D line )
         {
-            // For small-ish circles. this can theoretically be optimized by squaring the sum of radii instead of square-rooting when taking the distance.
-            return Vector2.Distance( c1.Center, c2.Center ) < (c1.Radius + c2.Radius);
+            throw new NotImplementedException();
         }
 
         [Obsolete( "Unconfirmed" )]
-        public bool IntersectsLine( Vector2 p1, Vector2 p2 )
+        public bool Intersects( Ray2D Ray )
         {
-            // Find the closest point on the line to the center of the circle
-            Vector2 intersection = Line2D.ClosestPointOnLine( Center, p1, p2 );
+            // Slab method, separate intervals for x and y slabs.
+            Vector2 min = Min;
+            Vector2 max = Max;
 
-            // Check if that point is within the radius of the circle
-            return ContainsPoint( intersection );
+            float txMin = (min.X - Ray.Origin.X) / Ray.Direction.X;
+            float txMax = (max.X - Ray.Origin.X) / Ray.Direction.X;
+            if( txMin > txMax )
+            {
+                float temp = txMin;
+                txMin = txMax;
+                txMax = temp;
+            }
+
+            float tyMin = (min.Y - Ray.Origin.Y) / Ray.Direction.Y;
+            float tyMax = (max.Y - Ray.Origin.Y) / Ray.Direction.Y;
+            if( tyMin > tyMax )
+            {
+                float temp = tyMin;
+                tyMin = tyMax;
+                tyMax = temp;
+            }
+
+            if( txMin > tyMax || tyMin > txMax )
+            {
+                return false;
+            }
+
+            txMin = Math.Max( txMin, tyMin );
+            txMax = Math.Min( txMax, tyMax );
+            return txMax > 0;
         }
 
-        public static Circle FromDiameter( Vector2 center, float diameter )
+        [Obsolete( "Unconfirmed" )]
+        public static bool Intersects( AABB2D self, AABB2D other )
         {
-            return new Circle( center, diameter * 0.5f );
+            Vector2 min1 = self.Min;
+            Vector2 max1 = self.Max;
+
+            Vector2 min2 = other.Min;
+            Vector2 max2 = other.Max;
+
+            return (min1.X <= max2.X && max1.X >= min2.X)
+                && (min1.Y <= max2.Y && max1.Y >= min2.Y);
         }
 
-        public static Circle FromCircumference( Vector2 center, float circumference )
+        [Obsolete( "Unconfirmed" )]
+        public static AABB2D Enclose( AABB2D a, AABB2D b )
         {
-            // C = pi * 2 * r
-            return new Circle( center, circumference / (2 * (float)Math.PI) );
+            // The smallest AABB needed to contain 2 AABBs.
+            Vector2 min = Vector2.Min( a.Center - a.Size / 2, b.Center - b.Size / 2 );
+            Vector2 max = Vector2.Max( a.Center + a.Size / 2, b.Center + b.Size / 2 );
+
+            Vector2 size = max - min;
+            Vector2 center = min + size / 2;
+
+            return new AABB2D( center, size );
         }
 
-        public static Circle FromArea( Vector2 center, float area )
+        [Obsolete( "Unconfirmed" )]
+        public static AABB2D Intersection( AABB2D a, AABB2D b )
         {
-            // A = pi * r * r
-            return new Circle( center, (float)Math.Sqrt( area / Math.PI ) );
+            Vector2 min = Vector2.Max( a.Center - a.Size / 2, b.Center - b.Size / 2 );
+            Vector2 max = Vector2.Min( a.Center + a.Size / 2, b.Center + b.Size / 2 );
+
+            if( min.X > max.X || min.Y > max.Y )
+            {
+                return new AABB2D( Vector2.Zero, Vector2.Zero );
+            }
+
+            Vector2 size = max - min;
+            Vector2 center = min + size / 2;
+
+            return new AABB2D( center, size );
         }
 
         /// <summary>
-        /// Makes a circle from 2 points that lie on its opposite ends.
+        /// Expands the bounds of the AABB by a fixed amount in all directions.
         /// </summary>
-        public static Circle FromTwoPoints( Vector2 p1, Vector2 p2 )
+        public AABB2D ExpandedBy( float amount )
         {
-            Vector2 center = Vector2.Midpoint( p1, p2 );
-            float radius = Vector2.Distance( p1, p2 ) * 0.5f;
-
-            return new Circle( center, radius );
+            Vector2 newSize = Size + new Vector2( amount * 2, amount * 2 );
+            return new AABB2D( Center, newSize );
         }
 
         [Obsolete( "Unconfirmed" )]
-        public static Circle? FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 )
+        public float DistanceTo( Vector2 point )
         {
-            // Find the perpendicular bisectors of the line segments connecting the points
-            Vector2 mid1 = (p1 + p2) / 2;
-            Vector2 bisector1 = new Vector2( -(p2.Y - p1.Y), p2.X - p1.X );
-            Vector2 mid2 = (p2 + p3) / 2;
-            Vector2 bisector2 = new Vector2( -(p3.Y - p2.Y), p3.X - p2.X );
+            Vector2 min = Min;
+            Vector2 max = Max;
 
-            // Find the intersection of the two bisectors to get the center of the circle
-            Vector2? center = Line2D.LineLineIntersection( new Line2D( mid1, mid1 + bisector1 ), new Line2D( mid2, mid2 + bisector2 ) );
-            if( center == null )
-            {
-                return null;
-            }
+            float dx = Math.Max( Math.Abs( point.X - min.X ), Math.Abs( point.X - max.X ) );
+            float dy = Math.Max( Math.Abs( point.Y - min.Y ), Math.Abs( point.Y - max.Y ) );
 
-            float radius = Vector2.Distance( center.Value, p1 );
-            return new Circle( center.Value, radius );
-        }
-
-        public Vector2[] GetPoints( int numPoints )
-        {
-            Vector2[] points = new Vector2[numPoints];
-            double angleIncrement = 2 * Math.PI / numPoints;
-            for( int i = 0; i < numPoints; i++ )
-            {
-                double angle = i * angleIncrement;
-                double x = Center.X + Radius * Math.Cos( angle );
-                double y = Center.Y + Radius * Math.Sin( angle );
-                points[i] = new Vector2( (float)x, (float)y );
-            }
-            return points;
-        }
-
-        public Circle Offset( Vector2 offset )
-        {
-            return new Circle( Center + offset, Radius );
-        }
-
-        public Circle Scaled( float scale )
-        {
-            return new Circle( Center, Radius * scale );
-        }
-
-        public Circle Inflated( float amount )
-        {
-            return new Circle( Center, Radius + amount );
-        }
-
-        public Circle Deflated( float amount )
-        {
-            return new Circle( Center, Radius - amount );
+            return (float)Math.Sqrt( dx * dx + dy * dy );
         }
 
         [Obsolete( "Unconfirmed" )]
-        public static Vector2[] GetIntersections( Circle c1, Circle c2 )
+        public static bool LineSegmentIntersectsBoundingBox( Vector2 min, Vector2 max, Vector2 p1, Vector2 p2 )
         {
-            float distance = Vector2.Distance( c1.Center, c2.Center );
+            Vector2 direction = p2 - p1;
+            Vector2 boxExtents = max - min;
+            Vector2 lineToBox = p1 - min;
+            float tmin = 0.0f;
+            float tmax = 1.0f;
 
-            // circles do not overlap.
-            if( distance > c1.Radius + c2.Radius )
+            for( int i = 0; i < 2; i++ )
             {
-                return new Vector2[] { };
+                float projection = direction[i];
+                float lineCoord = lineToBox[i];
+                float boxExtent = boxExtents[i];
+
+                if( projection == 0 && lineCoord < 0 )
+                {
+                    return false;
+                }
+
+                float t = lineCoord / projection;
+
+                if( projection < 0 )
+                {
+                    tmax = Math.Min( tmax, t );
+                }
+                else
+                {
+                    tmin = Math.Max( tmin, t );
+                }
+
+                if( tmax < tmin )
+                {
+                    return false;
+                }
             }
 
-            // does some weird stuff with trigonometry, apparently. who knows
-            float a = (c1.Radius * c1.Radius - c2.Radius * c2.Radius + distance * distance) / (2 * distance);
-            float h = (float)Math.Sqrt( c1.Radius * c1.Radius - a * a );
-            Vector2 p2 = c1.Center + a * (c2.Center - c1.Center) / distance;
-            Vector2 p3 = new Vector2( p2.X + h * (c2.Center.Y - c1.Center.Y) / distance, p2.Y - h * (c2.Center.X - c1.Center.X) / distance );
-            Vector2 p4 = new Vector2( p2.X - h * (c2.Center.Y - c1.Center.Y) / distance, p2.Y + h * (c2.Center.X - c1.Center.X) / distance );
-            if( p3 == p4 )
-                return new Vector2[] { p3 };
-            else
-                return new Vector2[] { p3, p4 };
+            return true;
         }
 
-        public override bool Equals( object obj )
+        /*[Obsolete( "Unconfirmed" )]
+        public static bool DoLineSegmentIntersectBoundingBox( Vector2 p1, Vector2 p2, float minX, float minY, float maxX, float maxY )
         {
-            if( obj is Circle )
+            // Check if the line segment is fully inside the bounding box
+            if( p1.X >= minX && p1.X <= maxX && p1.Y >= minY && p1.Y <= maxY &&
+                p2.X >= minX && p2.X <= maxX && p2.Y >= minY && p2.Y <= maxY )
             {
-                return this == (Circle)obj;
+                return true;
+            }
+
+            // Check if the line segment intersects any of the four sides of the bounding box
+            if( LineSegment2D.DoLineSegmentsIntersect( p1, p2, new Vector2( minX, minY ), new Vector2( maxX, minY ) ) ||
+                LineSegment2D.DoLineSegmentsIntersect( p1, p2, new Vector2( maxX, minY ), new Vector2( maxX, maxY ) ) ||
+                LineSegment2D.DoLineSegmentsIntersect( p1, p2, new Vector2( maxX, maxY ), new Vector2( minX, maxY ) ) ||
+                LineSegment2D.DoLineSegmentsIntersect( p1, p2, new Vector2( minX, maxY ), new Vector2( minX, minY ) ) )
+            {
+                return true;
             }
 
             return false;
-        }
+        }*/
+    }
+    public struct Ray2D
+    {
+        public Vector2 Origin { get; }
+        public Vector2 Direction { get; }
 
-        public override int GetHashCode()
+        public Ray2D( Vector2 origin, Vector2 direction )
         {
-            return Center.GetHashCode() ^ Radius.GetHashCode();
-        }
-
-        public static bool operator ==( Circle c1, Circle c2 )
-        {
-            return c1.Center == c2.Center && c1.Radius == c2.Radius;
-        }
-
-        public static bool operator !=( Circle c1, Circle c2 )
-        {
-            return c1.Center != c2.Center || c1.Radius != c2.Radius;
+            this.Origin = origin;
+            this.Direction = direction;
         }
     }
 }
