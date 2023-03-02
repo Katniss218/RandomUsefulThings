@@ -4,17 +4,18 @@ using System.Text;
 
 namespace Geometry
 {
+    [System.Serializable]
     public struct Line2D
     {
         /// <summary>
         /// The point that defines the position of the line in 2D space.
         /// </summary>
-        public Vector2 Point { get; }
+        public Vector2 Point;
 
         /// <summary>
         /// The direction of the line. Note that this may not necessarily be normalized.
         /// </summary>
-        public Vector2 Direction { get; }
+        public Vector2 Direction;
 
         /// <summary>
         /// Returns the slope (y / x) of the line.

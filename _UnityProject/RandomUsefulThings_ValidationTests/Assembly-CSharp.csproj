@@ -60,6 +60,8 @@
     <Compile Include="Assets\Vector2.cs" />
     <Compile Include="Assets\Quaternion.cs" />
     <Compile Include="Assets\Line2D.cs" />
+    <Compile Include="Assets\LineSegment2D.cs" />
+    <Compile Include="Assets\Ray2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

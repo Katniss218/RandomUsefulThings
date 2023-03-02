@@ -66,6 +66,7 @@ namespace Geometry
 
         private bool IntersectsLineSlab( Vector2 point, Vector2 direction, out float txMin, out float txMax ) // works
         {
+            // the slab method works by treating the AABB as 4 axis-aligned lines.
             // Slab method, separate intervals for x and y slabs.
             Vector2 min = Min;
             Vector2 max = Max;
@@ -95,6 +96,11 @@ namespace Geometry
 
             txMin = Math.Max( txMin, tyMin );
             txMax = Math.Min( txMax, tyMax );
+            // txMax < 0 && txMin < 0 if the box is entirely behind the ray.
+            // txMax > 0 && txMin < 0 if the box contains the origin.
+            // txMax > 0 && txMin > 0 if the box is entirely in front of the ray.
+
+            // they are actually the cartesian distances to the lines (either horizontal or vertical) in multiples of the magnitude of the direction.
             return true;
         }
 

@@ -17,6 +17,7 @@ namespace Geometry
 
         private void OnDrawGizmos()
         {
+            d = d.Normalized();
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube( c1.Center, c1.Size );
 
