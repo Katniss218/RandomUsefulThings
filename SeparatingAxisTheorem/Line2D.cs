@@ -9,7 +9,10 @@ namespace Geometry
         public Vector2 Point { get; }
         public Vector2 Direction { get; }
 
-        public float Slope { get => throw new NotImplementedException();/* y / x ?*/}
+        /// <summary>
+        /// Returns the slope (y / x) of the line.
+        /// </summary>
+        public float Slope { get => Direction.Y / Direction.X; }
 
         public Line2D( Vector2 point1, Vector2 point2 )
         {

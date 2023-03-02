@@ -61,21 +61,19 @@ namespace Geometry
         /// <summary>
         /// Computes a vector pointing from one point to another.
         /// </summary>
-        /// <param name="fromPoint"></param>
-        /// <param name="toPoint"></param>
-        /// <returns>Returns a displacement from 'from' to 'to'.</returns>
+        /// <returns>The vector representing the displacement from 'from' to 'to'.</returns>
         public static Vector2 PointingAt( Vector2 fromPoint, Vector2 toPoint )
         {
-            // A to B = B - A
+            // A pointing at B equals to `B - A`
 
             return new Vector2(
                 toPoint.X - fromPoint.X,
                 toPoint.Y - fromPoint.Y );
         }
 
-        // Method to normalize a Vector2
         public Vector2 Normalized()
         {
+            // To "normalize" a vector means to set its length to 1, while keeping the direction it's pointing in.
             float length = this.Length;
             return new Vector2( X / length, Y / length );
         }
@@ -86,6 +84,7 @@ namespace Geometry
         }
 
         // atan2 returns the values in range [-pi, pi], the 0 value is at +X axis.
+        // atan2(y, x) == atan(y / x)
 
         // if atan2 returns negative numbers, we can map to the fully positive range by using `v = (v + 360) % 360;` (or `v = (v + (2*PI)) % (2*PI);`)
         // or v = (v < 0) ? (v + 360) : v;
