@@ -129,9 +129,13 @@ namespace Geometry
             return new Vector2( Math.Max( a.X, b.X ), Math.Max( a.Y, b.Y ) );
         }
 
-        [Obsolete( "Unconfirmed" )]
+        /// <summary>
+        /// Rotates the Vector2 (point) around the origin.
+        /// </summary>
+        /// <param name="angle">The angle [radians].</param>
         public Vector2 Rotate( float angle )
         {
+            // Rotates counterclockwise if X+ points right and Y+ points up.
             float newX = (float)((X * Math.Cos( angle )) - (Y * Math.Sin( angle )));
             float newY = (float)((X * Math.Sin( angle )) + (Y * Math.Cos( angle )));
 
@@ -141,7 +145,8 @@ namespace Geometry
         /// <summary>
         /// Rotates the Vector2 (point) around a pivot point.
         /// </summary>
-        [Obsolete( "Unconfirmed" )]
+        /// <param name="pivot">The point to rotate around.</param>
+        /// <param name="angle">The angle [radians].</param>
         public Vector2 RotateAround( Vector2 pivot, float angle )
         {
             Vector2 v = this - pivot;
@@ -151,7 +156,10 @@ namespace Geometry
             return v + pivot;
         }
 
-        [Obsolete( "Unconfirmed" )]
+        /// <summary>
+        /// Calculates the angle between 2 vectors.
+        /// </summary>
+        /// <returns>The (unsigned) angle between the 2 vectors in radians.</returns>
         public static float Angle( Vector2 a, Vector2 b )
         {
             float dotProduct = Dot( a, b );
@@ -160,17 +168,19 @@ namespace Geometry
             return (float)Math.Acos( dotProduct / (aLength * bLength) );
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public Vector2 ProjectOnto( Vector2 other )
+        /// <summary>
+        /// Projects the vector onto a line defined by the direciton of the other vector.
+        /// </summary>
+        public Vector2 ProjectOnto( Vector2 other ) // Works
         {
+            // This can also be thought of as returning the component of this vector that points in the direction of the other vector.
             float dot = Dot( this, other );
             float otherLengthSquared = other.Length * other.Length;
 
             return other * (dot / otherLengthSquared);
         }
 
-        [Obsolete( "Unconfirmed" )]
-        public static Vector2 Reflection( Vector2 v, Vector2 normal )
+        public static Vector2 Reflection( Vector2 v, Vector2 normal ) // works.
         {
             Vector2 projection = v.ProjectOnto( normal );
             return (projection * 2) - v;
@@ -193,24 +203,6 @@ namespace Geometry
         }
 
         /// <summary>
-        /// Calculates the component of the vector in a given direction.
-        /// </summary>
-        [Obsolete( "Unconfirmed" )]
-        public Vector2 Component( Vector2 direction )
-        {
-            float dotProduct = Dot( this, direction );
-            float lengthSquared = direction.Length * direction.Length;
-            return direction * (dotProduct / lengthSquared);
-        }
-
-        [Obsolete( "Unconfirmed" )]
-        public Vector2 ProjectionOntoLine( Vector2 point, Vector2 direction )
-        {
-            Vector2 pointToVector = this - point;
-            return pointToVector.Component( direction ) + point;
-        }
-
-        /// <summary>
         /// Calculates the midpoint of 2 points.
         /// </summary>
         public static Vector2 Midpoint( Vector2 p1, Vector2 p2 )
@@ -220,12 +212,14 @@ namespace Geometry
 
         public float Slope()
         {
-            throw new NotImplementedException();
+            // Slope is the change in y for a unit (1.0) change in x.
+            return this.Y / this.X;
         }
 
         public static Vector2 FromSlope( float slope )
         {
-            throw new NotImplementedException();
+            // Slope is the change in y for a unit (1.0) change in x.
+            return new Vector2( 1.0f, slope );
         }
 
         /// <summary>

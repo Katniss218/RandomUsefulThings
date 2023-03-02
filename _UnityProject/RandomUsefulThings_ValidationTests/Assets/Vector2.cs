@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace Geometry
 {
@@ -76,10 +77,8 @@ namespace Geometry
             // This can do plane to edge intersection as well, if we don't normalize the direction.
             // So we could do line projected onto an edge.
 
-            Vector3 perpendicularProjDir = projectionDir.ProjectOntoPlane( line1Dir );
-            // This works because the vector pointing from any point on the line to the intersection will have a positive dot product with the projection direction.
-            // The projection direction needs to be aligned so that it's perpendicular to the line direction (this doesn't actually even change the result if it was done earlier).
-            if( Vector3.Dot( (planeLine2Intersection - line1Point), perpendicularProjDir ) <= 0 ) // reject the back half of the plane.
+            // every point behind every point on the original line should be negative.
+            if( Vector3.Dot( (planeLine2Intersection - line1Point), Vector3.ProjectOnPlane( projectionDir, line1Dir ) ) <= 0 ) // reject the back half of the plane.
             {
                 // The point lies "behind" the projection, i.e. would intersect if we inverted the projection direction.
                 return null;
