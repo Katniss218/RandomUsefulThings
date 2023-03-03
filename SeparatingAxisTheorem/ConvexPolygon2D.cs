@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Geometry
 {
-    public class ConvexPolygon
+    public class ConvexPolygon2D
     {
         // A list to store the vertices of the polygon
         private List<Vector2> _vertices;
 
         // Constructor to initialize the list of vertices
-        public ConvexPolygon()
+        public ConvexPolygon2D()
         {
             _vertices = new List<Vector2>();
         }
@@ -56,7 +56,7 @@ namespace Geometry
         }
 
         [Obsolete( "Unconfirmed" )]
-        public bool IsColliding( ConvexPolygon polygon1, ConvexPolygon polygon2 )
+        public bool IsColliding( ConvexPolygon2D polygon1, ConvexPolygon2D polygon2 )
         {
             // The separating axis theorem, also known as the SAT theorem, is a mathematical concept that is commonly used in computer graphics and computational geometry. It is a method for determining whether or not two convex polygons are colliding or intersecting.
             // The theorem states that if there is a line or axis that can be drawn to separate the two convex polygons, then the polygons are not colliding. In other words, if it is possible to draw a line or axis that passes through the polygons in such a way that the polygons are on opposite sides of the line, then the polygons are not colliding.
@@ -114,7 +114,7 @@ namespace Geometry
         }
 
         [Obsolete( "Unconfirmed" )]
-        public Vector2 GetMinimumTranslationVector( ConvexPolygon polygon1, ConvexPolygon polygon2 )
+        public Vector2 GetMinimumTranslationVector( ConvexPolygon2D polygon1, ConvexPolygon2D polygon2 )
         {
             // One approach to calculating the collision response is to use the separating axis theorem to determine the minimum translation vector (MTV), which is the smallest vector needed to move one of the polygons out of the other polygon.
 
