@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Geometry
 {
-    public struct Circle
+    public struct Circle2D
     {
         public Vector2 Center { get; }
 
@@ -12,7 +12,7 @@ namespace Geometry
 
         public float Diameter { get => Radius * 2; }
 
-        public Circle( Vector2 center, float radius )
+        public Circle2D( Vector2 center, float radius )
         {
             this.Center = center;
             this.Radius = radius;
@@ -40,7 +40,7 @@ namespace Geometry
             return Vector2.Distance( Center, point ) < Radius;
         }
 
-        public static bool Intersects( Circle c1, Circle c2 )
+        public static bool Intersects( Circle2D c1, Circle2D c2 )
         {
             // Circles intersect when the distance between their centers is smaller than the sum of their radii.
 
@@ -57,32 +57,32 @@ namespace Geometry
             return ContainsPoint( intersection );
         }
 
-        public static Circle FromDiameter( Vector2 center, float diameter )
+        public static Circle2D FromDiameter( Vector2 center, float diameter )
         {
-            return new Circle( center, diameter * 0.5f );
+            return new Circle2D( center, diameter * 0.5f );
         }
 
-        public static Circle FromCircumference( Vector2 center, float circumference )
+        public static Circle2D FromCircumference( Vector2 center, float circumference )
         {
             // C = pi * 2 * r
-            return new Circle( center, circumference / (2 * (float)Math.PI) );
+            return new Circle2D( center, circumference / (2 * (float)Math.PI) );
         }
 
-        public static Circle FromArea( Vector2 center, float area )
+        public static Circle2D FromArea( Vector2 center, float area )
         {
             // A = pi * r * r
-            return new Circle( center, (float)Math.Sqrt( area / Math.PI ) );
+            return new Circle2D( center, (float)Math.Sqrt( area / Math.PI ) );
         }
 
         /// <summary>
         /// Makes a circle from 2 points that lie on its opposite ends.
         /// </summary>
-        public static Circle FromTwoPoints( Vector2 p1, Vector2 p2 )
+        public static Circle2D FromTwoPoints( Vector2 p1, Vector2 p2 )
         {
             Vector2 center = Vector2.Midpoint( p1, p2 );
             float radius = Vector2.Distance( p1, p2 ) * 0.5f;
 
-            return new Circle( center, radius );
+            return new Circle2D( center, radius );
         }
 
         public AABB2D BoundingBox
@@ -93,7 +93,7 @@ namespace Geometry
             }
         }
 
-        public static Circle? FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 ) // works.
+        public static Circle2D? FromThreePoints( Vector2 p1, Vector2 p2, Vector2 p3 ) // works.
         {
             // Find the perpendicular bisectors of the line segments connecting the points
             Vector2 mid1 = (p1 + p2) / 2;
@@ -109,7 +109,7 @@ namespace Geometry
             }
 
             float radius = Vector2.Distance( center.Value, p1 );
-            return new Circle( center.Value, radius );
+            return new Circle2D( center.Value, radius );
         }
 
         public Vector2[] GetPoints( int numPoints )
@@ -128,27 +128,27 @@ namespace Geometry
             return points;
         }
 
-        public Circle Offset( Vector2 offset )
+        public Circle2D Offset( Vector2 offset )
         {
-            return new Circle( Center + offset, Radius );
+            return new Circle2D( Center + offset, Radius );
         }
 
-        public Circle Scaled( float scale )
+        public Circle2D Scaled( float scale )
         {
-            return new Circle( Center, Radius * scale );
+            return new Circle2D( Center, Radius * scale );
         }
 
-        public Circle Inflated( float amount )
+        public Circle2D Inflated( float amount )
         {
-            return new Circle( Center, Radius + amount );
+            return new Circle2D( Center, Radius + amount );
         }
 
-        public Circle Deflated( float amount )
+        public Circle2D Deflated( float amount )
         {
-            return new Circle( Center, Radius - amount );
+            return new Circle2D( Center, Radius - amount );
         }
 
-        public static Vector2[] GetIntersections( Circle c1, Circle c2 ) // works.
+        public static Vector2[] GetIntersections( Circle2D c1, Circle2D c2 ) // works.
         {
             float distance = Vector2.Distance( c1.Center, c2.Center );
 
@@ -172,9 +172,9 @@ namespace Geometry
 
         public override bool Equals( object obj )
         {
-            if( obj is Circle )
+            if( obj is Circle2D )
             {
-                return this == (Circle)obj;
+                return this == (Circle2D)obj;
             }
 
             return false;
@@ -185,12 +185,12 @@ namespace Geometry
             return Center.GetHashCode() ^ Radius.GetHashCode();
         }
 
-        public static bool operator ==( Circle c1, Circle c2 )
+        public static bool operator ==( Circle2D c1, Circle2D c2 )
         {
             return c1.Center == c2.Center && c1.Radius == c2.Radius;
         }
 
-        public static bool operator !=( Circle c1, Circle c2 )
+        public static bool operator !=( Circle2D c1, Circle2D c2 )
         {
             return c1.Center != c2.Center || c1.Radius != c2.Radius;
         }

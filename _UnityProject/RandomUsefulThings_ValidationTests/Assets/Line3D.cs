@@ -9,7 +9,7 @@ namespace Geometry
         public Vector3 Point { get; }
         public Vector3 Direction { get; }
 
-        public static Vector3? LinePlaneIntersection( Vector3 linePoint, Vector3 lineDir, Vector3 planePoint, Vector3 planeNormal, bool ray = false )
+        public static Vector3? LinePlaneIntersection( Vector3 linePoint, Vector3 lineDir, Vector3 planePoint, Vector3 planeNormal )
         {
             // Distance from `l.point` to the point of line-plane intersection (if denominator != 0)
             //     dist = dot((p.point - l.point), p.normal) / dot( l.dir, p.normal )
@@ -34,13 +34,6 @@ namespace Geometry
             //     where `realDist` is the distance returned if `planeNormal` was a unit vector.
 
             // we can check here if the distance is negative and reject the intersection (this case would be ray-plane).
-            if( ray )
-            {
-                if( distance < 0 )
-                {
-                    return null;
-                }
-            }
 
             // We can also use this to check for linesegment-plane intersections.
             //     If `linePoint` is vertex1 and `lineDir` is (vertex2 - vertex1) and is NOT NORMALIZED.
@@ -49,6 +42,32 @@ namespace Geometry
             //   and the distance is now measured to the other side, which is equivalent.
 
             return linePoint + (distance * lineDir);
+        }
+
+        public static Vector3? RayPlaneIntersection( Vector3 rayOrigin, Vector3 rayDir, Vector3 planePoint, Vector3 planeNormal )
+        {
+            // Distance from `l.point` to the point of line-plane intersection (if denominator != 0)
+            //     dist = dot((p.point - l.point), p.normal) / dot( l.dir, p.normal )
+            float denom = Vector3.Dot( rayDir, planeNormal );
+
+            if( Math.Abs( denom ) < 0.000001f )
+            {
+                // line is parallel to the plane.
+                return null;
+            }
+
+            // This is NOT supposed to be normalized. We take the dot product of a NON-UNIT vector.
+            // Otherwise, it doesn't work.
+            Vector3 lineToPlane = planePoint - rayOrigin;
+            // Returns the distance from the `planePoint` to the intersection with the plane.
+            float distance = Vector3.Dot( lineToPlane, planeNormal ) / denom;
+
+            if( distance < 0 )
+            {
+                return null;
+            }
+
+            return rayOrigin + (distance * rayDir);
         }
 
         public static Vector3? ProjectedLineIntersection(

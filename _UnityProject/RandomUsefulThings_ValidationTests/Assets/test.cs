@@ -7,25 +7,32 @@ namespace Geometry
 {
     public class test : MonoBehaviour
     {
-        public AABB2D c1;
+        public Triangle2D triangle;
 
         public Vector2 p;
-        public Vector2 d;
+
+        public Vector3 baryc;
 
         public bool intersects;
-        public bool intersects2;
 
         private void OnDrawGizmos()
         {
-            d = d.Normalized();
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube( c1.Center, c1.Size );
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine( triangle.P1, triangle.P2 );
+            Gizmos.DrawLine( triangle.P2, triangle.P3 );
+            Gizmos.DrawLine( triangle.P3, triangle.P1 );
+            Gizmos.color = new Color( 1.0f, 0.0f, 0.0f );
+            Gizmos.DrawSphere( triangle.P1, 0.05f );
+            Gizmos.color = new Color( 0.5f, 0.0f, 0.0f );
+            Gizmos.DrawSphere( triangle.P2, 0.05f );
+            Gizmos.color = new Color( 0.0f, 0.0f, 0.0f );
+            Gizmos.DrawSphere( triangle.P3, 0.05f );
 
-            intersects2 = c1.Intersects( new Ray2D( p, d ) );
+            baryc = triangle.BarycentricCoordinates( p );
+            float c = Triangle2D.InterpolateTriangle( p, triangle.P1, triangle.P2, triangle.P3, 1.0f, 0.5f, 0.0f );
 
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine( p, p + d );
-            Gizmos.DrawSphere( p + d, 0.1f );
+            Gizmos.color = new Color( c, 0, 0 );
+            Gizmos.DrawSphere( p, 0.1f );
             /*c = Geometry.Circle.FromThreePoints( v1, v2, v3 );
 
             Gizmos.color = Color.red;
