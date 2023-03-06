@@ -7,7 +7,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DifferentialEquations\DifferentialEquations.csproj" />
+    <ProjectReference Include="..\Miscellaneous\Miscellaneous.csproj" />
+    <ProjectReference Include="..\Noise\Noise.csproj" />
+    <ProjectReference Include="..\Pathfinding\Pathfinding.csproj" />
+    <ProjectReference Include="..\Physics\Physics.csproj" />
     <ProjectReference Include="..\SeparatingAxisTheorem\Geometry.csproj" />
+    <ProjectReference Include="..\WaveFunctionCollapse\WaveFunctionCollapse.csproj" />
   </ItemGroup>
 
 </Project>

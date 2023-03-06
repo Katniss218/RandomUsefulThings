@@ -10,6 +10,14 @@ namespace TestConsole
     {
         static void Main( string[] args )
         {
+            double tempK = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 1.0f );
+            Miscellaneous.Graphics.ColorRGBA c = new Miscellaneous.Graphics.ColorRGBA( 0, 1, 0 );
+            int vint = c.GetIntRGB();
+
+            c = Miscellaneous.Graphics.ColorRGBA.FromIntRGB( vint );
+
+            // 1 is when it approaches 1,0,0 again and wraps around to 0.
+
             Console.WriteLine( MathMethods.MathMethods.Factorial( 1 ) );
             Console.WriteLine( MathMethods.MathMethods.Factorial( 2 ) );
             Console.WriteLine( MathMethods.MathMethods.Factorial( 3 ) );
