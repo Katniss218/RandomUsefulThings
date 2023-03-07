@@ -11,59 +11,63 @@ namespace MathMethods
             return a - b * (float)Math.Floor( a / b );
         }
 
-        public static float Lerp( float from, float to, float t )
+        /// <summary>
+        /// Linearly maps a value from one range onto another range.
+        /// </summary>
+        /// <param name="value">The value from the original range to map.</param>
+        /// <param name="inMin">The min value of the original range.</param>
+        /// <param name="inMax">The max value of the original range.</param>
+        /// <param name="outMin">The min value of the new range.</param>
+        /// <param name="outMax">The max value of the new range.</param>
+        /// <returns>The value mapped onto the new range.</returns>
+        public static float Map( float value, float inMin, float inMax, float outMin, float outMax )
         {
-            // This function linearly interpolates between two values, start and end, by the amount amount.
-            // The amount is typically a value between 0 and 1, where 0 represents the start value and 1 represents the end value.
+            // This is related to linear interpolation.
 
-            return Math.Clamp( from + (to - from) * t, from, to );
-        }
-
-        public static double Map( double value, double inMin, double inMax, double outMin, double outMax )
-        {
+            // First shift the value so that the original range now starts at 0.
+            // Then multiply the value to map onto the new range.
+            // And last, unshift the value so that the new range starts at `outMin`.
             return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
-        }
-
-        public static float LerpUnclamped( float from, float to, float t )
-        {
-            return from + (to - from) * t;
-        }
-
-        public static double LerpUnclamped( double from, double to, double t )
-        {
-            return from + (to - from) * t;
         }
 
         public static float LengthSquared( float x, float y )
         {
+            // length squared of a vector.
             return (x * x) + (y * y);
         }
 
         public static float Length( float x, float y )
         {
+            // length of a vector.
             return (float)Math.Sqrt( LengthSquared( x, y ) );
         }
 
         public static float Dot( float v1x, float v1y, float v2x, float v2y )
         {
+            // dot product between 2 vectors.
             return (v1x * v2x) + (v1y * v2y);
         }
 
-        // returns where in between the 2 values the current value is (returns the t factor in linear interpolation).
-        // inverse lerp kind of.
-        public static double InverseLerp( double value, double min, double max )
+        /// <summary>
+        /// Mirrors the value across the specified point.
+        /// </summary>
+        public static float Flip( float value, float mirrorPoint )
         {
-            return (value - min) / (max - min);
+            return value + 2 * (mirrorPoint - value);
         }
 
-        // mirrors the value across the midpoint of the specified range.
-        public static double Flip( double value, double min, double max )
+        /// <summary>
+        /// Mirrors the value across the midpoint of the specified range.
+        /// </summary>
+        public static float Flip( float value, float min, float max )
         {
-            double range = max - min;
+            float range = max - min;
             return max - (value - min) % range;
         }
 
-        // greatest common divisor
+        /// <summary>
+        /// Returns the greatest common divisor of two integers.
+        /// </summary>
         public static int GCD( int a, int b )
         {
             while( b != 0 )
@@ -102,9 +106,9 @@ namespace MathMethods
             return n * (n + 1) * (n + 2) / 6;
         }
 
-        // returns the total number of cannonballs that can fit in an "n-ring" with a given number of sides and a given number of cannonballs per edge.
         private static int FigurateRing( int sides, int n )
         {
+            // returns the total number of cannonballs that can fit in a "ring" with a given number of sides `sides` and a given number of cannonballs per edge `n`.
             return n == 1 ? 1 : sides * (n - 1);
         }
 
@@ -162,84 +166,6 @@ namespace MathMethods
                 n /= 10;
             }
             return sum;
-        }
-
-        /// <summary>
-        /// Performs a hermite interpolation.
-        /// </summary>
-        public static float Smoothstep( float edge0, float edge1, float x )
-        {
-            float t = (float)Math.Clamp( (x - edge0) / (edge1 - edge0), 0.0, 1.0 );
-            return t * t * (3.0f - 2.0f * t);
-        }
-
-        public static Color LerpColor( Color from, Color to, double t )
-        {
-            double r = LerpUnclamped( from.R, to.R, t );
-            double g = LerpUnclamped( from.G, to.G, t );
-            double b = LerpUnclamped( from.B, to.B, t );
-            double a = LerpUnclamped( from.A, to.A, t );
-            return Color.FromArgb( (int)a, (int)r, (int)g, (int)b );
-        }
-        /*
-        public static Color SmoothStepColor( Color from, Color to, double t )
-        {
-            double r = SmoothStep( from.R, to.R, t );
-            double g = SmoothStep( from.G, to.G, t );
-            double b = SmoothStep( from.B, to.B, t );
-            double a = SmoothStep( from.A, to.A, t );
-            return Color.FromArgb( (int)a, (int)r, (int)g, (int)b );
-        }
-        */
-
-        public delegate double EasingFunction( double t );
-
-        [Obsolete( "Unconfirmed" )]
-        public static double Interpolate( double from, double to, double t, EasingFunction easingFunction )
-        {
-            double clampedT = Math.Clamp( t, 0, 1 );
-            return LerpUnclamped( from, to, easingFunction( clampedT ) );
-        }
-
-        // Smoother step function
-        [Obsolete( "Unconfirmed" )]
-        public static float SmootherStep( float edge0, float edge1, float x )
-        {
-            // This is a variant of the smooth step function that produces a smoother curve.
-            // It is defined as t * t * t * (t * (t * 6 - 15) + 10)
-
-            // Clamp x to the range [edge0, edge1]
-            x = Math.Max( Math.Min( x, edge1 ), edge0 );
-
-            // Calculate the smoother step value
-            float t = (x - edge0) / (edge1 - edge0);
-            return t * t * t * (t * (t * 6 - 15) + 10);
-        }
-
-        // Smooth clamp function
-        [Obsolete( "Unconfirmed" )]
-        public static float SmoothClamp( float edge0, float edge1, float x )
-        {
-            // This is a function that smoothly clamps a value x to the range [edge0, edge1].
-            // It is defined as edge0 + Smoothstep(0, 1, (x - edge0) / (edge1 - edge0)) * (edge1 - edge0).
-
-            // Calculate the smooth clamp value
-            float t = (x - edge0) / (edge1 - edge0);
-            return edge0 + Smoothstep( 0, 1, t ) * (edge1 - edge0);
-        }
-
-        // Smooth interpolation function
-        [Obsolete( "Unconfirmed" )]
-        public static float SmoothInterpolation( float a, float b, float t )
-        {
-            // This is a function that smoothly interpolates between two values a and b using a smooth step function.
-            // It is defined as a + Smoothstep(0, 1, t) * (b - a), where t is the interpolation value such that 0 <= t <= 1.
-
-            // Clamp t to the range [0, 1]
-            t = Math.Max( Math.Min( t, 1 ), 0 );
-
-            // Calculate the smooth interpolation value
-            return a + Smoothstep( 0, 1, t ) * (b - a);
         }
 
         /// <summary>
