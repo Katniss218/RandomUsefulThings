@@ -60,5 +60,83 @@ namespace Miscellaneous
             double deltaV = exhaustVelocity * Math.Log( initialMass / endMass );
             return deltaV;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="thrust">[N]</param>
+        /// <param name="massFlow">[kg/s]</param>
+        /// <returns>Effective exhaust velocity in [m/s]</returns>
+        public static double GetExhaustVelocity( double thrust, double massFlow )
+        {
+            return thrust / massFlow;
+        }
+
+        public static double GetThrust( double massFlow, double exhaustVelocity )
+        {
+            return massFlow * exhaustVelocity;
+        }
+
+        public static double GetMassFlow( double thrust, double exhaustVelocity )
+        {
+            return thrust / exhaustVelocity;
+        }
+
+        public static double MassToVolumeRatio( double OFMassRatio, double ODensity, double FDensity )
+        {
+            // OFMassRatio is e.g. ~5.5 for hydrolox, ~2.5 for kerolox ORSC.
+            // densities in [kg/l]
+
+            // totalMassFraction = 1 + OFMassRatio
+            // oxMassFraction = OFMassRatio / totalMassFraction
+            // fuelMassFraction = 1 / totalMassFraction
+
+            double oContrib = OFMassRatio / ODensity;
+            double fContrib = 1 - FDensity;
+            double totalContrib = oContrib + fContrib;
+
+            double OVolumeFraction = oContrib / totalContrib;
+            // FVolumeFraction = 1 - OFVolumeRatio
+            return OVolumeFraction;
+        }
+
+        public static double VolumeToMassRatio( double OVolumeFraction, double ODensity, double FDensity )
+        {
+            // densities in [kg/l]
+            double oContrib = OVolumeFraction / ODensity;
+            double fContrib = (1 - OVolumeFraction) / FDensity;
+
+            double OFMassRatio = oContrib / fContrib;
+            return OFMassRatio;
+        }
+
+        public static double GetTWR( double surfaceGravity, double thrust, double mass )
+        {
+            // for all three:
+            // thrust in [N]
+            // mass in [kg]
+            // surfaceGravity in [m/s]
+
+            return thrust / (surfaceGravity * mass);
+        }
+
+        public static double GetMass( double surfaceGravity, double thrust, double twr )
+        {
+            return thrust / twr / surfaceGravity;
+        }
+
+        public static double GetThrust( double surfaceGravity, double mass, double twr )
+        {
+            return mass * surfaceGravity * twr;
+        }
+
+        public static double GetMassFlowFromFlux( double massFlux, double area )
+        {
+            return massFlux * area;
+        }
+        public static double GetMassFlowFromFluxCircle( double massFlux, double radius )
+        {
+            return GetMassFlowFromFlux( massFlux, Math.PI * (radius * radius) );
+        }
     }
 }

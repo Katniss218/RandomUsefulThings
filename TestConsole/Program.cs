@@ -10,6 +10,19 @@ namespace TestConsole
     {
         static void Main( string[] args )
         {
+            Miscellaneous.Combustion.SingleStepCombustion.SimulateCombustion(
+                initialTemperature: 350,
+                initialPressure: 500000,
+                massFlowRate: 10,
+                fuelMassFraction: 0.4,
+                oxidizerMassFraction: 0.6,
+                specificHeatRatio: 1.3,
+                exhaustGasPressure: 300000,
+                exhaustGasTemperature: 500,
+                combustionHeatRelease: 50,
+                timeStep: 0.01,
+                numSteps: 2000 );
+
             var m = Miscellaneous.DeltaV.CalculatePropellantMass( 100000, 5000, 4000 );
             double tempK1 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 0.5f );
             double tempK2 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 1.0f );
