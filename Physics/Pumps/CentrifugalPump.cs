@@ -126,7 +126,7 @@ namespace Physics.Pumps
         }
 
         [Obsolete("untested")]
-        public static double CalculateNPSH( double inletPressure, double vaporPressure, double fluidDensity, double inletVelocity, double inletDiameter )
+        public static double CalculateNetPositiveSuctionHead( double inletPressure, double vaporPressure, double fluidDensity, double inletVelocity, double inletDiameter )
         {
             // Net Positive Suction Head
 
@@ -150,12 +150,27 @@ namespace Physics.Pumps
             // Pump specific speed can be calculated using British gallons or using Metric units (m3/s or L/s and metres head), changing the values listed above.
 
             return (rotationalSpeed * Math.Sqrt( flowRate )) / Math.Pow( head, 0.75 /* 3/4 */ );
+            // multiply by g 9.81 m/s^2 for dimensionless.
+        }
+
+        public static double CalculateSuctionSpecificSpeed( double flowRate, double netPositiveSuctionHead, double rotationalSpeed )
+        {
+            return (rotationalSpeed * Math.Sqrt( flowRate )) / Math.Pow( netPositiveSuctionHead, 0.75 /* 3/4 */ );
+            // multiply by g 9.81 m/s^2 for dimensionless.
         }
 
         public static double CalculatePumpAffinity( double impellerDiameter1, double impellerDiameter2, double rpm1, double rpm2 )
         {
             // The pump affinity is a dimensionless parameter that indicates how similar the pumps are in terms of their flow and pressure characteristics.
             return (impellerDiameter2 / impellerDiameter1) * (rpm2 / rpm1);
+        }
+
+        [Obsolete("unconfirmed")]
+        public static double CalculateBrakeHorsepower( double flowRate, double head, double efficiency, double fluidDensity )
+        {
+            const double GravityAcceleration = 9.81; // m/s^2
+            double power = (flowRate * head * fluidDensity * GravityAcceleration) / efficiency;
+            return power / 745.7; // Convert to horsepower
         }
     }
 }
