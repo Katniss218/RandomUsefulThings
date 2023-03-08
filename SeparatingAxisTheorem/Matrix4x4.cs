@@ -231,9 +231,20 @@ namespace Geometry
             );
         }
 
+
         [Obsolete( "Unconfirmed" )]
         public static Matrix4x4 Multiply( Matrix4x4 m1, Matrix4x4 m2 )
         {
+            // matrix-matrix mult.
+            // only possible if Ma.cols == Mb.rows
+
+
+            // split matrix A into Mb.cols number of matrices.
+            // each of those will become one column in the result matrix.
+
+
+            // rotate each column in Matrix B 90 degrees counterclockwise.
+
             return new Matrix4x4(
                 (m1.M00 * m2.M00) + (m1.M01 * m2.M10) + (m1.M02 * m2.M20) + (m1.M03 * m2.M30),
                 (m1.M00 * m2.M01) + (m1.M01 * m2.M11) + (m1.M02 * m2.M21) + (m1.M03 * m2.M31),

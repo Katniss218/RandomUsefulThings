@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathMethods;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -35,9 +36,9 @@ namespace Noise
                     float value = Hash.Hash1( MathMethods.MathMethods.Dot( ngx, ngy, 5.9129015f, 188.73386f ) ); // the type of hash is important
 
                     // do the smooth min for colors and distances
-                    float h = MathMethods.MathMethods.Smoothstep( -1.0f, 1.0f, (distance - d) / smoothness );
-                    distance = MathMethods.MathMethods.Lerp( distance, d, h ) - h * (1.0f - h) * smoothness / (1.0f + 3.0f * smoothness); // distance
-                    grayscale = MathMethods.MathMethods.Lerp( grayscale, value, h ) - h * (1.0f - h) * smoothness / (1.0f + 3.0f * smoothness); // color
+                    float h = Easing.Smoothstep( -1.0f, 1.0f, (distance - d) / smoothness );
+                    distance = Interpolation.Lerp( distance, d, h ) - h * (1.0f - h) * smoothness / (1.0f + 3.0f * smoothness); // distance
+                    grayscale = Interpolation.Lerp( grayscale, value, h ) - h * (1.0f - h) * smoothness / (1.0f + 3.0f * smoothness); // color
                 }
             }
 

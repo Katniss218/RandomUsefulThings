@@ -21,6 +21,44 @@ namespace Geometry
         }
 
         [Obsolete( "Unconfirmed" )]
+        public static bool AreLineSegmentsIntersecting( Vector2 l1_p1, Vector2 l1_p2, Vector2 l2_p1, Vector2 l2_p2, bool shouldIncludeEndPoints )
+        {
+            //To avoid floating point precision issues we can add a small value
+            float epsilon = 0.00001f;
+
+            bool isIntersecting = false;
+
+            float denominator = (l2_p2.Y - l2_p1.Y) * (l1_p2.X - l1_p1.X) - (l2_p2.X - l2_p1.X) * (l1_p2.Y - l1_p1.Y);
+
+            //Make sure the denominator is > 0, if not the lines are parallel
+            if( denominator != 0f )
+            {
+                float u_a = ((l2_p2.X - l2_p1.X) * (l1_p1.Y - l2_p1.Y) - (l2_p2.Y - l2_p1.Y) * (l1_p1.X - l2_p1.X)) / denominator;
+                float u_b = ((l1_p2.X - l1_p1.X) * (l1_p1.Y - l2_p1.Y) - (l1_p2.Y - l1_p1.Y) * (l1_p1.X - l2_p1.X)) / denominator;
+
+                //Are the line segments intersecting if the end points are the same
+                if( shouldIncludeEndPoints )
+                {
+                    //Is intersecting if u_a and u_b are between 0 and 1 or exactly 0 or 1
+                    if( u_a >= 0f + epsilon && u_a <= 1f - epsilon && u_b >= 0f + epsilon && u_b <= 1f - epsilon )
+                    {
+                        isIntersecting = true;
+                    }
+                }
+                else
+                {
+                    //Is intersecting if u_a and u_b are between 0 and 1
+                    if( u_a > 0f + epsilon && u_a < 1f - epsilon && u_b > 0f + epsilon && u_b < 1f - epsilon )
+                    {
+                        isIntersecting = true;
+                    }
+                }
+            }
+
+            return isIntersecting;
+        }
+
+        [Obsolete( "Unconfirmed" )]
         public static bool DoLineSegmentsIntersect( LineSegment2D l1, LineSegment2D l2 )
         {
             Vector2 p1 = l1.Point1;
@@ -79,7 +117,7 @@ namespace Geometry
             {
                 return Point2;
             }
-            return new Vector2( MathMethods.MathMethods.LerpUnclamped( Point1.X, Point2.X, t ), MathMethods.MathMethods.LerpUnclamped( Point1.Y, Point2.Y, t ) );
+            return new Vector2( Interpolation.LerpUnclamped( Point1.X, Point2.X, t ), Interpolation.LerpUnclamped( Point1.Y, Point2.Y, t ) );
         }
     }
 }

@@ -63,12 +63,24 @@ namespace Geometry
 
         public static float Dot( Vector3 v1, Vector3 v2 )
         {
+            // dot(v1, v2) = v1.magnitude * v2.magnitude * cos(angleBetween(v1, v2))
+            // angleBetween in radians.
+
             return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
         }
 
         public static Vector3 Cross( Vector3 v1, Vector3 v2 )
         {
-            // Calculate the cross product of the two vectors
+            // Calculate the cross product of the two vectors (X - cross product)
+            // v1, v2, v3, ... - vectors
+            // s1, s2, s3, ... - scalars
+            // anti-commutative property:       v1 X v2 = -v2 X v1
+            // associative property:            (s1*v1) X (s1*v2) = (a*b*(v1 X v2)   
+            // distributive property:           v1 X (v2 + v3) = v1 X v2 + v1 X v3
+            // distributive property:           (v1 + v2) X v3 = v1 X v3 + v2 X v3
+
+            // v1 X v2 = 0, only when v1 and v2 are parallel
+
             float x = (v1.Y * v2.Z) - (v1.Z * v2.Y);
             float y = (v1.Z * v2.X) - (v1.X * v2.Z);
             float z = (v1.X * v2.Y) - (v1.Y * v2.X);
@@ -183,7 +195,7 @@ namespace Geometry
         public static Vector3 Exclude( Vector3 sourceVector, Vector3 vectorToExclude )
         {
             // Leaves the sourceVector without the component that lied along the vectorToExclude.
-            // This is somewhat equivalent to the ProjectOntoPlane, excelt that projectOntoPlane is expected to take in unit vectors.
+            // This is somewhat equivalent to the ProjectOntoPlane, except that projectOntoPlane is expected to take in unit vectors.
             return sourceVector - sourceVector.Project( vectorToExclude );
         }
 
@@ -201,6 +213,9 @@ namespace Geometry
 
         public static Vector3 Slerp( Vector3 start, Vector3 end, float amount )
         {
+            // "How I would intepolate linearly on a sphere is find the average mangitude, then find the average angle (weighted by the magnitudes)"
+            //  -- Paculino
+
             // Calculate the dot product of the start and end vectors.
             float dot = Dot( start, end );
 

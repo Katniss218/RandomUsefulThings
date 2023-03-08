@@ -5,10 +5,39 @@ namespace MathMethods
 {
     public class MathMethods
     {
-        [Obsolete("Unconfirmed")]
+        // Formula for a 2D orbit shape, E is eccentricity, P is the periapsis.
+        // x and y are coordinates.
+        // (1 - E^2)*x^2 - 2Px + y^2 = 0
+
+        [Obsolete( "Unconfirmed" )]
         public static float Modulo( float a, float b )
         {
             return a - b * (float)Math.Floor( a / b );
+        }
+
+        /// <param name="x">The value to sample.</param>
+        public static double Sinc( double x )
+        {
+            // https://en.wikipedia.org/wiki/Sinc_function
+            if( x == 0 )
+            {
+                return 1.0;
+            }
+            return Math.Sin( x ) / x;
+        }
+
+        /// <summary>
+        /// Sinc(x) normalized to have a period of 1.
+        /// </summary>
+        /// <param name="x">The value to sample.</param>
+        public static double SincNormalized( double x )
+        {
+            // https://en.wikipedia.org/wiki/Sinc_function
+            if( x == 0 )
+            {
+                return 1.0;
+            }
+            return Math.Sin( Math.PI * x ) / (Math.PI * x);
         }
 
         /// <summary>
@@ -80,7 +109,7 @@ namespace MathMethods
         }
 
         // least common multiple
-        [Obsolete("Unconfirmed, but by looking at it, it makes sense")]
+        [Obsolete( "Unconfirmed, but by looking at it, it makes sense" )]
         public static int LCM( int a, int b )
         {
             return (a * b) / GCD( a, b );

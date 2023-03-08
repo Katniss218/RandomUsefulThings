@@ -12,12 +12,12 @@ namespace Geometry
         public float X { get; }
 
         /// <summary>
-        /// First imaginary coefficient ('c' from 'a + bi + cj + dk').
+        /// Second imaginary coefficient ('c' from 'a + bi + cj + dk').
         /// </summary>
         public float Y { get; }
 
         /// <summary>
-        /// First imaginary coefficient ('d' from 'a + bi + cj + dk').
+        /// Third imaginary coefficient ('d' from 'a + bi + cj + dk').
         /// </summary>
         public float Z { get; }
 

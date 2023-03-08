@@ -51,12 +51,15 @@ namespace Geometry
             return linePoint + (distance * lineDir);
         }
 
+        /// <summary>
+        /// projects line1 along the projectiondir and calculate where it intersects with line2 (if anywhere).
+        /// </summary>
+        /// <returns>The intersection point (if any), null if the lines did not intersect.</returns>
         public static Vector3? ProjectedLineIntersection(
             Vector3 line1Point, Vector3 line1Dir,
             Vector3 line2Point, Vector3 line2Dir,
             Vector3 projectionDir )
         {
-            // projects line1 along the projectiondir and calculate where it intersects with line2 (if anywhere).
 
             // We will represent the projected line as a plane.
             Vector3 planeNormal = Vector3.Cross( line1Dir, projectionDir );

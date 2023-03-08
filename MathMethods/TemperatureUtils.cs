@@ -6,8 +6,15 @@ namespace MathMethods
 {
     public class TemperatureUtils
     {
-        public const double G = 0.00000000006674; // valid when the calculations are done in kilograms and meters.
-        public const double SIGMA = 0.00000005670374419; // stphan boltzmann constant
+        /// <summary>
+        /// Gravitational constant. Valid when the calculations are done in kilograms and meters.
+        /// </summary>
+        public const double G = 0.00000000006674;
+
+        /// <summary>
+        /// Stephan boltzmann constant
+        /// </summary>
+        public const double SIGMA = 0.00000005670374419;
 
         public const double MASS_SUN = 1898000000000000000000000000000.0; // kg, I think
         public const double MASS_JUPITER = 1898000000000000000000000000.0; // kg, I think
@@ -79,6 +86,7 @@ namespace MathMethods
         {
             double radioSq = (4.0 * Math.PI * starRadius) / (4.0 * Math.PI * planetSma);
             radioSq *= radioSq;
+
             double Ks = SIGMA * (starTemperature * starTemperature * starTemperature * starTemperature) * radioSq;
 
             return Ks;
@@ -89,12 +97,13 @@ namespace MathMethods
             return SIGMA * (temperature * temperature * temperature * temperature) * surfaceArea;
         }
 
-        // "Energy Intercepted" is the amount of energy potentially available to a body, if it was perfectly absorbant.
+        /// "Energy Intercepted" is the amount of energy potentially available to a body, if it was perfectly absorbant.
         public static double GetEnergyIntercepted( double starTemperature, double starRadius, double planetSma, double planetRadius ) // Watts
         {
+            // return [W] = Ks [W/m^2] * PI * r [m] ^2
+
             double Ks = GetSolarConstant( starTemperature, starRadius, planetSma );
             return Ks * Math.PI * (planetRadius * planetRadius);
-            // return [W] = Ks [W/m^2] * PI * r [m] ^2
         }
 
         public static double GetEnergyAbsorbed( double energyIntercepted, double albedo )

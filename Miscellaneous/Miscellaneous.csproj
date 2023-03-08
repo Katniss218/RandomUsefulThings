@@ -5,7 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Graphics\ColorCIELAB.cs" />
+    <Compile Remove="Graphics\ColorRGBA.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SeparatingAxisTheorem\Geometry.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Graphics\" />
   </ItemGroup>
 
 </Project>

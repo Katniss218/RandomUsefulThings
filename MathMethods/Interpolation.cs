@@ -73,5 +73,9 @@ namespace MathMethods
             return a + Easing.Smoothstep( 0, 1, t ) * (b - a);
         }
 
+        // Spherical linear interpolation (slerp) can be used to e.g.:
+        // - interpolate points on the surface of a sphere.
+        // - interpolate direction vectors (it's equivalent to points on a unit sphere).
+        // - interpolate quaternions.
     }
 }

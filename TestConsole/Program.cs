@@ -10,11 +10,13 @@ namespace TestConsole
     {
         static void Main( string[] args )
         {
-            double tempK = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 1.0f );
-            Miscellaneous.Graphics.ColorRGBA c = new Miscellaneous.Graphics.ColorRGBA( 0, 1, 0 );
-            int vint = c.GetIntRGB();
-
-            c = Miscellaneous.Graphics.ColorRGBA.FromIntRGB( vint );
+            var m = Miscellaneous.DeltaV.CalculatePropellantMass( 100000, 5000, 4000 );
+            double tempK1 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 0.5f );
+            double tempK2 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 1.0f );
+            double tempK3 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 2.0f );
+            double tempK4 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 4.0f );
+            double tempK5 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 8.0f );
+            
 
             // 1 is when it approaches 1,0,0 again and wraps around to 0.
 

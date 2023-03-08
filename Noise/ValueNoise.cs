@@ -29,9 +29,9 @@ namespace Noise
 
             float sx = x - x0;
             float sy = y - y0;
-            float n0 = MathMethods.MathMethods.LerpUnclamped( v00, v10, sx );
-            float n1 = MathMethods.MathMethods.LerpUnclamped( v01, v11, sx );
-            float v = MathMethods.MathMethods.LerpUnclamped( n0, n1, sy );
+            float n0 = Interpolation.LerpUnclamped( v00, v10, sx );
+            float n1 = Interpolation.LerpUnclamped( v01, v11, sx );
+            float v = Interpolation.LerpUnclamped( n0, n1, sy );
 
             float result = v * amp;
 
