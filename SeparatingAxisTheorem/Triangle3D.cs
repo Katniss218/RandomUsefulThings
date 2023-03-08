@@ -41,5 +41,17 @@ namespace Geometry
             throw new NotImplementedException();
             //return PointInTriangle( planeIntersection.Value );
         }
+
+        public float Area()
+        {
+            // this is derived from the area for a parallelogram, which is the same, but without the division by 2.
+            // area of a triangle in 3D space can be calculated from the formula cross(edge1, edge2) / 2
+
+            Vector3 edge1 = P2 - P1;
+            Vector3 edge2 = P3 - P1;
+            Vector3 crossProduct = Vector3.Cross( edge1, edge2 );
+            float area = crossProduct.Length / 2.0f;
+            return area;
+        }
     }
 }

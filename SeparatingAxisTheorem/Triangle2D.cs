@@ -26,7 +26,7 @@ namespace Geometry
         /// Calculates the lengths of each edge in this triangle.
         /// </summary>
         /// <returns>A tuple with the edges. Each edge is guaranteed to be in the same element of the tuple {P1->P2, P2->P3, P3->P1}.</returns>
-        public (float a, float b, float c) GetEdges()
+        public (float a, float b, float c) GetEdgeLengths()
         {
             return (Vector2.Distance( P1, P2 ), Vector2.Distance( P2, P3 ), Vector2.Distance( P3, P1 ));
         }
@@ -48,7 +48,7 @@ namespace Geometry
         /// </summary>
         public float Area()
         {
-            (float a, float b, float c) = GetEdges();
+            (float a, float b, float c) = GetEdgeLengths();
 
             return Area( a, b, c );
         }
