@@ -14,6 +14,7 @@ namespace Physics
         /// </summary>
         public static double CalculateHoopStress( double pressure, double internalRadius, double thickness )
         {
+            // unit out same as pressure in, assuming consistent distance unit.
             // In thin-walled vessels, the hoop stress gradient (variation) in the outward direction is negligible. Thus no lerp-factor input.
             return (pressure * internalRadius) / thickness;
         }
@@ -27,11 +28,13 @@ namespace Physics
         /// <returns></returns>
         public static double CalculateLongitudinalStress( double pressure, double internalRadius, double thickness )
         {
+            // unit out same as pressure in, assuming consistent distance unit.
             return (pressure * internalRadius) / (2.0 * thickness);
         }
 
         public static double CalculateRadialStress( double pressure, float insideToOutsideFactor )
         {
+            // unit out same as pressure in, assuming consistent distance unit.
             // the negative weirds me out, but apparently that's correct.
             return MathMethods.Interpolation.Lerp( -pressure, 0.0, insideToOutsideFactor );
         }
