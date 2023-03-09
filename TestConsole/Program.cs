@@ -10,18 +10,25 @@ namespace TestConsole
     {
         static void Main( string[] args )
         {
-            Miscellaneous.Combustion.SingleStepCombustion.SimulateCombustion(
-                initialTemperature: 350,
-                initialPressure: 500000,
-                massFlowRate: 10,
-                fuelMassFraction: 0.4,
-                oxidizerMassFraction: 0.6,
-                specificHeatRatio: 1.3,
-                exhaustGasPressure: 300000,
-                exhaustGasTemperature: 500,
-                combustionHeatRelease: 50,
-                timeStep: 0.01,
-                numSteps: 2000 );
+            double height = 40; // height of the fuselage in meters
+            double radius = 10; // radius of the fuselage in meters
+            // thickness of the fuselage in meters
+            double E = 70E9; // modulus of elasticity of the material in Pa
+            double nu = 0.3; // Poisson's ratio of the material
+            double density = 2800; // density in kg/m^3
+
+            double F1 = Physics.Stresses.ComputeMaxLoad( height, radius, thickness: 0.005, E, nu );
+            double t12 = Physics.Stresses.ComputeThickness( height, radius, E, nu, F1 );
+            double M1 = Physics.Stresses.CalculateCylinderMass( height, radius, 0.005, density );
+
+            double F2 = Physics.Stresses.ComputeMaxLoad( height, radius, thickness: 0.01, E, nu );
+            double M2 = Physics.Stresses.CalculateCylinderMass( height, radius, 0.01, density );
+
+            double F3 = Physics.Stresses.ComputeMaxLoad( height, radius, thickness: 0.015, E, nu );
+            double M3 = Physics.Stresses.CalculateCylinderMass( height, radius, 0.015, density );
+
+            double F4 = Physics.Stresses.ComputeMaxLoad( height, radius, thickness: 0.02, E, nu );
+            double M4 = Physics.Stresses.CalculateCylinderMass( height, radius, 0.02, density );
 
             var m = Miscellaneous.DeltaV.CalculatePropellantMass( 100000, 5000, 4000 );
             double tempK1 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 0.5f );
@@ -29,7 +36,7 @@ namespace TestConsole
             double tempK3 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 2.0f );
             double tempK4 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 4.0f );
             double tempK5 = Physics.Radioactivity.RadioactiveHeating.CalculatePu238Temperature( 8.0f );
-            
+
 
             // 1 is when it approaches 1,0,0 again and wraps around to 0.
 

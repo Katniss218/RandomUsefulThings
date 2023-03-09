@@ -15,7 +15,7 @@ namespace Miscellaneous.Combustion
             return cp * (temperature - 298) * moleFraction;
         }
 
-        [Obsolete("untested, probably wrong")]
+        [Obsolete("I think its wrong")]
         public static void SimulateCombustion( double initialTemperature, double initialPressure, double massFlowRate, double fuelMassFraction, double oxidizerMassFraction, double specificHeatRatio, double exhaustGasPressure, double exhaustGasTemperature, double combustionHeatRelease, double timeStep, int numSteps )
         {
             // One commonly used combustion model is the one-step reaction model,
