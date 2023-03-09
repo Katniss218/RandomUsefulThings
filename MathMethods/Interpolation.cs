@@ -21,11 +21,19 @@ namespace MathMethods
             // By not clamping, we "extend" the line connecting the 2 points (from and to) infinitely in both directions.
             return from + (to - from) * t;
         }
+        public static double LerpUnclamped( double from, double to, double t )
+        {
+            return from + (to - from) * t;
+        }
 
         /// <summary>
         /// Linear interpolation with clamped output values.
         /// </summary>
         public static float Lerp( float from, float to, float t )
+        {
+            return Math.Clamp( LerpUnclamped( from, to, t ), from, to );
+        }
+        public static double Lerp( double from, double to, double t )
         {
             return Math.Clamp( LerpUnclamped( from, to, t ), from, to );
         }
