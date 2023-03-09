@@ -82,6 +82,32 @@ namespace Physics
             return firstPart + secondPart;
         }
 
-        public double 
+        public double CalculateRadialStress2( float percAlongThickness )
+        {
+            if( AmbientPressure != 0.0 )
+            {
+                throw new InvalidProgramException();
+            }
+
+            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double squareRadius = Radius * Radius;
+            double squareInternalRadius = InternalRadius * InternalRadius;
+
+            return ((squareInternalRadius * Pressure) / (squareRadius - squareInternalRadius)) * (1 - squareRadius / (radiusToPoint * radiusToPoint));
+        }
+
+        public double CalculateHoopStress2( float percAlongThickness )
+        {
+            if( AmbientPressure != 0.0 )
+            {
+                throw new InvalidProgramException();
+            }
+
+            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double squareRadius = Radius * Radius;
+            double squareInternalRadius = InternalRadius * InternalRadius;
+
+            return ((squareInternalRadius * Pressure) / (squareRadius - squareInternalRadius)) * (1 + squareRadius / (radiusToPoint * radiusToPoint));
+        }
     }
 }
