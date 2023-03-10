@@ -87,12 +87,12 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
         public static Vector Multiply( Matrix m, Vector v )
         {
-            // Multiplication of matrix with vector will always result in a vector with the number of rows equal to the number of rows source matrix.
             if( v.Rows != m.Cols )
             {
                 throw new InvalidOperationException( $"Can't multiply a {nameof( Vector )}{v.Rows} with a {nameof( Matrix )}{m.Rows}x{m.Cols}." );
             }
 
+            // Multiplication of matrix with vector will always result in a vector with the number of rows equal to the number of rows source matrix.
             Vector vRet = new Vector( m.Rows );
 
             // Element {i} of the result vector is equal to the dot product of the row {i} of the source matrix, and the source vector.

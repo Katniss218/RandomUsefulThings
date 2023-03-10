@@ -53,7 +53,14 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
         }
 
-        public double GetMagnitude()
+        /// <summary>
+        /// Calculates the squared magnitude (length) of the vector.
+        /// </summary>
+        /// <remarks>
+        /// It's faster than calculating the magnitude, because it doesn't require square-rooting.
+        /// </remarks>
+        /// <returns>The squared magnitude.</returns>
+        public double GetSquaredMagnitude()
         {
             // |v1| = sqrt( v1.x^2 + v1.y^2 + v1.z^2 + ... )
 
@@ -63,7 +70,18 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                 var val = this[i];
                 acc += val * val;
             }
-            return System.Math.Sqrt( acc );
+            return acc;
+        }
+
+        /// <summary>
+        /// Calculates the magnitude (length) of the vector.
+        /// </summary>
+        /// <returns>The magnitude.</returns>
+        public double GetMagnitude()
+        {
+            // |v1| = sqrt( v1.x^2 + v1.y^2 + v1.z^2 + ... )
+
+            return System.Math.Sqrt( GetSquaredMagnitude() );
         }
 
         public static double Dot( Vector v1, Vector v2 )
