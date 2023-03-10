@@ -5,11 +5,9 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveFunctionCollapse", "WaveFunctionCollapse\WaveFunctionCollapse.csproj", "{6168A799-570E-4B41-9E3A-55AFEB3ACDE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathMethods", "MathMethods\MathMethods.csproj", "{B770880B-508A-40F0-B33D-70B9498B6E0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math", "MathMethods\RandomUsefulThings.Math.csproj", "{B770880B-508A-40F0-B33D-70B9498B6E0B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Physics", "Physics\Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geometry", "SeparatingAxisTheorem\Geometry.csproj", "{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noise", "Noise\Noise.csproj", "{CD603091-3EAC-4662-AD49-113D9A6E4AE4}"
 EndProject
@@ -19,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Miscellaneous", "Miscellane
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{57BE5B5A-68F9-439F-A212-70AE2891F106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferentialEquations", "DifferentialEquations\DifferentialEquations.csproj", "{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DifferentialEquations", "DifferentialEquations\DifferentialEquations.csproj", "{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomUsefulThings.Math.Tests", "RandomUsefulThings.Math.Tests\RandomUsefulThings.Math.Tests.csproj", "{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +39,6 @@ Global
 		{E98BAB91-419D-420D-8644-42BEC66680D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98BAB91-419D-420D-8644-42BEC66680D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E98BAB91-419D-420D-8644-42BEC66680D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F47DED8-63CF-47FA-AFD4-2C0DCBA1B2F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CD603091-3EAC-4662-AD49-113D9A6E4AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD603091-3EAC-4662-AD49-113D9A6E4AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD603091-3EAC-4662-AD49-113D9A6E4AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +59,10 @@ Global
 		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

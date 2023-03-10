@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MathMethods\MathMethods.csproj" />
+    <ProjectReference Include="..\MathMethods\RandomUsefulThings.Math.csproj" />
   </ItemGroup>
 
   <ItemGroup>

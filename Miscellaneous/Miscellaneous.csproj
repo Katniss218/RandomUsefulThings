@@ -10,11 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SeparatingAxisTheorem\Geometry.csproj" />
+    <Folder Include="Graphics\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphics\" />
+    <ProjectReference Include="..\MathMethods\RandomUsefulThings.Math.csproj" />
   </ItemGroup>
 
 </Project>

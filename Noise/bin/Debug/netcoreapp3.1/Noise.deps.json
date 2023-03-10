@@ -8,15 +8,15 @@
     ".NETCoreApp,Version=v3.1": {
       "Noise/1.0.0": {
         "dependencies": {
-          "MathMethods": "1.0.0"
+          "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
           "Noise.dll": {}
         }
       },
-      "MathMethods/1.0.0": {
+      "RandomUsefulThings.Math/1.0.0": {
         "runtime": {
-          "MathMethods.dll": {}
+          "RandomUsefulThings.Math.dll": {}
         }
       }
     }
@@ -27,7 +27,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MathMethods/1.0.0": {
+    "RandomUsefulThings.Math/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -148,7 +148,7 @@ namespace Miscellaneous
             return (semiMajorAxis, e, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, trueAnomaly);
         }*/
 
-        public void CalculateNewOrbitalElements(
+       /* public void CalculateNewOrbitalElements(
         Vector3 position, Vector3 velocity, Vector3 deltaV,
         out float semiMajorAxis, out float eccentricity, out float inclination,
         out float longitudeOfAscendingNode, out float argumentOfPeriapsis )
@@ -229,6 +229,6 @@ namespace Miscellaneous
             trueAnomaly *= Math.Sign( sinTrueAnomaly );
 
             return trueAnomaly * Math.Rad2Deg;
-        }
+        }*/
     }
 }

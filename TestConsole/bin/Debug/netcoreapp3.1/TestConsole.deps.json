@@ -9,7 +9,6 @@
       "TestConsole/1.0.0": {
         "dependencies": {
           "DifferentialEquations": "1.0.0",
-          "Geometry": "1.0.0",
           "Miscellaneous": "1.0.0",
           "Noise": "1.0.0",
           "Pathfinding": "1.0.0",
@@ -25,22 +24,9 @@
           "DifferentialEquations.dll": {}
         }
       },
-      "Geometry/1.0.0": {
-        "dependencies": {
-          "MathMethods": "1.0.0"
-        },
-        "runtime": {
-          "Geometry.dll": {}
-        }
-      },
-      "MathMethods/1.0.0": {
-        "runtime": {
-          "MathMethods.dll": {}
-        }
-      },
       "Miscellaneous/1.0.0": {
         "dependencies": {
-          "Geometry": "1.0.0"
+          "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
           "Miscellaneous.dll": {}
@@ -48,7 +34,7 @@
       },
       "Noise/1.0.0": {
         "dependencies": {
-          "MathMethods": "1.0.0"
+          "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
           "Noise.dll": {}
@@ -56,7 +42,7 @@
       },
       "Pathfinding/1.0.0": {
         "dependencies": {
-          "Geometry": "1.0.0"
+          "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
           "Pathfinding.dll": {}
@@ -64,10 +50,15 @@
       },
       "Physics/1.0.0": {
         "dependencies": {
-          "Geometry": "1.0.0"
+          "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
           "Physics.dll": {}
+        }
+      },
+      "RandomUsefulThings.Math/1.0.0": {
+        "runtime": {
+          "RandomUsefulThings.Math.dll": {}
         }
       },
       "WaveFunctionCollapse/1.0.0": {
@@ -88,16 +79,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Geometry/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "MathMethods/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Miscellaneous/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -114,6 +95,11 @@
       "sha512": ""
     },
     "Physics/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RandomUsefulThings.Math/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
