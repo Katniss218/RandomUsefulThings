@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace RandomUsefulThings.Math.LinearAlgebra
 {
-    public class Matrix
+    public class Matrix : IEquatable<Matrix>
     {
         readonly double[,] _values;
         public int Rows { get; }
@@ -61,6 +62,16 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                     this._values[i, j] = original[i, j];
                 }
             }
+        }
+
+        public static Matrix Identity( int size )
+        {
+            Matrix m = new Matrix( size, size );
+            for( int i = 0; i < size; i++ )
+            {
+                m[i, i] = 1;
+            }
+            return m;
         }
 
         /*
@@ -162,19 +173,32 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             {
                 throw new InvalidOperationException( $"Can't multiply a {nameof( Matrix )}{m1.Rows}x{m1.Cols} with a {nameof( Matrix )}{m2.Rows}x{m2.Cols}." );
             }
+            // Not commutative. Yes associative.
+            // E * m => E does row operations on m
+            // m * E => E does column operations on m.
+
             // Multiplication of the following matrix with some other matrix:
             // [ 1, 0, 0 ] row0 => takes  1*row0 + 0*row1 + 0*row2, and puts that into row 0 (adds together vectors multiplied by scalars)
             // [-3, 1, 0 ] row1 => takes -3*row0 + 1*row1 + 0*row2, and puts that into row 1 (adds together vectors multiplied by scalars)
             // [ 0, 0, 1 ] row2 => takes  0*row0 + 0*row1 + 1*row2, and puts that into row 2 (adds together vectors multiplied by scalars)
+
+            // (m1 * m2)[i,j] = m1.GetRow(i) dot m2.GetColumn(j)
+            // (m1 * m2)[i,j] = (m1[i,0] * m2[0,j]) + (m1[i,1] * m2[1,j]) + (m1[i,2] * m2[2,j]) + ...
 
             Matrix mr = new Matrix( m1.Rows, m2.Cols );
             for( int i = 0; i < m1.Rows; i++ )
             {
                 for( int j = 0; j < m2.Cols; j++ )
                 {
-
+                    double acc = 0;
+                    for( int k = 0; k < m1.Cols; k++ )
+                    {
+                        acc += m1[i, k] * m2[k, j];
+                    }
+                    mr[i, j] = acc;
                 }
             }
+            return mr;
         }
 
         public Matrix Eliminate()
@@ -229,7 +253,28 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
             return U;
         }
+
         // after elimination, we can backsubstitute to solve the system of equations.
         // we solve in reverse order (starting with the row that has 1 element).
+
+
+        public bool Equals( [AllowNull] Matrix other )
+        {
+            if( other == null || other.Rows != this.Rows || other.Cols != this.Cols )
+            {
+                return false;
+            }
+            for( int i = 0; i < this.Rows; i++ )
+            {
+                for( int j = 0; j < this.Cols; j++ )
+                {
+                    if( this[i, j] != other[i, j] )
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
