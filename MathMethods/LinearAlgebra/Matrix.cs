@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RandomUsefulThings.Math.LinearAlgebra
 {
-    public class Matrix : IEquatable<Matrix>
+    public struct Matrix : IEquatable<Matrix>
     {
         readonly double[,] _values;
         public int Rows { get; }
@@ -17,7 +17,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             {
                 return this._values[row, col];
             }
-            set
+            set // I won't make this immutable because it adds overhead.
             {
                 this._values[row, col] = value;
             }
@@ -142,6 +142,79 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
         }
 
+        public static Matrix LinearCombination( (double s, Matrix m)[] elements )
+        {
+            // Linear combination of scalars and matrices:
+            // - Needs the same number of scalars as matrices.
+            // - Multiply the matrices by their corresponding scalars, then add the matrices together.
+            if( elements == null || elements.Length < 1 )
+            {
+                throw new InvalidOperationException( "Can't do linear combination of less than 2 elements." );
+            }
+
+            int rows = elements[0].m.Rows, cols = elements[0].m.Cols;
+            foreach( var (s, m) in elements )
+            {
+                if( m.Rows != rows || m.Cols != cols )
+                {
+                    throw new InvalidOperationException( "Can't do linear combination of matrices that have different dimensions." );
+                }
+            }
+
+            Matrix result = new Matrix( rows, cols );
+            foreach( var (s, m) in elements )
+            {
+                for( int i = 0; i < rows; i++ )
+                {
+                    for( int j = 0; j < cols; j++ )
+                    {
+                        result[i, j] += s * m[i, j]; // multiply element by scalar, and add to the accumulated value. We can do that because addition and multiplication are element-wise.
+                    }
+                }
+            }
+            return result;
+        }
+
+        // There's also a possibility of a linear combination of rows/columns of a matrix. there is just one matrix in that case, no list of elements.
+
+        public static Matrix Add( Matrix m1, Matrix m2 )
+        {
+            // Matrix addition -> element-wise addition.
+            // It is Commutative    => m1 + m2 = m2 + m1
+            // It is Associative    => (m1 + m2) + m3 = m1 + (m2 + m3)
+            if( m1.Rows != m2.Rows || m1.Cols != m2.Cols )
+            {
+                throw new InvalidOperationException( $"Can't add a {nameof( Matrix )}{m1.Rows}x{m1.Cols} and a {nameof( Matrix )}{m2.Rows}x{m2.Cols}." );
+            }
+
+            Matrix mr = new Matrix( m1.Rows, m2.Cols );
+            for( int i = 0; i < m1.Rows; i++ )
+            {
+                for( int j = 0; j < m1.Cols; j++ )
+                {
+                    mr[i, j] = m1[i, j] + m2[i, j];
+                }
+            }
+            return mr;
+        }
+
+        public static Matrix Multiply( Matrix m, double s )
+        {
+            // Matrix multiplication by a scalar -> element-wise multiplication.
+            // It is Commutative    => m*s = s*m
+            // It is Distributive   => s*(m1 + m2) = s*m1 + s*m2
+            //                      => (s1+s2)*m = s1*m + s2*m
+            Matrix mRet = new Matrix( m.Rows, m.Cols );
+            for( int i = 0; i < m.Rows; i++ )
+            {
+                for( int j = 0; j < m.Cols; j++ )
+                {
+                    mRet[i, j] = m[i, j] * s;
+                }
+            }
+            return mRet;
+        }
+
         public static Vector Multiply( Matrix m, Vector v )
         {
             if( v.Rows != m.Cols )
@@ -201,7 +274,8 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return mr;
         }
 
-        public Matrix Eliminate()
+        [Obsolete( "This can return incorrect values for some matrices." )]
+        public Matrix Eliminate_MyOwnIncorrect()
         {
             if( this.Rows < 2 )
             {
@@ -209,11 +283,11 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
             // :i, :j, ... is iteration variable.
             // elimination:
-            // Pivot positions is the main diagonal.
+            // Pivot positions are on the main diagonal. - this is not correct.
             // - find a pivot, m[0,0].
             // if there is a 0 in the pivot position, we should exchange rows, with a suitable row below. A suitable row is one that doesn't have a 0 in the pivot column. If there is none, the matrix is not invertible. Sorting beforehand won't fix it because the value changes during execution.
             // - Find the value of x, such that m[1,0] - x*m[0,0] = 0
-            // - Subtract the value x*[0,:i-1] from m[0,:i]           (subtract k times the one above it)
+            // - Subtract the value x*[0,:i-1] from m[0,:i]           (subtract k times the one above it) - we should also eliminate everything below, so that is also not correct.
 
             Matrix U = new Matrix( this );
             for( int i = 0; i < U.Rows - 1; i++ )
@@ -224,7 +298,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                     // Find suitable row below or abort if none can be found.
                     for( int j = i + 1; j < U.Cols; j++ )
                     {
-                        if( U[j, pivotCol] == 0 )
+                        if( U[j, pivotCol] == 0 ) // FIXME - this is wrong, pivot may not be in this column.
                         {
                             if( j == U.Cols - 1 )
                             {
@@ -237,10 +311,11 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                         break;
                     }
                 }
+#warning TODO - this is not fully correct.
                 // m[1,0] - x*m[0,0] = 0
                 // m[1,0] - x = 0 / m[0,0]
                 // x = -m[1,0] / m[0,0]
-                double X = -U[i + 1, pivotCol] / U[i, pivotCol]; // correct.
+                double X = -U[i + 1, pivotCol] / U[i, pivotCol];
 
                 for( int j = 0; j < U.Cols; j++ )
                 {
@@ -254,13 +329,75 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return U;
         }
 
+        /// <summary>
+        /// Brings the matrix to a Row Echelon Form (NOT Reduced Row Echelon Form!).
+        /// </summary>
+        /// <returns>A new matrix, in the Row Echelon Form.</returns>
+        public Matrix Eliminate()
+        {
+            // A matrix is in echelon form if it has the shape resulting from a Gaussian elimination.
+
+            if( this.Rows < 2 )
+            {
+                throw new Exception( "Matrix must have at least 2 rows to perform elimination." );
+            }
+
+            Matrix U = new Matrix( this );
+
+            for( int i = 0; i < U.Rows - 1; i++ )
+            {
+                int pivotRow = i;
+                int pivotCol = i;
+
+                double pivotValue = U[pivotRow, pivotCol];
+                // Pivot can't be 0, so if it is, try to find the first nonzero pivot below the current row and swap the rows.
+                if( pivotValue == 0 )
+                {
+                    bool foundPivot = false;
+                    for( int j = pivotRow + 1; j < U.Rows; j++ )
+                    {
+                        double value = U[j, pivotCol];
+                        if( value != 0 )
+                        {
+                            U.SwapRows( pivotRow, j );
+                            pivotValue = U[pivotRow, pivotCol];
+                            foundPivot = true;
+                            break;
+                        }
+                    }
+
+                    if( !foundPivot )
+                    {
+                        throw new Exception( "Matrix is not invertible." );
+                    }
+                }
+
+                // Eliminate all the values below the pivot.
+                for( int j = pivotRow + 1; j < U.Rows; j++ )
+                {
+                    double factor = U[j, pivotCol] / pivotValue;
+
+                    for( int k = pivotCol; k < U.Cols; k++ )
+                    {
+                        U[j, k] -= factor * U[pivotRow, k];
+                    }
+                }
+            }
+
+            return U;
+        }
         // after elimination, we can backsubstitute to solve the system of equations.
         // we solve in reverse order (starting with the row that has 1 element).
 
 
-        public bool Equals( [AllowNull] Matrix other )
+        // m1 * Inverse(m1) = Identity = Inverse(m1) * m1 (for square matrices)
+        // Matrix M is not invertible because there exists a nonzero vector x for which M * x = 0 (vector with all 0s)
+
+        // Invertible a.k.a. Nonsingular
+
+        public bool Equals( Matrix other )
         {
-            if( other == null || other.Rows != this.Rows || other.Cols != this.Cols )
+            if( other.Rows != this.Rows || other.Cols != this.Cols )
             {
                 return false;
             }

@@ -13,20 +13,13 @@ namespace TestConsole
 
             Matrix m1 = new Matrix( new double[,]
             {
-                { 1, 2, 1 },
-                { 3, 6, 1 },
-                { 0, 4, 1 },
-            } ); 
-            Matrix m2 = new Matrix( new double[,]
-            {
-                { 1, 0, 0 },
-                { 0, 1, 0 },
-                { 0, 0, 1 },
+                { 1, 3, 1, 9 },
+                { 1, 1, -1, 1 },
+                { 3, 11, 5, 35 },
             } );
 
-            Matrix U = Matrix.Multiply( m1, m2 );
+            Matrix U = m1.Eliminate();
 
-            Test( null );
         }
     }
 }

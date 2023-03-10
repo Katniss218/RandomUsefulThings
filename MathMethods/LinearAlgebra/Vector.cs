@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RandomUsefulThings.Math.LinearAlgebra
 {
-    public class Vector : IEquatable<Vector>
+    public struct Vector : IEquatable<Vector>
     {
         readonly double[] _values;
 
@@ -17,7 +17,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             {
                 return this._values[row];
             }
-            set
+            set // I won't make this immutable because it adds overhead.
             {
                 this._values[row] = value;
             }
@@ -84,6 +84,40 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return System.Math.Sqrt( GetSquaredMagnitude() );
         }
 
+        public static Vector LinearCombination( (double s, Vector v)[] elements )
+        {
+            // Linear combination of scalars and matrices:
+            // - Needs the same number of scalars as matrices.
+            // - Multiply the matrices by their corresponding scalars, then add the matrices together.
+            if( elements == null || elements.Length < 1 )
+            {
+                throw new InvalidOperationException( "Can't do linear combination of less than 2 elements." );
+            }
+
+            int rows = elements[0].v.Rows;
+            foreach( var (s, v) in elements )
+            {
+                if( v.Rows != rows )
+                {
+                    throw new InvalidOperationException( "Can't do linear combination of vectors that have different dimensions." );
+                }
+            }
+
+            Vector result = new Vector( rows );
+            foreach( var (s, v) in elements )
+            {
+                for( int i = 0; i < rows; i++ )
+                {
+                    result[i] += s * v[i]; // multiply element by scalar, and add to the accumulated value. We can do that because addition and multiplication are element-wise.
+                }
+            }
+            return result;
+        }
+
+        // Linear combination of scalars and vectors:
+        // - Needs the same number of scalars as vectors.
+        // - Multiply the vectors by their corresponding scalars, then add the vectors together.
+
         public static double Dot( Vector v1, Vector v2 )
         {
             // v1 dot v2 = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z + ...
@@ -102,9 +136,9 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return acc;
         }
 
-        public bool Equals( [AllowNull] Vector other )
+        public bool Equals( Vector other )
         {
-            if( other == null || other.Rows != this.Rows )
+            if( other.Rows != this.Rows )
             {
                 return false;
             }
