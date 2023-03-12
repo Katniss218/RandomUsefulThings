@@ -395,6 +395,29 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
         // Invertible a.k.a. Nonsingular
 
+        /// <param name="A">The augumented matrix form of a system of linear equations in its Row Echelon Form (after Gaussian elimination).</param>
+        /// <returns>An array of double values that are a solution to the system of equations.</returns>
+        public static double[] BackSubstitution( Matrix A )
+        {
+            double[] x = new double[A.Cols - 1];
+
+            // Iterate over rows in reverse order.
+            for( int i = A.Rows - 1; i >= 0; i-- )
+            {
+                double sum = 0;
+                // Iterate over columns to the right of diagonal element.
+                for( int j = i + 1; j < A.Cols - 1; j++ )
+                {
+                    sum += A[i, j] * x[j];
+                }
+
+                // Calculate the solution for the variable using previous the solutions and the coefficient of the diagonal element and the constant term.
+                x[i] = (A[i, A.Cols - 1] - sum) / A[i, i];
+            }
+
+            return x;
+        }
+
         public bool Equals( Matrix other )
         {
             if( other.Rows != this.Rows || other.Cols != this.Cols )

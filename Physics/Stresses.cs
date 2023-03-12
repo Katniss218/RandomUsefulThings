@@ -67,6 +67,7 @@ namespace Physics
             double momentOfInertia = GetMomentOfInertiaHollowCylinder( radius, thickness );
 
             // bending stiffness K
+            // It is a function of the Young's modulus E, the second moment of area I of the beam cross-section about the axis of interest, length of the beam and beam boundary condition.
             double bendingStiffness = (Math.PI * Math.PI) * modulusOfElasticity * momentOfInertia / ((height * height) * (1.0 - (poissonsRatio * poissonsRatio)));
 
             // critical buckling load F.

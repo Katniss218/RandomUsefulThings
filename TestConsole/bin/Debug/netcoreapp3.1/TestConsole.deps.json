@@ -12,7 +12,7 @@
           "Miscellaneous": "1.0.0",
           "Noise": "1.0.0",
           "Pathfinding": "1.0.0",
-          "Physics": "1.0.0",
+          "RandomUsefulThings.Physics": "1.0.0",
           "WaveFunctionCollapse": "1.0.0"
         },
         "runtime": {
@@ -48,17 +48,17 @@
           "Pathfinding.dll": {}
         }
       },
-      "Physics/1.0.0": {
+      "RandomUsefulThings.Math/1.0.0": {
+        "runtime": {
+          "RandomUsefulThings.Math.dll": {}
+        }
+      },
+      "RandomUsefulThings.Physics/1.0.0": {
         "dependencies": {
           "RandomUsefulThings.Math": "1.0.0"
         },
         "runtime": {
-          "Physics.dll": {}
-        }
-      },
-      "RandomUsefulThings.Math/1.0.0": {
-        "runtime": {
-          "RandomUsefulThings.Math.dll": {}
+          "RandomUsefulThings.Physics.dll": {}
         }
       },
       "WaveFunctionCollapse/1.0.0": {
@@ -94,12 +94,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Physics/1.0.0": {
+    "RandomUsefulThings.Math/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "RandomUsefulThings.Math/1.0.0": {
+    "RandomUsefulThings.Physics/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -148,87 +148,92 @@ namespace Miscellaneous
             return (semiMajorAxis, e, inclination, argumentOfPeriapsis, longitudeOfAscendingNode, trueAnomaly);
         }*/
 
-       /* public void CalculateNewOrbitalElements(
-        Vector3 position, Vector3 velocity, Vector3 deltaV,
-        out float semiMajorAxis, out float eccentricity, out float inclination,
-        out float longitudeOfAscendingNode, out float argumentOfPeriapsis )
-        {
-            // Step 2: Update the velocity vector of the spacecraft
-            velocity += deltaV;
+        /* public void CalculateNewOrbitalElements(
+         Vector3 position, Vector3 velocity, Vector3 deltaV,
+         out float semiMajorAxis, out float eccentricity, out float inclination,
+         out float longitudeOfAscendingNode, out float argumentOfPeriapsis )
+         {
+             // Step 2: Update the velocity vector of the spacecraft
+             velocity += deltaV;
 
-            // Step 3: Calculate the new angular momentum vector
-            Vector3 angularMomentum = Vector3.Cross( position, velocity );
+             // Step 3: Calculate the new angular momentum vector
+             Vector3 angularMomentum = Vector3.Cross( position, velocity );
 
-            // Step 4: Determine the new eccentricity vector
-            Vector3 eccentricityVector = ((velocity.LengthSquared - G * position.Length) * position - Vector3.Dot( position, velocity ) * velocity) / G;
+             // Step 4: Determine the new eccentricity vector
+             Vector3 eccentricityVector = ((velocity.LengthSquared - G * position.Length) * position - Vector3.Dot( position, velocity ) * velocity) / G;
 
-            // Step 5: Calculate the new eccentricity
-            eccentricity = eccentricityVector.Length;
+             // Step 5: Calculate the new eccentricity
+             eccentricity = eccentricityVector.Length;
 
-            // Step 6: Calculate the new semi-major axis
-            semiMajorAxis = -G * position.Length / (velocity.LengthSquared - 2 * G * position.Length);
+             // Step 6: Calculate the new semi-major axis
+             semiMajorAxis = -G * position.Length / (velocity.LengthSquared - 2 * G * position.Length);
 
-            // Step 7: Calculate the new inclination
-            inclination = Math.Acos( angularMomentum.Z / angularMomentum.Length ) * Math.Rad2Deg;
+             // Step 7: Calculate the new inclination
+             inclination = Math.Acos( angularMomentum.Z / angularMomentum.Length ) * Math.Rad2Deg;
 
-            // Step 8: Calculate the new longitude of ascending node
-            Vector3 ascendingNodeVector = Vector3.Cross( Vector3.Forward, angularMomentum );
-            if( ascendingNodeVector.Length > 0 )
-            {
-                ascendingNodeVector.Normalized();
-                longitudeOfAscendingNode = Math.Atan2( ascendingNodeVector.Y, ascendingNodeVector.X ) * Math.Rad2Deg;
-            }
-            else
-            {
-                longitudeOfAscendingNode = 0;
-            }
+             // Step 8: Calculate the new longitude of ascending node
+             Vector3 ascendingNodeVector = Vector3.Cross( Vector3.Forward, angularMomentum );
+             if( ascendingNodeVector.Length > 0 )
+             {
+                 ascendingNodeVector.Normalized();
+                 longitudeOfAscendingNode = Math.Atan2( ascendingNodeVector.Y, ascendingNodeVector.X ) * Math.Rad2Deg;
+             }
+             else
+             {
+                 longitudeOfAscendingNode = 0;
+             }
 
-            // Step 9: Calculate the new argument of periapsis
-            Vector3 nodeVector = Vector3.Cross( Vector3.Forward, eccentricityVector );
-            if( nodeVector.Length > 0 )
-            {
-                nodeVector.Normalized();
-                argumentOfPeriapsis = Math.Acos( Vector3.Dot( nodeVector, eccentricityVector ) / (nodeVector.Length * eccentricityVector.Length) ) * Math.Rad2Deg;
-            }
-            else
-            {
-                argumentOfPeriapsis = 0;
-            }
-        }
+             // Step 9: Calculate the new argument of periapsis
+             Vector3 nodeVector = Vector3.Cross( Vector3.Forward, eccentricityVector );
+             if( nodeVector.Length > 0 )
+             {
+                 nodeVector.Normalized();
+                 argumentOfPeriapsis = Math.Acos( Vector3.Dot( nodeVector, eccentricityVector ) / (nodeVector.Length * eccentricityVector.Length) ) * Math.Rad2Deg;
+             }
+             else
+             {
+                 argumentOfPeriapsis = 0;
+             }
+        
+             // To calculate the true anomaly, you can use the following equation:
+             // I have no idea if it's correct
+             // cos(ν) = (a * (1 - e ^ 2) / r - 1) / e
+             // v = acos(cos(v))
+         }
 
-        public float CalculateTrueAnomaly( Vector3 position, Vector3 velocity )
-        {
-            // Calculate the magnitude of the position vector
-            float r = position.Length;
+         public float CalculateTrueAnomaly( Vector3 position, Vector3 velocity )
+         {
+             // Calculate the magnitude of the position vector
+             float r = position.Length;
 
-            // Calculate the magnitude of the velocity vector
-            float v = velocity.Length;
+             // Calculate the magnitude of the velocity vector
+             float v = velocity.Length;
 
-            // Calculate the specific angular momentum vector
-            Vector3 h = Vector3.Cross( position, velocity );
+             // Calculate the specific angular momentum vector
+             Vector3 h = Vector3.Cross( position, velocity );
 
-            // Calculate the magnitude of the specific angular momentum vector
-            float hMag = h.Length;
+             // Calculate the magnitude of the specific angular momentum vector
+             float hMag = h.Length;
 
-            // Calculate the eccentricity vector
-            Vector3 eVec = Vector3.Cross( velocity, h ) / G - position / r;
+             // Calculate the eccentricity vector
+             Vector3 eVec = Vector3.Cross( velocity, h ) / G - position / r;
 
-            // Calculate the magnitude of the eccentricity vector
-            float e = eVec.Length;
+             // Calculate the magnitude of the eccentricity vector
+             float e = eVec.Length;
 
-            // Calculate the semi-major axis
-            float a = 1 / (2 / r - v * v / (G * (1 + e)));
+             // Calculate the semi-major axis
+             float a = 1 / (2 / r - v * v / (G * (1 + e)));
 
-            // Calculate the argument of periapsis
-            float argPeriapsis = Math.Acos( Vector3.Dot( eVec, h ) / (e * hMag) ) * Math.Rad2Deg;
+             // Calculate the argument of periapsis
+             float argPeriapsis = Math.Acos( Vector3.Dot( eVec, h ) / (e * hMag) ) * Math.Rad2Deg;
 
-            // Calculate the true anomaly
-            float cosTrueAnomaly = (a * (1 - e * e) / r - 1) / e;
-            float trueAnomaly = (float)Math.Acos( cosTrueAnomaly );
-            float sinTrueAnomaly = Vector3.Dot( position, velocity ) / (r * v * (float)Math.Sin( trueAnomaly ));
-            trueAnomaly *= Math.Sign( sinTrueAnomaly );
+             // Calculate the true anomaly
+             float cosTrueAnomaly = (a * (1 - e * e) / r - 1) / e;
+             float trueAnomaly = (float)Math.Acos( cosTrueAnomaly );
+             float sinTrueAnomaly = Vector3.Dot( position, velocity ) / (r * v * (float)Math.Sin( trueAnomaly ));
+             trueAnomaly *= Math.Sign( sinTrueAnomaly );
 
-            return trueAnomaly * Math.Rad2Deg;
-        }*/
+             return trueAnomaly * Math.Rad2Deg;
+         }*/
     }
 }

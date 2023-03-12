@@ -13,12 +13,12 @@ namespace TestConsole
 
             Matrix m1 = new Matrix( new double[,]
             {
-                { 1, 3, 1, 9 },
-                { 1, 1, -1, 1 },
-                { 3, 11, 5, 35 },
+                { 1, 1, 0 }, // {}x + {}y = {}
+                { -1, 1, 1 }, // {}x + {}y = {}
             } );
 
             Matrix U = m1.Eliminate();
+            double[] values = Matrix.BackSubstitution( U );
 
         }
     }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaveFunctionCollapse", "Wav
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math", "MathMethods\RandomUsefulThings.Math.csproj", "{B770880B-508A-40F0-B33D-70B9498B6E0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Physics", "Physics\Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Physics", "Physics\RandomUsefulThings.Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noise", "Noise\Noise.csproj", "{CD603091-3EAC-4662-AD49-113D9A6E4AE4}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DifferentialEquations", "DifferentialEquations\DifferentialEquations.csproj", "{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomUsefulThings.Math.Tests", "RandomUsefulThings.Math.Tests\RandomUsefulThings.Math.Tests.csproj", "{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math.Tests", "RandomUsefulThings.Math.Tests\RandomUsefulThings.Math.Tests.csproj", "{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
