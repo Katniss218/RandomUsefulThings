@@ -8,7 +8,7 @@ namespace MathMethods
         // Formula for a 2D orbit shape, E is eccentricity, P is the periapsis.
         // x and y are coordinates.
         // (1 - E^2)*x^2 - 2Px + y^2 = 0
-
+        
         [Obsolete( "Unconfirmed" )]
         public static float Modulo( float a, float b )
         {
@@ -141,6 +141,8 @@ namespace MathMethods
             return n == 1 ? 1 : sides * (n - 1);
         }
 
+
+
         /// <summary>
         /// Calculates figurate numbers. E.g. Triangular, Square, Pentagonal, Hexagonal, etc. numbers.
         /// </summary>
@@ -200,9 +202,10 @@ namespace MathMethods
         /// <summary>
         /// Rounds the value to the nearest multiple of the specified number.
         /// </summary>
-        public static float RoundToMultiple( float value, float multiple )
+        public static float RoundToMultiple( float value, float multipleOfThis )
         {
-            return multiple * (float)Math.Round( value / multiple );
+            // Rounds the number to the closest integer in the space where `multipleOfThis` = 1, then brings it back up to the correct range.
+            return multipleOfThis * (float)Math.Round( value / multipleOfThis );
         }
 
         /// <summary>
@@ -220,12 +223,26 @@ namespace MathMethods
         /// Returns the FoV needed to make an object appear a constant angular size.
         /// </summary>
         /// <param name="fixedSize">Controls the size of the object.</param>
-        public static float GetFovToFixSize( float distance, float fixedSize )
+        public static float GetFovToFixSize( float distance, float fixedSize, float scale = 1.0f )
         {
-            const float SCALE = 1.0f;
-            float fov = SCALE / (distance * fixedSize);
+            float fov = scale / (distance * fixedSize);
 
             return fov;
         }
+
+        /// <summary>
+        /// The circle constant.
+        /// </summary>
+        public static double PI = 3.1415926535897932384626433832795028841971693993751;
+
+        /// <summary>
+        /// One degree in radians.
+        /// </summary>
+        public static double DegToRad = PI / 180.0; // 0.017453292519943295769236907684886127134428718885417
+
+        /// <summary>
+        /// One radian in degrees.
+        /// </summary>
+        public static double RadToDeg = 180.0 / PI; // 57.295779513082320876798154814105170332405472466564 
     }
 }

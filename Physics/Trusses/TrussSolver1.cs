@@ -8,7 +8,7 @@ namespace RandomUsefulThings.Physics.Trusses
     {
 
         [Obsolete("Unconfirmed")]
-        static void Solve( TrussGraph graph )
+        static void Solve( TrussGraph3D graph )
         {
             // Initialize the global stiffness matrix
             double[,] K = new double[3 * graph.Joints.Length, 3 * graph.Joints.Length];
