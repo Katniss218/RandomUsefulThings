@@ -7,12 +7,12 @@ namespace RandomUsefulThings.Math.DifferentialEquations
     // this is a differential equation. It describes how the value of one variable changes in respect to other variables.
     // in this case, it's very simple. The change in 'v' over some arbitrary change in 't', is equal to 2 times that change in 't'.
 
-    // *possibly untrue* but a differential equation AFAIK, can only descrime how a single variable changes.
+    // *possibly untrue* but a differential equation AFAIK, can only describe how a single variable changes.
     // - To describe the changes in other variables, you need a system of differential equations using those same variables as parameters.
-
 
     public class EulerIntegrator // euler integrator for equations with only a single independent variable and nothing else.
     {
+        // First order method - halve the step size, halve the error.
         public float v;
         public float t;
 

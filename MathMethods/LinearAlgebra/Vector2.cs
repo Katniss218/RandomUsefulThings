@@ -180,7 +180,7 @@ namespace Geometry
             return other * (dot / otherLengthSquared);
         }
 
-        public static Vector2 Reflection( Vector2 v, Vector2 normal ) // works.
+        public static Vector2 Reflect( Vector2 v, Vector2 normal ) // works.
         {
             Vector2 projection = v.ProjectOnto( normal );
             return (projection * 2) - v;

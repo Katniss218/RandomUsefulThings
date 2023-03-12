@@ -9,6 +9,15 @@ namespace Geometry
         public Vector3 Point { get; }
         public Vector3 Direction { get; }
 
+        [Obsolete( "untested" )] // seems like it'll work.
+        public Vector3 GetClosestPointOnLine( Vector3 point )
+        {
+            // Project the point onto the direction vector.
+            float distance = Vector3.Dot( point - Point, Direction );
+            // use the parametric form to calculate the point on the line.
+            return Point + (distance * Direction);
+        }
+
         public static Vector3? LinePlaneIntersection( Vector3 linePoint, Vector3 lineDir, Vector3 planePoint, Vector3 planeNormal, bool ray = false )
         {
             // Distance from `l.point` to the point of line-plane intersection (if denominator != 0)

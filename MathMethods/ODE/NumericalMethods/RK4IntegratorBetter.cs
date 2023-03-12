@@ -3,8 +3,18 @@ using System.Linq;
 
 namespace RandomUsefulThings.Math.DifferentialEquations
 {
+    // RK2
+    // calculate the slope at `current` time.
+    // calculate slope at the `current + timestep` time.
+    // average the 2 slopes. This is the new slope.
+
+    // number of evaluations of the slope = the order of the integrator.
+
+
     public class RK4IntegratorBetter
     {
+
+        // Fourth order method - half the step size, 1/16th the error.
         public float[] _variables;
         public float t;
 

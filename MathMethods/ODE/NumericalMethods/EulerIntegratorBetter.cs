@@ -5,6 +5,7 @@ namespace RandomUsefulThings.Math.DifferentialEquations
 {
     public class EulerIntegratorBetter // euler integrator for systems of differential equations
     {
+        // First order method - halve the step size, halve the error.
         public float[] _variables;
         public float t;
 

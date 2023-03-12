@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noise", "Noise\Noise.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pathfinding", "Pathfinding\Pathfinding.csproj", "{F5A98768-D711-4837-9216-11E6F0B6FA85}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Miscellaneous", "Miscellaneous\Miscellaneous.csproj", "{914D5037-BF2E-4568-AE5A-35B3073A86C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Misc", "Miscellaneous\RandomUsefulThings.Misc.csproj", "{914D5037-BF2E-4568-AE5A-35B3073A86C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{57BE5B5A-68F9-439F-A212-70AE2891F106}"
 EndProject

@@ -178,10 +178,16 @@ namespace Geometry
             float sinY = (float)Math.Sin( y * 0.5f );
             float sinZ = (float)Math.Sin( z * 0.5f );
 
+            // The 3 terms on the left are opposite to the corresponding terms on the right (sin <-> cos).
             float qx = (cosX * sinY * sinZ) + (sinX * cosY * cosZ); // Unity.
             float qy = (cosX * sinY * cosZ) - (sinX * cosY * sinZ); // Unity.
             float qz = (cosX * cosY * sinZ) - (sinX * sinY * cosZ); // Unity.
             float qw = (cosX * cosY * cosZ) + (sinX * sinY * sinZ); // Unity.
+
+            // result.X = cosX * sinY * cosZ + sinX * cosY * sinZ; // XNA. I think this has to do with handedness.
+            // result.Y = sinX * cosY * cosZ - cosX * sinY * sinZ;
+            // result.Z = cosX * cosY * sinZ - sinX * sinY * cosZ;
+            // result.W = cosX * cosY * cosZ + sinX * sinY * sinZ;
 
             // Return the calculated quaternion
             return new Quaternion( qx, qy, qz, qw ); // possibly needs normalizing??

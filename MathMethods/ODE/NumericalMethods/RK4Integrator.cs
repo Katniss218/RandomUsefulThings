@@ -5,6 +5,7 @@ namespace RandomUsefulThings.Math.DifferentialEquations
 {
     public class RK4Integrator // runge-kutta integrator
     {
+        // Fourth order method - half the step size, 1/16th the error.
         public float v;
         public float t;
 

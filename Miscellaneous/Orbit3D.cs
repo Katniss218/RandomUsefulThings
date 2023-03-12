@@ -5,8 +5,12 @@ using System.Text;
 
 namespace Miscellaneous
 {
-    class Orbit
+    class Orbit3D
     {
+        // Formula for a 2D (!!!) orbit shape with periapsis on the left, at y=0, E is eccentricity, P is the periapsis.
+        // x and y are coordinates.
+        // (1 - E^2)*x^2 - 2Px + y^2 = 0
+
         const float G = 6.6743e-11f;
         /*
         [Obsolete( "unconfirmed" )]

@@ -5,10 +5,6 @@ namespace MathMethods
 {
     public class MathMethods
     {
-        // Formula for a 2D orbit shape, E is eccentricity, P is the periapsis.
-        // x and y are coordinates.
-        // (1 - E^2)*x^2 - 2Px + y^2 = 0
-        
         [Obsolete( "Unconfirmed" )]
         public static float Modulo( float a, float b )
         {
@@ -40,6 +36,15 @@ namespace MathMethods
             return Math.Sin( Math.PI * x ) / (Math.PI * x);
         }
 
+        public static T Clamp<T>( T value, T min, T max ) where T : IComparable<T>
+        {
+            if( value.CompareTo( max ) > 0 )
+                return max;
+            if( value.CompareTo( min ) < 0 )
+                return min;
+            return value;
+        }
+
         /// <summary>
         /// Linearly maps a value from one range onto another range.
         /// </summary>
@@ -54,9 +59,9 @@ namespace MathMethods
             // This is related to linear interpolation.
 
             // First shift the value so that the original range now starts at 0.
-            // Then multiply the value to map onto the new range.
-            // And last, unshift the value so that the new range starts at `outMin`.
-            return (value - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+            // Then divide to get normalized range and multiply to map onto the new range.
+            // And lastly, unshift the value so that the new range starts at `outMin`.
+            return (((value - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
         }
 
         public static float LengthSquared( float x, float y )
@@ -92,6 +97,16 @@ namespace MathMethods
         {
             float range = max - min;
             return max - (value - min) % range;
+        }
+
+        [Obsolete( "untested" )]
+        public static int MySqrt( int x ) // floor of the square root of the specified integer.
+        {
+            // Newton method.
+            long res = x;
+            while( res * res > x )
+                res = (res + x / res) / 2;
+            return (int)res;
         }
 
         /// <summary>
@@ -140,8 +155,6 @@ namespace MathMethods
             // returns the total number of cannonballs that can fit in a "ring" with a given number of sides `sides` and a given number of cannonballs per edge `n`.
             return n == 1 ? 1 : sides * (n - 1);
         }
-
-
 
         /// <summary>
         /// Calculates figurate numbers. E.g. Triangular, Square, Pentagonal, Hexagonal, etc. numbers.

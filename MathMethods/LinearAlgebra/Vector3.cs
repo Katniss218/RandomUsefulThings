@@ -192,6 +192,7 @@ namespace Geometry
             return lineDirection * Dot( this, lineDirection ) / lineDirection.LengthSquared;
         }
 
+        [Obsolete("??")]
         public static Vector3 Exclude( Vector3 sourceVector, Vector3 vectorToExclude )
         {
             // Leaves the sourceVector without the component that lied along the vectorToExclude.

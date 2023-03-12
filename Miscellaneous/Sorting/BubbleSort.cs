@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Misc.Sorting
 {
-    public static class BubbleSort
+    public static class Array_Ex_BubbleSort
     {
-        public static void Run( int[] array )
+        public static void BubbleSort( this int[] array )
         {
             int length = array.Length;
 

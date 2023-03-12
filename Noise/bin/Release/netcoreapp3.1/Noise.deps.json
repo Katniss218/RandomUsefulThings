@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Noise/1.0.0": {
+        "dependencies": {
+          "RandomUsefulThings.Math": "1.0.0"
+        },
+        "runtime": {
+          "Noise.dll": {}
+        }
+      },
+      "RandomUsefulThings.Math/1.0.0": {
+        "runtime": {
+          "RandomUsefulThings.Math.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Noise/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RandomUsefulThings.Math/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

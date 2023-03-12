@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Misc.Sorting
 {
-    public static class QuicksortAlg
+    public static class Array_Ex_Quicksort
     {
         // A utility function to swap two elements
         [MethodImpl( MethodImplOptions.AggressiveInlining )]

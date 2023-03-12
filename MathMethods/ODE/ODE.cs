@@ -45,6 +45,7 @@ namespace RandomUsefulThings.ODE
         // Integral curve is a curve that goes through the direction field, and at every point its slope is equal to the value of the direction field.
         // - the integral curve DOESN'T pass through every point in the field.
         // - thus, the direction field has to be continuous.
+        // - two integral curves can't cross at an angle. They can't touch either.
 
 
         // the differential equation can give you the next value in the direction field for the corresponding initial value, at infinitely small step.

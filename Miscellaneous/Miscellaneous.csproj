@@ -1,20 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Graphics\ColorCIELAB.cs" />
-    <Compile Remove="Graphics\ColorRGBA.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Graphics\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MathMethods\RandomUsefulThings.Math.csproj" />
-  </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
 </Project>

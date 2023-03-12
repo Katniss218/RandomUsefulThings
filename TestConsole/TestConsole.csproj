@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DifferentialEquations\DifferentialEquations.csproj" />
-    <ProjectReference Include="..\Miscellaneous\Miscellaneous.csproj" />
+    <ProjectReference Include="..\Miscellaneous\RandomUsefulThings.Misc.csproj" />
     <ProjectReference Include="..\Noise\Noise.csproj" />
     <ProjectReference Include="..\Pathfinding\Pathfinding.csproj" />
     <ProjectReference Include="..\Physics\RandomUsefulThings.Physics.csproj" />

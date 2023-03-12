@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Pathfinding/1.0.0": {
+        "dependencies": {
+          "RandomUsefulThings.Math": "1.0.0"
+        },
+        "runtime": {
+          "Pathfinding.dll": {}
+        }
+      },
+      "RandomUsefulThings.Math/1.0.0": {
+        "runtime": {
+          "RandomUsefulThings.Math.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Pathfinding/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RandomUsefulThings.Math/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

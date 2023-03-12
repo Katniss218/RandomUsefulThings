@@ -211,6 +211,48 @@ namespace Geometry
         }
 
         [Obsolete( "Unconfirmed" )]
+        public static Matrix4x4 RotationX( float angleRad )
+        {
+            float cos = (float)Math.Cos( angleRad );
+            float sin = (float)Math.Sin( angleRad );
+
+            return new Matrix4x4(
+                1f, 0f, 0f, 0f,
+                0f, cos, sin, 0f,
+                0f, -sin, cos, 0f,
+                0f, 0f, 0f, 1f
+            );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static Matrix4x4 RotationY( float angleRad )
+        {
+            float cos = (float)Math.Cos( angleRad );
+            float sin = (float)Math.Sin( angleRad );
+
+            return new Matrix4x4(
+                cos, -sin, 0f, 0f,
+                0f, 1, 0, 0f,
+                sin, 0, cos, 0f,
+                0f, 0f, 0f, 1f
+            );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static Matrix4x4 RotationZ( float angleRad )
+        {
+            float cos = (float)Math.Cos( angleRad );
+            float sin = (float)Math.Sin( angleRad );
+
+            return new Matrix4x4(
+                cos, sin, 0f, 0f,
+                -sin, cos, 0, 0f,
+                0, 0, 1, 0f,
+                0f, 0f, 0f, 1f
+            );
+        }
+
+        [Obsolete( "Unconfirmed" )]
         public static Matrix4x4 Transform( Vector3 translation, Quaternion rotation, Vector3 scale )
         {
             var translationMatrix = Translation( translation );
