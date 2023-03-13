@@ -12,36 +12,15 @@ namespace TestConsole
 
         static void Main( string[] args )
         {
-            float asin1 = Trigonometry.Asin( 0.1f );
-            float asin2 = Trigonometry.Asin( 0.2f );
-            float asin3 = Trigonometry.Asin( 0.3f );
-            float asin4 = Trigonometry.Asin( 0.4f );
-            float asin5 = Trigonometry.Asin( 0.5f );
-            float asin6 = Trigonometry.Asin( -0.6f );
-            float asin7 = Trigonometry.Asin( 0.7f );
-            float asin8 = Trigonometry.Asin( 0.8f );
-            float asin9 = Trigonometry.Asin( -0.9f );
-            float asin10 = Trigonometry.Asin( 0.95f );
-            float asin11 = Trigonometry.Asin( 0.99f );
-            float asin12 = Trigonometry.Asin( 0.999f );
-
-            float rasin1 = (float)System.Math.Asin( 0.1f );
-            float rasin2 = (float)System.Math.Asin( 0.2f );
-            float rasin3 = (float)System.Math.Asin( 0.3f );
-            float rasin4 = (float)System.Math.Asin( 0.4f );
-            float rasin5 = (float)System.Math.Asin( 0.5f );
-            float rasin6 = (float)System.Math.Asin( -0.6f );
-            float rasin7 = (float)System.Math.Asin( 0.7f );
-            float rasin8 = (float)System.Math.Asin( 0.8f );
-            float rasin9 = (float)System.Math.Asin( -0.9f );
-            float rasin10 = (float)System.Math.Asin( 0.95f );
-            float rasin11 = (float)System.Math.Asin( 0.99f );
-            float rasin12 = (float)System.Math.Asin( 0.999f );
+            float x1 = MathMethods.MathMethods.Modulo( 5.44f, 2.5f );
+            float x2 = MathMethods.MathMethods.Modulo( 10.4f, 2f );
+            float x3 = MathMethods.MathMethods.Modulo( -65.44f, -2.5f );
+            float x4 = MathMethods.MathMethods.Modulo( 6.44f, -5f );
 
 
             RandomUsefulThings.Misc.UnscaledTimeBenchmark b = new RandomUsefulThings.Misc.UnscaledTimeBenchmark();
 
-            int val;
+            /*int val;
             int a = 5;
             int bb = 10;
             int c = 0;
@@ -103,7 +82,7 @@ namespace TestConsole
                 valf = Trigonometry.Atan( valf );
             } );
 
-            b.Run( RandomUsefulThings.Misc.UnscaledTimeBenchmark.Mode.UnscaledTimeUnit );
+            b.Run( RandomUsefulThings.Misc.UnscaledTimeBenchmark.Mode.UnscaledTimeUnit );*/
         }
     }
 }

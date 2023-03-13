@@ -21,10 +21,10 @@ namespace MathMethods
         // 1-\ 6\ \frac{1}{2+\left(x+2\right)^{\left(x+2\right)}}
         // error: -0.05
 
-        [Obsolete( "Unconfirmed" )]
-        public static float Modulo( float a, float b )
+        public static float Modulo( float x, float range ) // correct.
         {
-            return a - b * (float)Math.Floor( a / b );
+            // Modulo, supports arbitrary floating point numbers in range [float.MinValue..float.MaxValue] for both parameters.
+            return x - range * (float)Math.Floor( x / range );
         }
 
         /// <param name="x">The value to sample.</param>
