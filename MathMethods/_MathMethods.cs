@@ -5,6 +5,10 @@ namespace MathMethods
 {
     public class MathMethods
     {
+        // erf(x) for x > 0
+        // 1-\ 6\ \frac{1}{2+\left(x+2\right)^{\left(x+2\right)}}
+        // error: -0.05
+
         [Obsolete( "Unconfirmed" )]
         public static float Modulo( float a, float b )
         {
