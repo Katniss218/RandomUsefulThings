@@ -1,5 +1,6 @@
 ﻿using Geometry;
 using MathMethods;
+using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
 using System;
 using static MathMethods.Thermodynamics;
@@ -22,18 +23,32 @@ namespace TestConsole
 
         static void Main( string[] args )
         {
-            var x = MySqrt2( 9 );
-            var y = MySqrt2( 2 );
-            var z = MySqrt2( 4 );
+            float asin1 = Trigonometry.Asin( 0.1f );
+            float asin2 = Trigonometry.Asin( 0.2f );
+            float asin3 = Trigonometry.Asin( 0.3f );
+            float asin4 = Trigonometry.Asin( 0.4f );
+            float asin5 = Trigonometry.Asin( 0.5f );
+            float asin6 = Trigonometry.Asin( -0.6f );
+            float asin7 = Trigonometry.Asin( 0.7f );
+            float asin8 = Trigonometry.Asin( 0.8f );
+            float asin9 = Trigonometry.Asin( -0.9f );
+            float asin10 = Trigonometry.Asin( 0.95f );
+            float asin11 = Trigonometry.Asin( 0.99f );
+            float asin12 = Trigonometry.Asin( 0.999f );
 
-            Matrix m1 = new Matrix( new double[,]
-            {
-                { 1, 1, 0 }, // {}x + {}y = {}
-                { -1, 1, 1 }, // {}x + {}y = {}
-            } );
+            float rasin1 = (float)System.Math.Asin( 0.1f );
+            float rasin2 = (float)System.Math.Asin( 0.2f );
+            float rasin3 = (float)System.Math.Asin( 0.3f );
+            float rasin4 = (float)System.Math.Asin( 0.4f );
+            float rasin5 = (float)System.Math.Asin( 0.5f );
+            float rasin6 = (float)System.Math.Asin( -0.6f );
+            float rasin7 = (float)System.Math.Asin( 0.7f );
+            float rasin8 = (float)System.Math.Asin( 0.8f );
+            float rasin9 = (float)System.Math.Asin( -0.9f );
+            float rasin10 = (float)System.Math.Asin( 0.95f );
+            float rasin11 = (float)System.Math.Asin( 0.99f );
+            float rasin12 = (float)System.Math.Asin( 0.999f );
 
-            Matrix U = m1.Eliminate();
-            double[] values = Matrix.BackSubstitution( U );
 
             RandomUsefulThings.Misc.UnscaledTimeBenchmark b = new RandomUsefulThings.Misc.UnscaledTimeBenchmark();
 
