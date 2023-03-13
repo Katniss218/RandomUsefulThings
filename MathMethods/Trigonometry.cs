@@ -10,11 +10,12 @@ namespace RandomUsefulThings.Math
         {
             const float PI = 3.14159265359f;
 
+#warning TODO - this is actually wrong, should mod to twopi.
             x = MathMethods.MathMethods.Modulo(x, PI);
 
-            const float Fac11 = 39916800;
-            const float Fac9 = 362880;
-            const float Fac7 = 5040;
+            const float Fac11 = 39916800; // 11!
+            const float Fac9 = 362880; // 9!
+            const float Fac7 = 5040; // 7!
             const float Fac5 = 120;
             const float Fac3 = 6;
 
@@ -31,9 +32,10 @@ namespace RandomUsefulThings.Math
 
         public static float Cos( float x )
         {
-            const float Fac10 = 3628800;
-            const float Fac8 = 40320;
-            const float Fac6 = 720;
+#warning TODO - this is actually wrong, should mod to twopi.
+            const float Fac10 = 3628800; // 10!
+            const float Fac8 = 40320; // 8!
+            const float Fac6 = 720; // 6!
             const float Fac4 = 24;
             const float Fac2 = 2;
 
@@ -49,6 +51,8 @@ namespace RandomUsefulThings.Math
 
         public static float Tan( float x )
         {
+            // rough approximation
+            // x + 0.5x^4 + 0.01x^16 + 0.000005x^32
             throw new NotImplementedException();
         }
 

@@ -58,6 +58,8 @@ namespace TestConsole
             int c = 0;
             bool boolV;
             int i = 0;
+            double vald = 50.4353;
+            float valf = 50.4353f;
             b.Add( "i++", () =>
             {
                 i++;
@@ -103,6 +105,14 @@ namespace TestConsole
              {
                  val = MySqrt2( 1000000 );
              } );
+            b.Add( "atan", () =>
+            {
+                vald = Math.Atan( vald );
+            } );
+            b.Add( "custom atan", () =>
+            {
+                valf = Trigonometry.Atan( valf );
+            } );
 
             b.Run( RandomUsefulThings.Misc.UnscaledTimeBenchmark.Mode.UnscaledTimeUnit );
         }
