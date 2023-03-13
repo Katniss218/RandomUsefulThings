@@ -8,12 +8,43 @@ namespace RandomUsefulThings.Math
     {
         public static float Sin( float x )
         {
-            throw new NotImplementedException();
+            const float PI = 3.14159265359f;
+
+            x = MathMethods.MathMethods.Modulo(x, PI);
+
+            const float Fac11 = 39916800;
+            const float Fac9 = 362880;
+            const float Fac7 = 5040;
+            const float Fac5 = 120;
+            const float Fac3 = 6;
+
+            float x2 = x * x;
+
+            float x3 = x2 * x;
+            float x5 = x3 * x2;
+            float x7 = x5 * x2;
+            float x9 = x7 * x2;
+            float x11 = x9 * x2;
+
+            return x - (x3 / Fac3) + (x5 / Fac5) - (x7 / Fac7) + (x9 / Fac9) - (x11 / Fac11);
         }
 
         public static float Cos( float x )
         {
-            throw new NotImplementedException();
+            const float Fac10 = 3628800;
+            const float Fac8 = 40320;
+            const float Fac6 = 720;
+            const float Fac4 = 24;
+            const float Fac2 = 2;
+
+            float x2 = x * x;
+
+            float x4 = x2 * x2;
+            float x6 = x4 * x2;
+            float x8 = x6 * x2;
+            float x10 = x8 * x2;
+
+            return 1 - (x2 / Fac2) + (x4 / Fac4) - (x6 / Fac6) + (x8 / Fac8) - (x10 / Fac10);
         }
 
         public static float Tan( float x )
