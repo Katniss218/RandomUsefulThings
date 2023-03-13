@@ -291,5 +291,54 @@ namespace Geometry
         {
             return v1.X != v2.X || v1.Y != v2.Y;
         }
+
+        /* RotateTowards 2D
+        
+        float distX = npc.position.X + (float)(npc.width / 2) - Main.player[npc.target].position.X - (float)(Main.player[npc.target].width / 2);
+		float distY = npc.position.Y + (float)(npc.height / 2) - Main.player[npc.target].position.Y - (float)(Main.player[npc.target].height / 2);
+		float rotationToPlayer = (float)Math.Atan2( (double)distY, (double)distX ) + 1.57f; // halfPi
+		if( rotationToPlayer < 0f )
+		{
+			rotationToPlayer += 6.283f;
+		}
+		else if( (double)rotationToPlayer > 6.283 ) // twoPi
+		{
+			rotationToPlayer -= 6.283f;
+		}
+        if( npc.rotation < rotationToPlayer )
+			{
+				if( (double)(rotationToPlayer - npc.rotation) > PI )
+				{
+					npc.rotation -= rotationSpeedAmount;
+				}
+				else
+				{
+					npc.rotation += rotationSpeedAmount;
+				}
+			}
+			else if( npc.rotation > rotationToPlayer )
+			{
+				if( (double)(npc.rotation - rotationToPlayer) > PI )
+				{
+					npc.rotation += rotationSpeedAmount;
+				}
+				else
+				{
+					npc.rotation -= rotationSpeedAmount;
+				}
+			}
+			if( npc.rotation > rotationToPlayer - rotationSpeedAmount && npc.rotation < rotationToPlayer + rotationSpeedAmount )
+			{
+				npc.rotation = rotationToPlayer;
+			}
+			if( npc.rotation < 0f )
+			{
+				npc.rotation += TwoPI;
+			}
+			else if( (double)npc.rotation > TwoPI )
+			{
+				npc.rotation -= 6.TwoPI;
+			}
+        */
     }
 }

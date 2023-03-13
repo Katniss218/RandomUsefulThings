@@ -5,6 +5,18 @@ namespace MathMethods
 {
     public class MathMethods
     {
+        public static int Sqrt( int x ) // Returns the floor of the square root of the specified integer. Newton-Raphson method.
+        {
+            double Prev = 0;
+            double Cur = x;
+            while( (int)Prev != (int)Cur )
+            {
+                Prev = Cur;
+                Cur = Cur - ((Cur * Cur) - x) / (2 * Cur);
+            }
+            return (int)(Cur - (Cur % 1));
+        }
+
         // erf(x) for x > 0
         // 1-\ 6\ \frac{1}{2+\left(x+2\right)^{\left(x+2\right)}}
         // error: -0.05

@@ -9,17 +9,6 @@ namespace TestConsole
 {
     class Program
     {
-        public static int MySqrt2( int x )
-        {
-            double Prev = 0;
-            double Cur = x;
-            while( (int)Prev != (int)Cur )
-            {
-                Prev = Cur;
-                Cur = Cur - ((Cur * Cur) - x) / (2 * Cur);
-            }
-            return (int)(Cur - (Cur % 1));
-        }
 
         static void Main( string[] args )
         {

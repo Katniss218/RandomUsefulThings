@@ -6,6 +6,8 @@ namespace RandomUsefulThings.Math
 {
     public static class Trigonometry
     {
+        // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
+
         public static float Sin( float x )
         {
             const float PI = 3.14159265359f;
