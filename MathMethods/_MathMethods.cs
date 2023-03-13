@@ -24,6 +24,9 @@ namespace MathMethods
         public static float Modulo( float x, float range ) // correct.
         {
             // Modulo, supports arbitrary floating point numbers in range [float.MinValue..float.MaxValue] for both parameters.
+            // Negative values of range wrap into [-range..0]
+            // Positive values of range wrap into [0-..range]
+
             return x - range * (float)Math.Floor( x / range );
         }
 

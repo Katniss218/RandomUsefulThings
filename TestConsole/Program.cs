@@ -14,7 +14,7 @@ namespace TestConsole
         {
             float x1 = MathMethods.MathMethods.Modulo( 5.44f, 2.5f );
             float x2 = MathMethods.MathMethods.Modulo( 10.4f, 2f );
-            float x3 = MathMethods.MathMethods.Modulo( -65.44f, -2.5f );
+            float x3 = MathMethods.MathMethods.Modulo( 5.44f, -2.5f );
             float x4 = MathMethods.MathMethods.Modulo( 6.44f, -5f );
 
 
