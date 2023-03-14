@@ -2,87 +2,48 @@
 using MathMethods;
 using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
+using RandomUsefulThings.Misc;
 using System;
-using static MathMethods.Thermodynamics;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace TestConsole
 {
-    class Program
+    public static class Program
     {
-
-        static void Main( string[] args )
+        public static void Main( string[] args )
         {
-            float x1 = MathMethods.MathMethods.Modulo( 5.44f, 2.5f );
-            float x2 = MathMethods.MathMethods.Modulo( 10.4f, 2f );
-            float x3 = MathMethods.MathMethods.Modulo( 5.44f, -2.5f );
-            float x4 = MathMethods.MathMethods.Modulo( 6.44f, -5f );
+            float x;
 
+            x = Trigonometry.Cos( 3.1416f );
 
-            RandomUsefulThings.Misc.UnscaledTimeBenchmark b = new RandomUsefulThings.Misc.UnscaledTimeBenchmark();
+            SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100000, 1000 )
+            {
+                ParameterFunc = ( t ) => t * 4000000 + 0.001f,
+                //Reference = ( x ) => Math.Sin( x ),
+                Reference = ( x ) => Math.Sqrt( x ),
+                GetError = ( a, b ) => a - b
+            };
 
-            /*int val;
-            int a = 5;
-            int bb = 10;
-            int c = 0;
-            bool boolV;
-            int i = 0;
-            double vald = 50.4353;
-            float valf = 50.4353f;
-            b.Add( "i++", () =>
+            /*b.Add( "Math.Sin(double)", ( x ) =>
             {
-                i++;
+                return Math.Sin( x );
             } );
-            b.Add( "c += a + b;", () =>
-             {
-                 c += a + bb;
-             } );
-            b.Add( "c += a + b; (times 10)", () =>
+            b.Add( "Custom Sin(float)", ( x ) =>
             {
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
-                c += a + bb;
+                return Trigonometry.Sin( x );
+            } );*/
+
+            b.Add( "Math.Exp(double)", ( x ) =>
+            {
+                return Math.Sqrt( x );
             } );
-            b.Add( "boolV = c < (b - a);", () =>
+            b.Add( "Custom Exp(double)", ( x ) =>
             {
-                boolV = (c < (bb - a));
-            } );
-            b.Add( "MySqrt2( 100 )", () =>
-             {
-                 val = MySqrt2( 100 );
-             } );
-            b.Add( "MySqrt2( 1000 )", () =>
-             {
-                 val = MySqrt2( 1000 );
-             } );
-            b.Add( "MySqrt2( 10000 )", () =>
-             {
-                 val = MySqrt2( 10000 );
-             } );
-            b.Add( "MySqrt2( 100000 )", () =>
-             {
-                 val = MySqrt2( 100000 );
-             } );
-            b.Add( "MySqrt2( 1000000 )", () =>
-             {
-                 val = MySqrt2( 1000000 );
-             } );
-            b.Add( "atan", () =>
-            {
-                vald = Math.Atan( vald );
-            } );
-            b.Add( "custom atan", () =>
-            {
-                valf = Trigonometry.Atan( valf );
+                return MathMethods.MathMethods.Sqrt( x );
             } );
 
-            b.Run( RandomUsefulThings.Misc.UnscaledTimeBenchmark.Mode.UnscaledTimeUnit );*/
+            b.Run();
         }
     }
 }

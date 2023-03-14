@@ -6,40 +6,71 @@ namespace RandomUsefulThings.Math
 {
     public static class Trigonometry
     {
+        //public const double QuarterPI = 0.78539816339744830961566084581987572104929234984377645524373614807695410157155224965700870633552926699553702162832057666177346115238764555793133985203212027936257102567548463027638991115573723873259549;
+        //public const double HalfPI = 1.570796326794896619231321691639751442098584699687552910487472296153908203143104499314017412671058533991074043256641153323546922304775291115862679704064240558725142051350969260552779822311474477465191;
+        //public const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930382;
+        //public const double TwoPI = 6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359642961730265646132941876892191011644634507188162569622349005682054038770422111192892458979098607639;
+
+        const float HalfPI = 1.570796326794f;
+        const float PI = 3.141592653589f;
+        const float TwoPI = 6.283185307179f;
+
         // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
 
+        /// <summary>
+        /// Calculates the sine of the specified angle in radians.
+        /// </summary>
+        /// <returns>The value of the sine. Maximum absolute value of error: 10^-6, median: 10^-8.</returns>
         public static float Sin( float x )
         {
-            const float PI = 3.14159265359f;
+            // Range reduction.
+            float newX = x % TwoPI;
+            if( newX > PI )
+            {
+                newX -= TwoPI;
+            }
+            else if( newX < -PI )
+            {
+                newX += TwoPI;
+            }
 
-#warning TODO - this is actually wrong, should mod to twopi.
-            x = MathMethods.MathMethods.Modulo(x, PI);
+            if( newX > HalfPI ) // flip around +- PI/2 to further reduce range
+            {
+                newX += 2 * (HalfPI - newX);
+            }
+            else if( newX < -HalfPI )
+            {
+                newX += 2 * (-HalfPI - newX);
+            }
 
-            const float Fac11 = 39916800; // 11!
-            const float Fac9 = 362880; // 9!
-            const float Fac7 = 5040; // 7!
-            const float Fac5 = 120;
-            const float Fac3 = 6;
+            // Small values of pi.
+            if( newX < 0.0175f && newX > -0.0175f )
+            {
+                return newX;
+            }
 
-            float x2 = x * x;
+            float x2 = newX * newX;
 
-            float x3 = x2 * x;
+            float x3 = x2 * newX;
             float x5 = x3 * x2;
             float x7 = x5 * x2;
             float x9 = x7 * x2;
-            float x11 = x9 * x2;
 
-            return x - (x3 / Fac3) + (x5 / Fac5) - (x7 / Fac7) + (x9 / Fac9) - (x11 / Fac11);
+            return // Need up to x^15 terms to get above float32 precision in [-pi..pi]. Up to x^9 with range reduction.
+                newX
+                - (x3 / 6)
+                + (x5 / 120)
+                - (x7 / 5040)
+                + (x9 / 362880);
         }
 
+        /// <summary>
+        /// Calculates the cosine of the specified angle in radians.
+        /// </summary>
+        /// <returns>The value of the cosine. Maximum absolute value of error: 10^-4, median: 10^-7.</returns>
         public static float Cos( float x )
         {
-#warning TODO - this is actually wrong, should mod to twopi.
-            const float Fac10 = 3628800; // 10!
-            const float Fac8 = 40320; // 8!
-            const float Fac6 = 720; // 6!
-            const float Fac4 = 24;
-            const float Fac2 = 2;
+            x = ((x + PI) % TwoPI) - PI;
 
             float x2 = x * x;
 
@@ -47,8 +78,16 @@ namespace RandomUsefulThings.Math
             float x6 = x4 * x2;
             float x8 = x6 * x2;
             float x10 = x8 * x2;
+            float x12 = x10 * x2;
 
-            return 1 - (x2 / Fac2) + (x4 / Fac4) - (x6 / Fac6) + (x8 / Fac8) - (x10 / Fac10);
+            return
+                1
+                -(x2 / 2) 
+                + (x4 / 24) 
+                - (x6 / 720) 
+                + (x8 / 40320)
+                - (x10 / 3628800)
+                + (x12 / 479001600);
         }
 
         public static float Tan( float x )
