@@ -338,7 +338,7 @@ namespace RandomUsefulThings.Math
 
 
         // maclaurin expansion for e^x
-        // e^x =~ (x^1)/1! + (x^2)/2! + (x^3)/3! + (x^4)/4! + ...
+        // e^x =~ 1 + x + (x^2)/2! + (x^3)/3! + (x^4)/4! + ...
 
         public static double Exp( double x ) // Reasonably accurate around x < 10.
         {
