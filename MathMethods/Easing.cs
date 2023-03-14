@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Math
 {
     public static class Easing
     {
@@ -32,7 +32,7 @@ namespace MathMethods
         public static float Gain( float x, float k )
         {
             // https://iquilezles.org/articles/functions/
-            float a = 0.5f * (float)Math.Pow( 2.0 * ((x < 0.5) ? x : 1.0 - x), k );
+            float a = 0.5f * (float)System.Math.Pow( 2.0 * ((x < 0.5) ? x : 1.0 - x), k );
             return (x < 0.5f) ? a : 1.0f - a;
         }
 
@@ -44,7 +44,7 @@ namespace MathMethods
         public static float Parabola( float x, float k )
         {
             // https://iquilezles.org/articles/functions/
-            return (float)Math.Pow( 4.0 * x * (1.0 - x), k );
+            return (float)System.Math.Pow( 4.0 * x * (1.0 - x), k );
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MathMethods
         public static float Smoothstep( float edge0, float edge1, float t )
         {
             // Hermite interpolation?
-            float tc = (float)Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
+            float tc = (float)System.Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
 
             // v = -2t^3 + 3t^2
             return tc * tc * ((tc * -2.0f) + 3.0f);
@@ -74,7 +74,7 @@ namespace MathMethods
 
         public static float InverseSmoothstep( float t )
         {
-            return 0.5f - (float)Math.Sin( Math.Asin( 1.0 - 2.0 * t ) / 3.0 ); // edge0 = 0, edge1 = 1.
+            return 0.5f - (float)System.Math.Sin( System.Math.Asin( 1.0 - 2.0 * t ) / 3.0 ); // edge0 = 0, edge1 = 1.
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace MathMethods
         public static float SmootherStep( float edge0, float edge1, float t )
         {
             // Proposed by Ken Perlin.
-            float tc = (float)Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
+            float tc = (float)System.Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
 
             // v = 6t^5 - 15t^4 + 10t^3
             return tc * tc * tc * (tc * ((tc * 6.0f) - 15.0f) + 10.0f);
@@ -94,7 +94,7 @@ namespace MathMethods
         /// </summary>
         public static float Smoothstep7( float edge0, float edge1, float t )
         {
-            float tc = (float)Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
+            float tc = (float)System.Math.Clamp( (t - edge0) / (edge1 - edge0), 0.0, 1.0 );
 
             // -20t^7 + 70t^6 - 84t^5 + 35t^4
             return tc * tc * tc * tc * (tc * (tc * ((tc * -20.0f) + 70.0f) - 84.0f) + 35.0f);

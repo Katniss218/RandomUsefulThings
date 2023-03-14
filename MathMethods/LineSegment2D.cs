@@ -1,4 +1,4 @@
-﻿using MathMethods;
+﻿using RandomUsefulThings.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -77,10 +77,10 @@ namespace Geometry
                 if( Vector2.Cross( new Vector2( p3.X - p1.X, p3.Y - p1.Y ), v1 ) == 0 )
                 {
                     // The line segments are collinear, check if they overlap
-                    if( Math.Max( p1.X, p2.X ) >= Math.Min( p3.X, p4.X ) &&
-                        Math.Min( p1.X, p2.X ) <= Math.Max( p3.X, p4.X ) &&
-                        Math.Max( p1.Y, p2.Y ) >= Math.Min( p3.Y, p4.Y ) &&
-                        Math.Min( p1.Y, p2.Y ) <= Math.Max( p3.Y, p4.Y ) )
+                    if( System.Math.Max( p1.X, p2.X ) >= System.Math.Min( p3.X, p4.X ) &&
+                        System.Math.Min( p1.X, p2.X ) <= System.Math.Max( p3.X, p4.X ) &&
+                        System.Math.Max( p1.Y, p2.Y ) >= System.Math.Min( p3.Y, p4.Y ) &&
+                        System.Math.Min( p1.Y, p2.Y ) <= System.Math.Max( p3.Y, p4.Y ) )
                     {
                         return true;
                     }

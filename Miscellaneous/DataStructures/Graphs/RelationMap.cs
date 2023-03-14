@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MathMethods.Graphs
+namespace RandomUsefulThings.Misc.Graphs
 {
     /// <summary>
     /// Represents relations between 2 members (indices) of type 'int'.
@@ -81,9 +81,9 @@ namespace MathMethods.Graphs
 
         public static int GetSize( int matrixLength )
         {
-            float num = 0.5f * (float)(1 + Math.Sqrt( 1 + 8 * matrixLength ));
+            float num = 0.5f * (float)(1 + System.Math.Sqrt( 1 + 8 * matrixLength ));
 
-            if( Math.Floor( num ) != num )
+            if( System.Math.Floor( num ) != num )
             {
                 throw new Exception( "Invalid matrix length " + matrixLength );
             }

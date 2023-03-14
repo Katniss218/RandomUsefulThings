@@ -1,4 +1,4 @@
-﻿using MathMethods;
+﻿using RandomUsefulThings.Math;
 using System;
 
 // GLSL noises
@@ -16,9 +16,9 @@ namespace Noise
             x *= freq;
             y *= freq;
 
-            float x0 = (float)Math.Floor( x );
+            float x0 = (float)System.Math.Floor( x );
             float x1 = x0 + 1.0f;
-            float y0 = (float)Math.Floor( y );
+            float y0 = (float)System.Math.Floor( y );
             float y1 = y0 + 1.0f;
 
             float v00 = Hash.Get( x0, y0 );

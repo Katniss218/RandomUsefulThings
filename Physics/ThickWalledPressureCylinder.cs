@@ -1,4 +1,4 @@
-﻿using MathMethods;
+﻿using RandomUsefulThings.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,7 +30,7 @@ namespace Physics
         {
             // output units are the same as input unit for pressure, as long as the unit for distance (r, rInternal, etc) is consistent.
             // Use consistent unit for pressure and ambient pressure.
-            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double radiusToPoint = Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
             double squareRadius = Radius * Radius;
             double squareInternalRadius = InternalRadius * InternalRadius;
 
@@ -45,7 +45,7 @@ namespace Physics
         {
             // output units are the same as input unit for pressure, as long as the unit for distance (r, rInternal, etc) is consistent.
             // Use consistent unit for pressure and ambient pressure.
-            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double radiusToPoint = Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
             double squareRadius = Radius * Radius;
             double squareInternalRadius = InternalRadius * InternalRadius;
 
@@ -70,7 +70,7 @@ namespace Physics
 
         public double CalculateRadialDisplacement( double youngsModulus, double poissonsRatio, float percAlongThickness )
         {
-            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double radiusToPoint = Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
             double squareRadius = Radius * Radius;
             double squareInternalRadius = InternalRadius * InternalRadius;
 
@@ -90,7 +90,7 @@ namespace Physics
                 throw new InvalidProgramException();
             }
 
-            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double radiusToPoint = Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
             double squareRadius = Radius * Radius;
             double squareInternalRadius = InternalRadius * InternalRadius;
 
@@ -104,7 +104,7 @@ namespace Physics
                 throw new InvalidProgramException();
             }
 
-            double radiusToPoint = MathMethods.Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
+            double radiusToPoint = Interpolation.Lerp( InternalRadius, Radius, percAlongThickness );
             double squareRadius = Radius * Radius;
             double squareInternalRadius = InternalRadius * InternalRadius;
 

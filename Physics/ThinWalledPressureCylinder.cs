@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RandomUsefulThings.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Physics
+namespace RandomUsefulThings.Physics
 {
     public class ThinWalledPressureCylinder
     {
@@ -36,7 +37,7 @@ namespace Physics
         {
             // unit out same as pressure in, assuming consistent distance unit.
             // the negative weirds me out, but apparently that's correct.
-            return MathMethods.Interpolation.Lerp( -pressure, 0.0, insideToOutsideFactor );
+            return Interpolation.Lerp( -pressure, 0.0, insideToOutsideFactor );
         }
     }
 }

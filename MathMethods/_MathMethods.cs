@@ -1,10 +1,21 @@
 ﻿using System;
 using System.Drawing;
 
-namespace MathMethods
+namespace RandomUsefulThings.Math
 {
-    public class MathMethods
+    public static class MathMethods
     {
+
+        // n*(n+1)/2
+        [Obsolete( "untested" )]
+        public static long SumOfNaturalNumbers( int lastElement )
+        {
+            // returns the sum of all natural numbers less than or equal to the parameter.
+
+            return (long)lastElement * ((long)lastElement + 1) / 2;
+        }
+
+
         public static int Sqrt( int x ) // Returns the floor of the square root of the specified integer. Newton-Raphson method.
         {
             double Prev = 0;
@@ -27,12 +38,12 @@ namespace MathMethods
             // Negative values of range wrap into [-range..0]
             // Positive values of range wrap into [0-..range]
 
-            return x - range * (float)Math.Floor( x / range );
+            return x - range * (float)System.Math.Floor( x / range );
         }
 
         public static double Modulo( double x, double range )
         {
-            return x - range * Math.Floor( x / range );
+            return x - range * System.Math.Floor( x / range );
         }
 
         [Obsolete( "Don't use this. For educational purposes only." )]
@@ -99,7 +110,7 @@ namespace MathMethods
             {
                 return 1.0;
             }
-            return Math.Sin( x ) / x;
+            return System.Math.Sin( x ) / x;
         }
 
         /// <summary>
@@ -113,7 +124,7 @@ namespace MathMethods
             {
                 return 1.0;
             }
-            return Math.Sin( Math.PI * x ) / (Math.PI * x);
+            return System.Math.Sin( System.Math.PI * x ) / (System.Math.PI * x);
         }
 
         public static T Clamp<T>( T value, T min, T max ) where T : IComparable<T>
@@ -153,7 +164,7 @@ namespace MathMethods
         public static float Length( float x, float y )
         {
             // length of a vector.
-            return (float)Math.Sqrt( LengthSquared( x, y ) );
+            return (float)System.Math.Sqrt( LengthSquared( x, y ) );
         }
 
         public static float Dot( float v1x, float v1y, float v2x, float v2y )
@@ -298,7 +309,7 @@ namespace MathMethods
         public static float RoundToMultiple( float value, float multipleOfThis )
         {
             // Rounds the number to the closest integer in the space where `multipleOfThis` = 1, then brings it back up to the correct range.
-            return multipleOfThis * (float)Math.Round( value / multipleOfThis );
+            return multipleOfThis * (float)System.Math.Round( value / multipleOfThis );
         }
 
         /// <summary>
@@ -605,17 +616,14 @@ namespace MathMethods
         /// <summary>
         /// Reasonably accurate.
         /// </summary>
-        /// <param name="x"></param>
-        /// <returns></returns>
         public static double Log( double x )
         {
             const double E = 2.718281828459045235;
             const int ITERATIONS = 20; // 20 default.
 
-            // Trap illegal values
             if( x <= 0 )
             {
-                return double.NaN;  // NaN
+                return double.NaN;
             }
 
             // Confine x to a sensible range
@@ -654,7 +662,7 @@ namespace MathMethods
             double squaredExp = (x - midpoint) / standardDeviation;
             squaredExp *= squaredExp;
 
-            return (1 / (standardDeviation * SqrtTwoPI)) * Math.Pow( Math.E, -0.5 * squaredExp );
+            return (1 / (standardDeviation * SqrtTwoPI)) * System.Math.Pow( System.Math.E, -0.5 * squaredExp );
         }
 
         public static float Sqrt( float x )
@@ -717,6 +725,11 @@ namespace MathMethods
         /// The circle constant.
         /// </summary>
         public static double PI = 3.1415926535897932384626433832795028841971693993751;
+
+        /// <summary>
+        /// Base of the natural logarithm.
+        /// </summary>
+        public static double E = 2.7182818284590452353602874713526624977572470936999;
 
         /// <summary>
         /// One degree in radians.

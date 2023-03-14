@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods.Graphs
+namespace RandomUsefulThings.Misc.Graphs
 {
     public static class MyLinq
     {

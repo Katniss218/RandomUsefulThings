@@ -1,4 +1,4 @@
-﻿using MathMethods;
+﻿using RandomUsefulThings.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,8 +13,8 @@ namespace Noise
         /// <param name="smoothness">[0..1]</param>
         public static (float grayscale, float distance) ValueAt( float x, float y, float smoothness )
         {
-            float nx = (float)Math.Floor( x );
-            float ny = (float)Math.Floor( y );
+            float nx = (float)System.Math.Floor( x );
+            float ny = (float)System.Math.Floor( y );
             float fx = x - nx;
             float fy = y = ny;
 
@@ -30,10 +30,10 @@ namespace Noise
                     float oy = Hash.Hash2( ngx, ngy ).y;
 
                     // distance to cell		
-                    float d = MathMethods.MathMethods.Length( gy - fx + ox, gx - fy - oy );
+                    float d = MathMethods.Length( gy - fx + ox, gx - fy - oy );
 
                     // cell color
-                    float value = Hash.Hash1( MathMethods.MathMethods.Dot( ngx, ngy, 5.9129015f, 188.73386f ) ); // the type of hash is important
+                    float value = Hash.Hash1( MathMethods.Dot( ngx, ngy, 5.9129015f, 188.73386f ) ); // the type of hash is important
 
                     // do the smooth min for colors and distances
                     float h = Easing.Smoothstep( -1.0f, 1.0f, (distance - d) / smoothness );

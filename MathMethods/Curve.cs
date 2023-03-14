@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Math
 {
     public class CurvePoint
     {

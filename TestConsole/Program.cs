@@ -1,5 +1,4 @@
 ﻿using Geometry;
-using MathMethods;
 using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
 using RandomUsefulThings.Misc;
@@ -19,15 +18,15 @@ namespace TestConsole
 
             double xd;
 
-            xd = MathMethods.MathMethods.BellCurve( 0, 0.4, 0 );
-            xd = MathMethods.MathMethods.BellCurve( 1, 0.4, 0 );
-            xd = MathMethods.MathMethods.BellCurve( 2, 0.4, 0 );
+            xd = MathMethods.BellCurve( 0, 0.4, 0 );
+            xd = MathMethods.BellCurve( 1, 0.4, 0 );
+            xd = MathMethods.BellCurve( 2, 0.4, 0 );
 
             SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100000, 1000 )
             {
                 ParameterFunc = ( t ) => t * 4000000 + 0.001f,
                 //Reference = ( x ) => Math.Sin( x ),
-                Reference = ( x ) => Math.Sqrt( x ),
+                Reference = ( x ) => System.Math.Sqrt( x ),
                 GetError = ( a, b ) => a - b
             };
 
@@ -42,11 +41,11 @@ namespace TestConsole
 
             b.Add( "Math.Exp(double)", ( x ) =>
             {
-                return Math.Sqrt( x );
+                return System.Math.Sqrt( x );
             } );
             b.Add( "Custom Exp(double)", ( x ) =>
             {
-                return MathMethods.MathMethods.Sqrt( x );
+                return MathMethods.Sqrt( x );
             } );
 
             b.Run();

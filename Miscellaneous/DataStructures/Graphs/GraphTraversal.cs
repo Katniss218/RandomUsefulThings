@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MathMethods.Graphs
+namespace RandomUsefulThings.Misc.Graphs
 {
     /// <summary>
     /// Defines a node in a tree data structure that contains children of the same type as itself.

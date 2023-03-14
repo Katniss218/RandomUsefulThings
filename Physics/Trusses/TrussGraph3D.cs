@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RandomUsefulThings.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -39,7 +40,7 @@ namespace RandomUsefulThings.Physics.Trusses
             // member angle is the angle from vertical in degrees.
 
             double memberArea = cylinderArea / numberOfMembers;
-            double cosTheta = System.Math.Cos( memberAngle * MathMethods.MathMethods.DegToRad );
+            double cosTheta = System.Math.Cos( memberAngle * MathMethods.DegToRad );
             double memberAreaWithAngle = memberArea / cosTheta;
             return memberAreaWithAngle;
         }

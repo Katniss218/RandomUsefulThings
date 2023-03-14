@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods.Integrals
+namespace RandomUsefulThings.Math.Integrals
 {
     public class SimpsonRule
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Math
 {
     public static class Interpolation
     {
@@ -31,11 +31,11 @@ namespace MathMethods
         /// </summary>
         public static float Lerp( float from, float to, float t )
         {
-            return Math.Clamp( LerpUnclamped( from, to, t ), from, to );
+            return System.Math.Clamp( LerpUnclamped( from, to, t ), from, to );
         }
         public static double Lerp( double from, double to, double t )
         {
-            return Math.Clamp( LerpUnclamped( from, to, t ), from, to );
+            return System.Math.Clamp( LerpUnclamped( from, to, t ), from, to );
         }
 
         // returns where in between the 2 values the current value is (returns the t factor in linear interpolation).
@@ -51,7 +51,7 @@ namespace MathMethods
         public static double Interpolate( float from, float to, float t, EasingFunction easingFunction )
         {
             // lerp with an easing function applied to the value of t.
-            float clampedT = Math.Clamp( t, 0, 1 );
+            float clampedT = System.Math.Clamp( t, 0, 1 );
             return LerpUnclamped( from, to, easingFunction( clampedT ) );
         }
 
@@ -75,7 +75,7 @@ namespace MathMethods
             // It is defined as a + Smoothstep(0, 1, t) * (b - a), where t is the interpolation value such that 0 <= t <= 1.
 
             // Clamp t to the range [0, 1]
-            t = Math.Max( Math.Min( t, 1 ), 0 );
+            t = System.Math.Max( System.Math.Min( t, 1 ), 0 );
 
             // Calculate the smooth interpolation value
             return a + Easing.Smoothstep( 0, 1, t ) * (b - a);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RandomUsefulThings.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,8 +14,8 @@ namespace Noise
 
         public static (float x, float y) Hash2( float x, float y )
         {
-            float dot1 = MathMethods.MathMethods.Dot( x, y, 127.1f, 311.7f );
-            float dot2 = MathMethods.MathMethods.Dot( x, y, 269.5f, 183.3f );
+            float dot1 = MathMethods.Dot( x, y, 127.1f, 311.7f );
+            float dot2 = MathMethods.Dot( x, y, 269.5f, 183.3f );
 
             float sinD1 = (float)(Math.Sin( dot1 ) * 43758.5453);
             float sinD2 = (float)(Math.Sin( dot2 ) * 43758.5453);

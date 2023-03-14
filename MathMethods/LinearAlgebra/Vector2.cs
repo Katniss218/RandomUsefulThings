@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RandomUsefulThings.Math;
 
 namespace Geometry
 {
@@ -228,8 +229,8 @@ namespace Geometry
         public static Vector2 RoundToMultiple( Vector2 value, float multiple )
         {
             return new Vector2(
-                MathMethods.MathMethods.RoundToMultiple( value.X, multiple ),
-                MathMethods.MathMethods.RoundToMultiple( value.Y, multiple )
+                MathMethods.RoundToMultiple( value.X, multiple ),
+                MathMethods.RoundToMultiple( value.Y, multiple )
                 );
         }
 

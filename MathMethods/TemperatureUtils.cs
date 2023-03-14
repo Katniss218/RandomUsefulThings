@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MathMethods
+namespace RandomUsefulThings.Math
 {
     public class TemperatureUtils
     {
@@ -84,7 +84,7 @@ namespace MathMethods
 
         public static double GetSolarConstant( double starTemperature, double starRadius, double planetSma )
         {
-            double radioSq = (4.0 * Math.PI * starRadius) / (4.0 * Math.PI * planetSma);
+            double radioSq = (4.0 * System.Math.PI * starRadius) / (4.0 * System.Math.PI * planetSma);
             radioSq *= radioSq;
 
             double Ks = SIGMA * (starTemperature * starTemperature * starTemperature * starTemperature) * radioSq;
@@ -103,7 +103,7 @@ namespace MathMethods
             // return [W] = Ks [W/m^2] * PI * r [m] ^2
 
             double Ks = GetSolarConstant( starTemperature, starRadius, planetSma );
-            return Ks * Math.PI * (planetRadius * planetRadius);
+            return Ks * System.Math.PI * (planetRadius * planetRadius);
         }
 
         public static double GetEnergyAbsorbed( double energyIntercepted, double albedo )
@@ -139,7 +139,7 @@ namespace MathMethods
                 - 0.00000199 * temperature * temperature * relativeHumidity * relativeHumidity;
             if( relativeHumidity < 13 && temperature >= 80.0 && temperature <= 112.0 )
             {
-                heatIndex -= ((13.0 - relativeHumidity) / 4.0) * Math.Sqrt( (17.0 - Math.Abs( temperature - 95.0 )) / 17.0 );
+                heatIndex -= ((13.0 - relativeHumidity) / 4.0) * System.Math.Sqrt( (17.0 - System.Math.Abs( temperature - 95.0 )) / 17.0 );
             }
             if( relativeHumidity > 85.0 && temperature >= 80.0 && temperature <= 87.0 )
             {
@@ -152,7 +152,7 @@ namespace MathMethods
         public static double CalculateWindChill( double temperature, double windSpeed )
         {
             if( temperature > 50.0 || windSpeed < 3.0 ) return temperature;
-            double windChill = 35.74 + 0.6215 * temperature - 35.75 * Math.Pow( windSpeed, 0.16 ) + 0.4275 * temperature * Math.Pow( windSpeed, 0.16 );
+            double windChill = 35.74 + 0.6215 * temperature - 35.75 * System.Math.Pow( windSpeed, 0.16 ) + 0.4275 * temperature * System.Math.Pow( windSpeed, 0.16 );
             return windChill;
         }
     }

@@ -11,6 +11,23 @@ namespace RandomUsefulThings.Math
         //public const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930382;
         //public const double TwoPI = 6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359642961730265646132941876892191011644634507188162569622349005682054038770422111192892458979098607639;
 
+        // Taylor series approximations:
+        // sin(x) = x - x^3/3! + x^5/5! - x^7/7! + x^9/9! - ...
+        // arcsin(x) = x + (1/2)x^3/3 + (1/2)(3/4)x^5/5 + (1/2)(3/4)(5/6)x^7/7 + ...
+        // also close to x - 1, arcsin(x) = π/2 - √(1-x^2) - (1/6) (1-x^2)^(3/2)
+
+        // cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
+        // arccos(x) = π/2 - arcsin(x)
+
+        // tan(x) = x + x^3/3 + 2x^5/15 + 17x^7/315 + 62x^9/2835 + ...
+        // tan(x) = sin(x) / cos(x)
+        // arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
+
+        // can be approximated with just +-*/% by precomputing factorials and using multiplication for powers.
+
+        // CORDIC algorithm can be used to calculate approximate values of trig functions.
+
+
         const float HalfPI = 1.570796326794f;
         const float PI = 3.141592653589f;
         const float TwoPI = 6.283185307179f;
