@@ -11,17 +11,13 @@ namespace RandomUsefulThings.Math
         //public const double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930382;
         //public const double TwoPI = 6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359642961730265646132941876892191011644634507188162569622349005682054038770422111192892458979098607639;
 
-        // Taylor series approximations:
-        // sin(x) = x - x^3/3! + x^5/5! - x^7/7! + x^9/9! - ...
-        // arcsin(x) = x + (1/2)x^3/3 + (1/2)(3/4)x^5/5 + (1/2)(3/4)(5/6)x^7/7 + ...
-        // also close to x - 1, arcsin(x) = π/2 - √(1-x^2) - (1/6) (1-x^2)^(3/2)
 
-        // cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
-        // arccos(x) = π/2 - arcsin(x)
+        // 
+        // 
 
-        // tan(x) = x + x^3/3 + 2x^5/15 + 17x^7/315 + 62x^9/2835 + ...
-        // tan(x) = sin(x) / cos(x)
-        // arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
+        // 
+        // 
+        // 
 
         // can be approximated with just +-*/% by precomputing factorials and using multiplication for powers.
 
@@ -40,6 +36,8 @@ namespace RandomUsefulThings.Math
         /// <returns>The value of the sine. Maximum absolute value of error: 10^-6, median: 10^-8.</returns>
         public static float Sin( float x )
         {
+            // Taylor Series approximation: Sin(x) =~ x - (x^3)/3! + (x^5)/5! - (x^7)/7! + (x^9)/9! - ...
+
             // Range reduction.
             float newX = x % TwoPI;
             if( newX > PI )
@@ -87,6 +85,8 @@ namespace RandomUsefulThings.Math
         /// <returns>The value of the cosine. Maximum absolute value of error: 10^-4, median: 10^-7.</returns>
         public static float Cos( float x )
         {
+            // Taylor Series approximation: Cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
+
             x = ((x + PI) % TwoPI) - PI;
 
             float x2 = x * x;
@@ -109,57 +109,84 @@ namespace RandomUsefulThings.Math
 
         public static float Tan( float x )
         {
-            // rough approximation
-            // x + 0.5x^4 + 0.01x^16 + 0.000005x^32
-            throw new NotImplementedException();
+            // Taylor Series approximation: Tan(x) = x + x^3/3 + 2x^5/15 + 17x^7/315 + 62x^9/2835 + ...
+            // Not used.
+
+            // Tan(x) = Sin(x) / Cos(x)
+
+            float sin = Sin( x );
+            float cos = Cos( x );
+            return sin / cos; // Generally close, but could be better when close to the asymptotes.
         }
 
         public static float Asin( float x )
         {
-            const float HalfPI = 1.57079632679f;
-            const float MinusHalfPI = 1.57079632679f;
+            // Taylor Series approximation: Arcsin(x) =~ x + (1/2)x^3/3 + (1/2)(3/4)x^5/5 + (1/2)(3/4)(5/6)x^7/7 + ...
+            // Not used here.
 
-            if( x == 0 ) return 0;
-            if( x <= 1f ) return MinusHalfPI;
-            if( x >= 1f ) return HalfPI;
+            const float HalfPI = 1.57079632679f;
+
+            if( x > -0.0175f && x < 0.0175f ) 
+                return x;
+            if( x <= -1f ) 
+                return -HalfPI;
+            if( x >= 1f ) 
+                return HalfPI;
 
             bool negative = x < 0;
             if( negative )
                 x = -x;
 
-            // x + 0.035x^2 + 0.244x^4 + 0.168x^16 + 0.11x^128
             // Minimum error: -0.0138, at x = 0.9999
             // Maximum error: 0.01522, at x = 0.9979
             float accumulator = x;
             x = x * x; // x^2
-            accumulator += 0.035f * x;
+            accumulator += 0.034f * x;
             x = x * x; // x^4
-            accumulator += 0.244f * x;
-            x = x * x; // x^8
-            x = x * x; // x^16
-            x = x * x; // x^32
-            accumulator += 0.168f * x;
-            x = x * x; // x^64
-            x = x * x; // x^128
-            accumulator += 0.11f * x;
 
-            if( negative )
+            if( x > -0.6f && x < 0.6f )
             {
-                return -accumulator;
+                accumulator += 0.24121f * x;
+                return negative ? -accumulator : accumulator; // Arcsin(x) =~ x + 0.034x^2 + 0.24121x^4
             }
-            return accumulator;
+            accumulator += 0.2407f * x;
+            x = x * x; // x^8
+
+            if( x > -0.8f && x < 0.8f )
+            {
+                x = x * x; // x^16
+                accumulator += 0.22f * x;
+                return negative ? -accumulator : accumulator; // Arcsin(x) =~ x + 0.034x^2 + 0.2407x^4 + 0.22x^16
+            }
+            accumulator += 0.009f * x;
+            x = x * x; // x^16
+            accumulator += 0.1875f * x;
+            x = x * x; // x^32
+            accumulator -= 0.124f * x;
+            x = x * x; // x^64
+            accumulator += 0.309f * x;
+            x = x * x; // x^128
+            accumulator -= 0.306f * x;
+            x = x * x; // x^256
+            accumulator += 0.217f * x;
+
+            return negative ? -accumulator : accumulator; // Arcsin(x) =~ x + 0.034x^2 + 0.2407x^4 + 0.009x^8 + 0.1865x^16 - 0.124x^32 + 0.309x^64 - 0.306x^128 + 0.217x^256
         }
 
-        [Obsolete( "verify that the implementation is correct. should work." )]
         public static float Acos( float x )
         {
+            // Arccos(x) = π/2 - arcsin(x)
+
             const float HalfPI = 1.57079632679f;
+
             return HalfPI - Asin( x );
         }
 
-        [Obsolete("verify that the implementation is correct. should work.")]
         public static float Atan( float x )
         {
+            // Taylor Series approximation: Arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
+            // Not used.
+
             const float HalfPI = 1.57079632679f;
             const float HalfPIMinus1 = 0.57079632679f;
 

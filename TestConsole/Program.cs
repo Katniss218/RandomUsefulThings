@@ -14,7 +14,8 @@ namespace TestConsole
         {
             float x;
 
-            x = Trigonometry.Cos( 3.1416f );
+            x = Trigonometry.Tan( 4.7125f );
+            x = (float)Math.Tan( 4.7125f );
 
             double xd;
 
@@ -24,9 +25,9 @@ namespace TestConsole
 
             SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100000, 1000 )
             {
-                ParameterFunc = ( t ) => t * 4000000 + 0.001f,
+                ParameterFunc = ( t ) => t,
                 //Reference = ( x ) => Math.Sin( x ),
-                Reference = ( x ) => System.Math.Sqrt( x ),
+                Reference = ( x ) => Math.Asin( x ),
                 GetError = ( a, b ) => a - b
             };
 
@@ -39,13 +40,13 @@ namespace TestConsole
                 return Trigonometry.Sin( x );
             } );*/
 
-            b.Add( "Math.Exp(double)", ( x ) =>
+            b.Add( "Math.Acos(double)", ( x ) =>
             {
-                return System.Math.Sqrt( x );
+                return Math.Asin( x );
             } );
-            b.Add( "Custom Exp(double)", ( x ) =>
+            b.Add( "Custom Acos(double)", ( x ) =>
             {
-                return MathMethods.Sqrt( x );
+                return Trigonometry.Asin( x );
             } );
 
             b.Run();
