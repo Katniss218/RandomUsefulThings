@@ -645,6 +645,18 @@ namespace MathMethods
             return t + power_adjust;
         }
 
+        public static double BellCurve( double x, double standardDeviation, double midpoint )
+        {
+            // gaussian distribution.
+
+            const double SqrtTwoPI = 2.50662827463;
+
+            double squaredExp = (x - midpoint) / standardDeviation;
+            squaredExp *= squaredExp;
+
+            return (1 / (standardDeviation * SqrtTwoPI)) * Math.Pow( Math.E, -0.5 * squaredExp );
+        }
+
         public static float Sqrt( float x )
         {
             if( x < 0 ) // about 10x slower than Math.Sqrt for large numbers.

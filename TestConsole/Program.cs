@@ -17,6 +17,12 @@ namespace TestConsole
 
             x = Trigonometry.Cos( 3.1416f );
 
+            double xd;
+
+            xd = MathMethods.MathMethods.BellCurve( 0, 0.4, 0 );
+            xd = MathMethods.MathMethods.BellCurve( 1, 0.4, 0 );
+            xd = MathMethods.MathMethods.BellCurve( 2, 0.4, 0 );
+
             SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100000, 1000 )
             {
                 ParameterFunc = ( t ) => t * 4000000 + 0.001f,
