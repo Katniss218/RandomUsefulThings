@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace RandomUsefulThings.Math
 {
     public static class MathMethods
     {
-
         // n*(n+1)/2
         [Obsolete( "untested" )]
         public static long SumOfNaturalNumbers( int lastElement )
@@ -221,6 +221,23 @@ namespace RandomUsefulThings.Math
             return (a * b) / GCD( a, b );
         }
 
+        [Obsolete( "Unconfirmed" )]
+        public static List<int> PrimeFactors( int n )
+        {
+            List<int> factors = new List<int>();
+            int i = 2;
+            while( n > 1 )
+            {
+                while( n % i == 0 )
+                {
+                    factors.Add( i );
+                    n /= i;
+                }
+                i++;
+            }
+            return factors;
+        }
+
         // sum of first n numbers that are 1 or larger. Also the 3-sided figurate number.
         public static int Triangular( int n )
         {
@@ -264,6 +281,47 @@ namespace RandomUsefulThings.Math
             return acc;
         }
 
+        [Obsolete("Unconfirmed")]
+        public static List<int> ContinuedFraction( double x )
+        {
+            // returns the continued fraction ? maybe idk
+
+            List<int> terms = new List<int>();
+            int integerPart = (int)x;
+            double fractionPart = x - integerPart;
+            while( fractionPart != 0 )
+            {
+                int term = (int)(1 / fractionPart);
+                terms.Add( term );
+                fractionPart = 1 / fractionPart - term;
+            }
+            terms.Insert( 0, integerPart );
+            return terms;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static int Totient( int n )
+        {
+            // Supposed to be Euler's Totient function.
+            int result = n;
+            for( int p = 2; p * p <= n; p++ )
+            {
+                if( n % p == 0 )
+                {
+                    while( n % p == 0 )
+                    {
+                        n /= p;
+                    }
+                    result -= result / p;
+                }
+            }
+            if( n > 1 )
+            {
+                result -= result / n;
+            }
+            return result;
+        }
+
         /// <summary>
         /// Returns the factorial of a given number (the product of all the natural numbers less than or equal to it).
         /// </summary>
@@ -279,9 +337,9 @@ namespace RandomUsefulThings.Math
             }
 
             long result = 1;
-            for( int i = 2; i <= value; i++ ) // could be optimized by a while loop.
+            for( ; value >= 2; --value )
             {
-                result *= i;
+                result *= value;
             }
             return result;
         }
@@ -308,7 +366,7 @@ namespace RandomUsefulThings.Math
         /// </summary>
         public static float RoundToMultiple( float value, float multipleOfThis )
         {
-            // Rounds the number to the closest integer in the space where `multipleOfThis` = 1, then brings it back up to the correct range.
+            // Rounds the number to the closest integer in space where `multipleOfThis` = 1, then brings it back up to the correct range.
             return multipleOfThis * (float)System.Math.Round( value / multipleOfThis );
         }
 
@@ -334,16 +392,27 @@ namespace RandomUsefulThings.Math
             return fov;
         }
 
+        [Obsolete("Unconfirmed")]
+        public static double Exp( double x, double b )
+        {
+            // exp but with arbitrary base b.
+            return System.Math.Exp( b * System.Math.Log( x ) );
+        }
 
+        [Obsolete( "Unconfirmed" )]
+        public static double Round( double x, double b )
+        {
+            // Rounds the value in the specified number system (base b)
+            return System.Math.Round( x / b ) * b;
+        }
 
-
-        // maclaurin expansion for e^x
-        // e^x =~ 1 + x + (x^2)/2! + (x^3)/3! + (x^4)/4! + ...
-
+        /// <summary>
+        /// Computes e raised to the power of x.
+        /// </summary>
         public static double Exp( double x ) // Reasonably accurate around x < 10.
         {
             // exp(x+y) = exp(x)*exp(y)
-            // so we can precompute a table with values for the integer part (there's only around 700 items for the full 64-bit precision).
+            // so we can precompute a table with values for the integer part (the full 64-bit precision only has range x in [-745..710]).
             // The fractional part is also only important near 0.
 
             double[] ExpAdjustment = new double[256]
@@ -611,16 +680,42 @@ namespace RandomUsefulThings.Math
             return BitConverter.Int64BitsToDouble( tmp << 32 ) * ExpAdjustment[index];
         }
 
+        public static double ExpTaylor( double x )
+        {
+            // maclaurin expansion for e^x
+            // e^x =~ 1 + x + (x^2)/2! + (x^3)/3! + (x^4)/4! + ...
 
-        // All logarithms are proportional. Having a function approximation for one base, we already know all bases.
-        // log10(x) = log2(x) / log2(10)
-        // all logarithms have a root at x=1
+            // taylor series, 7 terms. Accurate in [-2.4..2.4]
+            return (362880 + x * (362880 + x * (181440 + x * (60480 + x * (15120 + x * (3024 + x * (504 + x * (72 + x * (9 + x))))))))) * 2.75573192e-6;
+        }
+
+        public static double ExpFunky( double x ) // slower but seems to be more accurate than BitConverter exp.
+        {
+            double s = 1;
+            double a = 1;
+            double y = 1;
+            double x1 = x / 200;
+
+            for( int k = 1; k <= 200; k++ )
+            {
+                a /= k;
+                y *= x1;
+                s += a * y;
+            }
+
+            s = System.Math.Pow( s, 200 ); // s to 200 power (integer, can be done without Math.Pow).
+            return s;
+        }
 
         /// <summary>
         /// Reasonably accurate.
         /// </summary>
         public static double Log( double x )
         {
+            // All logarithms are proportional. Having a function approximation for one base, we already know all bases.
+            // log10(x) = log2(x) / log2(10)
+            // all logarithms have a root at x=1
+
             const double E = 2.718281828459045235;
             const int ITERATIONS = 20; // 20 default.
 
@@ -705,21 +800,6 @@ namespace RandomUsefulThings.Math
             // Householder's method:
             // x_n + 1 = x_n + 2(x - x_n ^ 2) / (2x_n ^ 2 - x)
             return current;
-
-            /*
-            initial_guess = 2**(n//2) * 2**((n%2)*0.5)
-
-            where "n" is the integer closest to the input value "x" that is greater than or equal to zero.
-            This formula computes an initial guess by first computing the integer part of the square root of "x" (i.e., "n//2")
-            and then adding half a unit if "x" is odd (i.e., "(n%2)0.5"), and finally multiplying by 2 raised to the power of half the number
-            of bits used to represent the floating-point values (i.e., "2*(-k/2)").
-
-            This initial guess is based on the observation that the square root of a number "x" is roughly
-            2 raised to the power of half the number of bits used to represent the floating-point values
-            (i.e., "2**(-k/2)"), where "k" is the number of bits used. 
-            This observation can be used to compute an initial guess that is close to the actual square root and
-            that can help speed up the convergence of the Newton-Raphson method.
-            */
         }
 
         /// <summary>
@@ -739,7 +819,6 @@ namespace RandomUsefulThings.Math
 
             return result;
         }
-
 
 
         /// <summary>

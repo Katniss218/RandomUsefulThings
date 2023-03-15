@@ -31,7 +31,7 @@ namespace RandomUsefulThings.Math
         // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
 
         /// <summary>
-        /// Calculates the sine of the specified angle in radians.
+        /// Calculates the approximation of the sine of the specified angle in radians.
         /// </summary>
         /// <returns>The value of the sine. Maximum absolute value of error: 10^-6, median: 10^-8.</returns>
         public static float Sin( float x )
@@ -80,7 +80,7 @@ namespace RandomUsefulThings.Math
         }
 
         /// <summary>
-        /// Calculates the cosine of the specified angle in radians.
+        /// Calculates the approximation of the cosine of the specified angle in radians.
         /// </summary>
         /// <returns>The value of the cosine. Maximum absolute value of error: 10^-4, median: 10^-7.</returns>
         public static float Cos( float x )
@@ -107,6 +107,10 @@ namespace RandomUsefulThings.Math
                 + (x12 / 479001600);
         }
 
+        /// <summary>
+        /// Calculates the approximation of the tangent of the specified angle in radians.
+        /// </summary>
+        /// <returns>The value of the cosine. Maximum absolute value of error: ?, median: ?.</returns>
         public static float Tan( float x )
         {
             // Taylor Series approximation: Tan(x) = x + x^3/3 + 2x^5/15 + 17x^7/315 + 62x^9/2835 + ...
@@ -119,10 +123,46 @@ namespace RandomUsefulThings.Math
             return sin / cos; // Generally close, but could be better when close to the asymptotes.
         }
 
+        /// <summary>
+        /// Calculates the angle in radians whose sine is the specified value.
+        /// </summary>
+        /// <returns>The value of the angle.</returns>
+        public static float AsinTaylor( float x )
+        {
+            // Taylor Series approximation: Arcsin(x) =~ x + ((1/2)x^3)/3 + ((1/2)(3/4)x^5)/5 + ((1/2)(3/4)(5/6)x^7)/7 + ...
+            // Preserves the derivatives.
+
+            float xPow2 = x * x;
+            float xPower = x;
+            float coefficient = 1.0f;
+
+            int ITERATIONS = (int)(2 + (xPow2 * xPow2 * xPow2) * 50); // Dynamic iterations based on where they're needed (roughly).
+
+            float accumulator = x;
+
+            for( int i = 0; i < ITERATIONS; i++ )
+            {
+                // new coeffs: i * 2 + 1, i * 2 + 2;
+                // 1,2 ; 3,4 ; 5,6 ; ...
+
+                float iTimes2 = i * 2.0f;
+                coefficient *= ((iTimes2 + 1) / (iTimes2 + 2));
+                xPower *= xPow2;
+
+                accumulator += (coefficient * xPower) / (iTimes2 + 3);
+            }
+
+            return accumulator;
+        }
+
+        /// <summary>
+        /// Calculates the approximation of the angle in radians whose sine is the specified value.
+        /// </summary>
+        /// <returns>The value of the angle. Maximum absolute value of error: ?, median [0..1]: ?</returns>
         public static float Asin( float x )
         {
-            // Taylor Series approximation: Arcsin(x) =~ x + (1/2)x^3/3 + (1/2)(3/4)x^5/5 + (1/2)(3/4)(5/6)x^7/7 + ...
-            // Not used here.
+            // Custom approximation.
+            // Generally does not preserve the derivatives. Faster than taylor.
 
             const float HalfPI = 1.57079632679f;
 
@@ -168,11 +208,21 @@ namespace RandomUsefulThings.Math
             x = x * x; // x^256
             accumulator += 0.217f * x;
 
+            // alternative for x in [0.77..1] => c_{2}=\pi/2-0.9992\sqrt{(1-x^{2})}-0.491\sqrt{(1-x)^{3}}
+
+            // close when x = 1, arcsin(x) =~ π/2 - sqrt((1 - x^2)) - (1/6)*(1 - x^2)^(3/2)
+            // good in about [0.95..1]
+
             return negative ? -accumulator : accumulator; // Arcsin(x) =~ x + 0.034x^2 + 0.2407x^4 + 0.009x^8 + 0.1865x^16 - 0.124x^32 + 0.309x^64 - 0.306x^128 + 0.217x^256
         }
 
+        /// <summary>
+        /// Calculates the approximation of the angle in radians whose cosine is the specified value.
+        /// </summary>
+        /// <returns>The value of the angle. Maximum absolute value of error: ?, median [0..1]: ?</returns>
         public static float Acos( float x )
         {
+            // Generally does not preserve the derivatives. Faster than taylor.
             // Arccos(x) = π/2 - arcsin(x)
 
             const float HalfPI = 1.57079632679f;
@@ -181,13 +231,28 @@ namespace RandomUsefulThings.Math
         }
 
         /// <summary>
-        /// Calculates the angle in radians whose tangent is the specified value.
+        /// Calculates the angle in radians whose cosine is the specified value.
+        /// </summary>
+        /// <returns>The value of the angle.</returns>
+        public static float AcosTaylor( float x )
+        {
+            // Arccos(x) = π/2 - arcsin(x)
+
+            const float HalfPI = 1.57079632679f;
+
+            return HalfPI - AsinTaylor( x );
+        }
+
+        /// <summary>
+        /// Calculates the approximation of the angle in radians whose tangent is the specified value.
         /// </summary>
         /// <returns>The value of the angle. Maximum absolute value of error: 10^-3, median [0..100]: 10^-5.</returns>
         public static float Atan( float x )
         {
+            // Generally does not preserve the derivatives. Faster than taylor.
+
             // Taylor Series approximation: Arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
-            // Not used.
+            // Not used here. Not very useful for values far from the origin.
 
             const float HalfPI = 1.57079632679f;
 
@@ -210,5 +275,18 @@ namespace RandomUsefulThings.Math
                 - ((HalfPI - 0.83f) / ((x * x) + 1))
                 + (0.17f / ((x * x * x) + 1));
         }
+
+        // secant
+        // Sec(x) = 1/Cos(x)
+
+        // cosecant
+        // Csc(x) = 1/Sin(x)
+
+        // cotangent
+        // Cot(x) = 1/Tan(x)
+
+        // chord
+        // Crd(x) = 2*Sin(x/2)
+
     }
 }

@@ -14,7 +14,7 @@ namespace TestConsole
         {
             float x;
 
-            x = Trigonometry.Atan( 4984.8f );
+            x = Trigonometry.AsinTaylor( 0.5f );
             x = (float)Math.Tan( 4.7125f );
 
             double xd;
@@ -23,11 +23,11 @@ namespace TestConsole
             xd = MathMethods.BellCurve( 1, 0.4, 0 );
             xd = MathMethods.BellCurve( 2, 0.4, 0 );
 
-            SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100000, 1000 )
+            SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100, 1000 )
             {
-                ParameterFunc = ( t ) => t * 100,
+                ParameterFunc = ( t ) => t * 100 - 50,
                 //Reference = ( x ) => Math.Sin( x ),
-                Reference = ( x ) => Math.Atan( x ),
+                Reference = ( x ) => Math.Exp( x ),
                 GetError = ( a, b ) => a - b
             };
 
@@ -40,13 +40,21 @@ namespace TestConsole
                 return Trigonometry.Sin( x );
             } );*/
 
-            b.Add( "Math.Acos(double)", ( x ) =>
+            b.Add( "Custom fac(double)", ( x ) =>
             {
-                return Math.Atan( x );
+                return Math.Exp( x );
             } );
-            b.Add( "Custom Acos(double)", ( x ) =>
+            b.Add( "Custom fac(double)", ( x ) =>
             {
-                return Trigonometry.Atan( x );
+                return MathMethods.Exp( x );
+            } );
+            b.Add( "Custom fac(double)", ( x ) =>
+            {
+                return MathMethods.ExpFunky( x );
+            } );
+            b.Add( "Custom fac(double)", ( x ) =>
+            {
+                return MathMethods.ExpInt( (int)x, 3 );
             } );
 
             b.Run();
