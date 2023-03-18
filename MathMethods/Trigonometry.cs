@@ -137,6 +137,7 @@ namespace RandomUsefulThings.Math
             float coefficient = 1.0f;
 
             int ITERATIONS = (int)(2 + (xPow2 * xPow2 * xPow2) * 50); // Dynamic iterations based on where they're needed (roughly).
+            // 2+5x^{2}\ +50x^{32} seems to be a better curve.
 
             float accumulator = x;
 

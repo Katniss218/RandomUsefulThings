@@ -6,6 +6,9 @@ namespace Physics.Pumps
 {
     public class CentrifugalPump
     {
+        // rotational speed and thickness (size along the rotation axis) determine the flowrate
+        // rotational speed and diameter determine the pressure.
+
         [Obsolete( "untested" )]
         public static double CalculateOutputPressure( double pumpSpeed, double pumpHead, double fluidDensity )
         {
