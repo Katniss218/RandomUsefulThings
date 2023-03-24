@@ -56,14 +56,15 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\Ray2D.cs" />
     <Compile Include="Assets\LineSegment2D.cs" />
     <Compile Include="Assets\Vector2.cs" />
+    <Compile Include="Assets\rotator.cs" />
     <Compile Include="Assets\test.cs" />
+    <Compile Include="Assets\Line3D.cs" />
     <Compile Include="Assets\Quaternion.cs" />
     <Compile Include="Assets\Line2D.cs" />
-    <Compile Include="Assets\Line3D.cs" />
-    <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\QuickOutline\Resources\Shaders\OutlineMask.shader" />

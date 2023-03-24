@@ -48,7 +48,7 @@ namespace Geometry
 
         public static Vector3 PointingAt( Vector3 fromPoint, Vector3 toPoint )
         {
-            // A to B = B - A
+            // `A pointing to B` is equal to `B - A`
 
             return new Vector3(
                 toPoint.X - fromPoint.X,
@@ -56,16 +56,39 @@ namespace Geometry
                 toPoint.Z - fromPoint.Z );
         }
 
+        public static Vector3 AngleAxis( float angle, Vector3 axis )
+        {
+            // Direction represents the axis, and magnitude represents the angle.
+            // useful for e.g. Angular Velocity
+            return axis.Normalized() * angle;
+        }
+
+        public void ToAngleAxis( out float angle, out Vector3 axis )
+        {
+            angle = this.Length;
+            axis = this / angle; // divide by magnitude, essentially the same as normalize but doesn't recompute the magnitude.
+        }
+
+        /// <summary>
+        /// Sets the length of the vector to 1.
+        /// </summary>
+        /// <returns>A new vector with its length (magnitude) equal to 1, and the same direction as the input vector.</returns>
         public Vector3 Normalized()
         {
             float length = this.Length;
             return new Vector3( X / length, Y / length, Z / length );
         }
 
+        /// <summary>
+        /// Calculates the dot product of two vectors.
+        /// </summary>
         public static float Dot( Vector3 v1, Vector3 v2 )
         {
+            // Returns the magnitude of the vector v1, when projected onto the vector v2.
+            // When both are unit vectors, returns the cosine of the angle between the 2 vectors.
+
             // dot(v1, v2) = v1.magnitude * v2.magnitude * cos(angleBetween(v1, v2))
-            // angleBetween in radians.
+            // - angleBetween in radians.
 
             return (v1.X * v2.X) + (v1.Y * v2.Y) + (v1.Z * v2.Z);
         }
@@ -90,6 +113,9 @@ namespace Geometry
             return new Vector3( x, y, z );
         }
 
+        /// <summary>
+        /// Calculates the square of the distance between the 2 vectors.
+        /// </summary>
         public static float DistanceSquared( Vector3 v1, Vector3 v2 )
         {
             float dx = v2.X - v1.X;
@@ -99,6 +125,12 @@ namespace Geometry
             return (dx * dx) + (dy * dy) + (dz * dz);
         }
 
+        /// <summary>
+        /// Calculates the distance between the 2 vectors.
+        /// </summary>
+        /// <remarks>
+        /// Slower to compute than <see cref="DistanceSquared"/> due to an additional square root.
+        /// </remarks>
         public static float Distance( Vector3 v1, Vector3 v2 )
         {
             return (float)Math.Sqrt( DistanceSquared( v1, v2 ) );
@@ -213,18 +245,17 @@ namespace Geometry
             return this - orthogonalComponent;
         }
 
+        /// <summary>
+        /// Spherically interpolates between two direction vectors.
+        /// </summary>
         public static Vector3 Slerp( Vector3 start, Vector3 end, float amount )
         {
             // "How I would intepolate linearly on a sphere is find the average mangitude, then find the average angle (weighted by the magnitudes)"
             //  -- Paculino
 
-            // Calculate the dot product of the start and end vectors.
-            float dot = Dot( start, end );
+            float dot = Math.Clamp( Dot( start, end ), -1.0f, 1.0f );
 
-            // Clamp the dot product to the range [-1, 1] to prevent any invalid calculations.
-            dot = Math.Clamp( dot, -1.0f, 1.0f );
-
-            // Calculate the angle between the two vectors.
+            // calculate the angle between the start/end vectors, and multiply by how far along that angle we want to interpolate to get the angle between the start and the returned interpolated vector.
             float angle = (float)Math.Acos( dot ) * amount;
 
             // Calculate the interpolated vector using a formula based on the angle and the start and end vectors.

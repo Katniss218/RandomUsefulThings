@@ -4,6 +4,8 @@ namespace Geometry
 {
     public struct Matrix4x4
     {
+        // Fields are M<row><col>
+
         public float M00 { get; }
         public float M01 { get; }
         public float M02 { get; }

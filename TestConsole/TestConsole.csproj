@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DifferentialEquations\DifferentialEquations.csproj" />
     <ProjectReference Include="..\Miscellaneous\RandomUsefulThings.Misc.csproj" />
     <ProjectReference Include="..\Noise\Noise.csproj" />
     <ProjectReference Include="..\Pathfinding\Pathfinding.csproj" />

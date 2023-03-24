@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Misc", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{57BE5B5A-68F9-439F-A212-70AE2891F106}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DifferentialEquations", "DifferentialEquations\DifferentialEquations.csproj", "{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math.Tests", "RandomUsefulThings.Math.Tests\RandomUsefulThings.Math.Tests.csproj", "{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}"
 EndProject
 Global
@@ -55,10 +53,6 @@ Global
 		{57BE5B5A-68F9-439F-A212-70AE2891F106}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BE5B5A-68F9-439F-A212-70AE2891F106}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BE5B5A-68F9-439F-A212-70AE2891F106}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA04A9B6-584E-4B3B-B2E8-2C868E5AEE8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
