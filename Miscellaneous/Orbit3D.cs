@@ -239,5 +239,86 @@ namespace Miscellaneous
 
              return trueAnomaly * Math.Rad2Deg;
          }*/
+
+        [Obsolete("Unconfirmed")]
+        public static double[] CalculateOrbitalElements( double[] stateVector, double mu )
+        {
+            // Extract position and velocity vectors from state vector
+            double[] positionVector = new double[] { stateVector[0], stateVector[1], stateVector[2] };
+            double[] velocityVector = new double[] { stateVector[3], stateVector[4], stateVector[5] };
+
+            // Calculate specific angular momentum vector and its magnitude
+            double[] angularMomentumVector = Vector3D.CrossProduct( positionVector, velocityVector );
+            double angularMomentumMagnitude = angularMomentumVector.Length;
+
+            // Calculate eccentricity vector and its magnitude
+            double[] eccentricityVector = Vector3D.CrossProduct( velocityVector, angularMomentumVector ) / mu - positionVector / Vector3D.Distance( positionVector, Vector3D.Zero );
+            double eccentricityMagnitude = eccentricityVector.Length;
+
+            // Calculate inclination
+            double inclination = Math.Acos( angularMomentumVector.Z / angularMomentumMagnitude );
+
+            // Calculate longitude of ascending node
+            double longitudeAscendingNode = Math.Atan2( angularMomentumVector.X, -angularMomentumVector.Y );
+            if( longitudeAscendingNode < 0 )
+            {
+                longitudeAscendingNode += 2 * Math.PI;
+            }
+
+            // Calculate argument of periapsis
+            double argumentOfPeriapsis = Math.Atan2( Vector3D.DotProduct( angularMomentumVector, eccentricityVector ) / (angularMomentumMagnitude * eccentricityMagnitude), Math.Cos( inclination ) );
+            if( argumentOfPeriapsis < 0 )
+            {
+                argumentOfPeriapsis += 2 * Math.PI;
+            }
+
+            // Calculate true anomaly
+            double trueAnomaly = Math.Atan2( Vector3D.DotProduct( positionVector, Vector3D.CrossProduct( angularMomentumVector, velocityVector ) ) / (angularMomentumMagnitude * Vector3D.Distance( positionVector, Vector3D.Zero )), Vector3D.DotProduct( positionVector, velocityVector ) / (Vector3D.Distance( positionVector, Vector3D.Zero ) * Vector3D.Distance( velocityVector, Vector3D.Zero )) );
+            if( trueAnomaly < 0 )
+            {
+                trueAnomaly += 2 * Math.PI;
+            }
+
+            // Calculate semimajor axis
+            double semimajorAxis = 1 / (2 / Vector3D.Distance( positionVector, Vector3D.Zero ) - Vector3D.DotProduct( velocityVector, velocityVector ) / mu);
+
+            // Return array of orbital elements
+            return new double[] { semimajorAxis, eccentricityMagnitude, inclination, longitudeAscendingNode, argumentOfPeriapsis, trueAnomaly };
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double[] CalculateStateVector( double[] orbitalElements, double mu )
+        {
+            // Extract orbital elements
+            double semimajorAxis = orbitalElements[0];
+            double eccentricityMagnitude = orbitalElements[1];
+            double inclination = orbitalElements[2];
+            double longitudeAscendingNode = orbitalElements[3];
+            double argumentOfPeriapsis = orbitalElements[4];
+            double trueAnomaly = orbitalElements[5];
+
+            // Calculate semilatus rectum
+            double semilatusRectum = semimajorAxis * (1 - eccentricityMagnitude * eccentricityMagnitude);
+
+            // Calculate position and velocity vectors in perifocal coordinates
+            double[] positionVectorPerifocal = new double[] { semilatusRectum / (1 + eccentricityMagnitude * Math.Cos( trueAnomaly )), 0, 0 };
+            double[] velocityVectorPerifocal = new double[] { Math.Sqrt( mu / semilatusRectum ) * eccentricityMagnitude * Math.Sin( trueAnomaly ), Math.Sqrt( mu / semilatusRectum ) * (eccentricityMagnitude + Math.Cos( trueAnomaly )), 0 };
+
+            // Create rotation matrices to transform from perifocal to geocentric equatorial coordinates
+            // 3x3 matrices
+            double[,] rotation1 = new double[,] { { Math.Cos( argumentOfPeriapsis ), -Math.Sin( argumentOfPeriapsis ), 0 }, { Math.Sin( argumentOfPeriapsis ), Math.Cos( argumentOfPeriapsis ), 0 }, { 0, 0, 1 } };
+            double[,] rotation2 = new double[,] { { 1, 0, 0 }, { 0, Math.Cos( inclination ), -Math.Sin( inclination ) }, { 0, Math.Sin( inclination ), Math.Cos( inclination ) } };
+            double[,] rotation3 = new double[,] { { Math.Cos( longitudeAscendingNode ), -Math.Sin( longitudeAscendingNode ), 0 }, { Math.Sin( longitudeAscendingNode ), Math.Cos( longitudeAscendingNode ), 0 }, { 0, 0, 1 } };
+
+            // Combine rotation matrices
+            double[,] combinedRotation = Matrix3D.Multiply( Matrix3D.Multiply( rotation1, rotation2 ), rotation3 );
+
+            // Transform position and velocity vectors from perifocal to geocentric equatorial coordinates
+            double[] positionVector = Matrix3D.Multiply( combinedRotation, positionVectorPerifocal );
+            double[] velocityVector = Matrix3D.Multiply( combinedRotation, velocityVectorPerifocal );
+
+            // Return state vector
+            return new double[] { positionVector[0], positionVector[1], positionVector[2], velocityVector[0], velocityVector[1], velocityVector[2] };
+        }
     }
 }

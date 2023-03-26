@@ -142,6 +142,21 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
         }
 
+        public double Trace() // Trace is the sum of the diagonal elements.
+        {
+            if( this.Cols != this.Rows )
+            {
+                throw new InvalidOperationException( "Trace can only be performed on a square matrix." );
+            }
+
+            double acc = 0.0;
+            for( int i = 0; i < this.Cols; i++ )
+            {
+                acc += this[i, i];
+            }
+            return acc;
+        }
+
         public static Matrix LinearCombination( (double s, Matrix m)[] elements )
         {
             // Linear combination of scalars and matrices:
@@ -344,22 +359,23 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
             Matrix U = new Matrix( this );
 
-            for( int i = 0; i < U.Rows - 1; i++ )
+            for( int row = 0; row < U.Rows - 1; row++ )
             {
-                int pivotRow = i;
-                int pivotCol = i;
+                int pivotRow = row;
+                int pivotCol = row;
+                // Pivot will always be on the diagonal starting at (0,0).
 
                 double pivotValue = U[pivotRow, pivotCol];
+
                 // Pivot can't be 0, so if it is, try to find the first nonzero pivot below the current row and swap the rows.
                 if( pivotValue == 0 )
                 {
                     bool foundPivot = false;
-                    for( int j = pivotRow + 1; j < U.Rows; j++ )
+                    for( int row2 = pivotRow + 1; row2 < U.Rows; row2++ ) // Find a row that has a non-zero value in the pivot column.
                     {
-                        double value = U[j, pivotCol];
-                        if( value != 0 )
+                        if( U[row2, pivotCol] != 0 )
                         {
-                            U.SwapRows( pivotRow, j );
+                            U.SwapRows( pivotRow, row2 );
                             pivotValue = U[pivotRow, pivotCol];
                             foundPivot = true;
                             break;
@@ -372,14 +388,15 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                     }
                 }
 
-                // Eliminate all the values below the pivot.
-                for( int j = pivotRow + 1; j < U.Rows; j++ )
+                // Eliminate all the rows below the pivot.
+                for( int row3 = pivotRow + 1; row3 < U.Rows; row3++ )
                 {
-                    double factor = U[j, pivotCol] / pivotValue;
+                    double factor = U[row3, pivotCol] / pivotValue;
 
-                    for( int k = pivotCol; k < U.Cols; k++ )
+                    // Eliminate everything below (row > pivotRow) and to the right (col >= pivotCol) of the pivot.
+                    for( int col3 = pivotCol; col3 < U.Cols; col3++ )
                     {
-                        U[j, k] -= factor * U[pivotRow, k];
+                        U[row3, col3] -= factor * U[pivotRow, col3];
                     }
                 }
             }
@@ -395,27 +412,30 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
         // Invertible a.k.a. Nonsingular
 
+        [Obsolete("I think it should work, but I don't remember if I tested it.")]
         /// <param name="A">The augumented matrix form of a system of linear equations in its Row Echelon Form (after Gaussian elimination).</param>
         /// <returns>An array of double values that are a solution to the system of equations.</returns>
-        public static double[] BackSubstitution( Matrix A )
+        public double[] BackSubstitution()
         {
-            double[] x = new double[A.Cols - 1];
+            // This doesn't modify the matrix, so technically it's not suitable for inverting.
+
+            double[] solutions = new double[this.Cols - 1]; // I guess could also be rows, without `- 1`, because the un-augumented matrix is square.
 
             // Iterate over rows in reverse order.
-            for( int i = A.Rows - 1; i >= 0; i-- )
+            for( int row = this.Rows - 1; row >= 0; row-- )
             {
                 double sum = 0;
-                // Iterate over columns to the right of diagonal element.
-                for( int j = i + 1; j < A.Cols - 1; j++ )
+                // Iterate over columns to the right of the pivot (col > pivotCol).
+                for( int col = row + 1; col < this.Cols - 1; col++ )
                 {
-                    sum += A[i, j] * x[j];
+                    sum += this[row, col] * solutions[col];
                 }
 
                 // Calculate the solution for the variable using previous the solutions and the coefficient of the diagonal element and the constant term.
-                x[i] = (A[i, A.Cols - 1] - sum) / A[i, i];
+                solutions[row] = (this[row, this.Cols - 1] - sum) / this[row, row];
             }
 
-            return x;
+            return solutions;
         }
 
         public bool Equals( Matrix other )
