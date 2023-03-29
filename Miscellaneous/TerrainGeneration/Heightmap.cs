@@ -60,7 +60,7 @@ namespace Miscellaneous.TerrainGeneration
             float slopeY = (heightUp - heightDown) / (2 * pixelSize);
 
             // Calculate the total slope and direction.
-            slope = Mathf.Sqrt( slopeX * slopeX + slopeY * slopeY );
+            slope = (float)Math.Sqrt( slopeX * slopeX + slopeY * slopeY );
             direction = new Vector2( -slopeX, -slopeY ).Normalized();
         }
 
@@ -85,8 +85,8 @@ namespace Miscellaneous.TerrainGeneration
                 return Vector2.Zero;
             }
 
-            float curvatureX = (dx * dy - dxy) / (denominator * Mathf.Sqrt( denominator ));
-            float curvatureY = (dx * dy + dxy) / (denominator * Mathf.Sqrt( denominator ));
+            float curvatureX = (dx * dy - dxy) / (float)(denominator * Math.Sqrt( denominator ));
+            float curvatureY = (dx * dy + dxy) / (float)(denominator * Math.Sqrt( denominator ));
 
             return new Vector2( curvatureX, curvatureY );
         }
@@ -106,7 +106,7 @@ namespace Miscellaneous.TerrainGeneration
 
                 // Find the neighboring points and their heights
                 List<Vector2> neighbors = SampleNeighbors( currentPos, stepSize );
-                float[] heights = neighbors.Select( n => GetHeight( n.X, n.Y ) ).ToArray();
+                float[] heights = neighbors.Select( n => Sample( n.X, n.Y ) ).ToArray();
 
                 // Find the index of the highest or lowest neighbor, depending on whether we're following a ridge or valley
                 int bestIndex = followRidge ? Array.IndexOf( heights, heights.Max() ) : Array.IndexOf( heights, heights.Min() );
@@ -133,12 +133,14 @@ namespace Miscellaneous.TerrainGeneration
             List<Vector2> maxima = new List<Vector2>();
 
             // Iterate over all points in the heightmap
-            for( int i = 0; i < size; i++ )
+            int width = heightmap.GetLength( 0 );
+            int height = heightmap.GetLength( 1 );
+            for( int i = 0; i < width; i++ )
             {
-                for( int j = 0; j < size; j++ )
+                for( int j = 0; j < height; j++ )
                 {
-                    Vector2 currentPos = new Vector2( i / (float)size, j / (float)size );
-                    float currentHeight = GetHeight( currentPos.x, currentPos.y );
+                    Vector2 currentPos = new Vector2( i / (float)width, j / (float)height );
+                    float currentHeight = Sample( currentPos.X, currentPos.Y );
 
                     // Check if the current point is a local minimum or maximum
                     bool isMinima = true;
@@ -151,7 +153,7 @@ namespace Miscellaneous.TerrainGeneration
                             if( k == 0 && l == 0 )
                                 continue;
 
-                            float neighborHeight = GetHeight( (i + k) / (float)size, (j + l) / (float)size );
+                            float neighborHeight = Sample( (i + k) / (float)width, (j + l) / (float)height );
 
                             if( neighborHeight <= currentHeight )
                                 isMaxima = false;
