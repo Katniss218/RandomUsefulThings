@@ -364,6 +364,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                 int pivotRow = row;
                 int pivotCol = row;
                 // Pivot will always be on the diagonal starting at (0,0).
+                // Pivot a.k.a. Leading Coefficient.
 
                 double pivotValue = U[pivotRow, pivotCol];
 
@@ -384,6 +385,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 
                     if( !foundPivot )
                     {
+                        // Invertible a.k.a. Nonsingular
                         throw new Exception( "Matrix is not invertible." );
                     }
                 }
@@ -401,18 +403,19 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                 }
             }
 
+            // after elimination, we can backsubstitute to solve the system of equations.
+            // we solve in reverse order (starting with the row that has 1 element).
+
+
+            // m1 * Inverse(m1) = Identity = Inverse(m1) * m1 (for square matrices)
+            // Matrix M is not invertible when there exists a nonzero vector x for which M * x = 0 (the result vector is zeroed).
+            // - This is because if the result vector is zeroed, we can't multiply it back into the original, because anything times zero is zero.
+
             return U;
         }
-        // after elimination, we can backsubstitute to solve the system of equations.
-        // we solve in reverse order (starting with the row that has 1 element).
 
 
-        // m1 * Inverse(m1) = Identity = Inverse(m1) * m1 (for square matrices)
-        // Matrix M is not invertible because there exists a nonzero vector x for which M * x = 0 (vector with all 0s)
-
-        // Invertible a.k.a. Nonsingular
-
-        [Obsolete("I think it should work, but I don't remember if I tested it.")]
+        [Obsolete("I think it should work, I vaguely remember testing it.")]
         /// <param name="A">The augumented matrix form of a system of linear equations in its Row Echelon Form (after Gaussian elimination).</param>
         /// <returns>An array of double values that are a solution to the system of equations.</returns>
         public double[] BackSubstitution()
@@ -436,6 +439,36 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
 
             return solutions;
+        }
+
+        [Obsolete("Unconfirmed")]
+        public static Matrix Convolve( Matrix input, Matrix kernel )
+        {
+            // Convolution is an operation that loops through each element in the input matrix, and for each element:
+            // - The kernel is centered over the current input element.
+            // - The surrounding elements in the input matrix are multiplied with the corresponding elements in the kernel.
+            // - The multiplied elements are added together to produce a new value for the current input element.
+
+            int kernelSize = kernel.Rows;
+            int padding = kernelSize / 2;
+            Matrix output = new Matrix( input.Rows, input.Cols );
+
+            for( int row = padding; row < input.Rows - padding; row++ )
+            {
+                for( int col = padding; col < input.Cols - padding; col++ )
+                {
+                    double sum = 0;
+                    for( int i = 0; i < kernelSize; i++ )
+                    {
+                        for( int j = 0; j < kernelSize; j++ )
+                        {
+                            sum += input[row + i - padding, col + j - padding] * kernel[i, j];
+                        }
+                    }
+                    output[row, col] = sum;
+                }
+            }
+            return output;
         }
 
         public bool Equals( Matrix other )
