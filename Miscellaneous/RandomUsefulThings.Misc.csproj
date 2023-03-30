@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphics\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MathMethods\RandomUsefulThings.Math.csproj" />
   </ItemGroup>
 
