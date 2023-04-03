@@ -38,13 +38,13 @@ namespace RandomUsefulThings.Math.PDE
             // First order (linear) derivative approximations.
 
             // -- Where `i` is the grid index and deltaX is the grid spacing (gridPosition = i * deltaX).
-            public static double Linear_Forward( Func<double, double> u, int i, double deltaX )
+            public static double Order1_Forward( Func<double, double> u, int i, double deltaX )
                 => Derivatives.NumericalMethods.FiniteDifference.FirstDerivative_Forward( u, i, deltaX );
 
-            public static double Linear_Backward( Func<double, double> u, int i, double deltaX )
+            public static double Order1_Backward( Func<double, double> u, int i, double deltaX )
                 => Derivatives.NumericalMethods.FiniteDifference.FirstDerivative_Backwards( u, i, deltaX );
 
-            public static double Linear_Central( Func<double, double> u, int i, double deltaX )
+            public static double Order1_Central( Func<double, double> u, int i, double deltaX )
                 => Derivatives.NumericalMethods.FiniteDifference.FirstDerivative_Central( u, i, deltaX );
 
             // Higher order can be approximated by fitting a higher order polynomial to the curve (by sampling 3 points instead of 2 for a quadratic for example).

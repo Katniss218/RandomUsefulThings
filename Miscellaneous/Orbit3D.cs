@@ -239,7 +239,7 @@ namespace Miscellaneous
 
              return trueAnomaly * Math.Rad2Deg;
          }*/
-
+        /*
         [Obsolete("Unconfirmed")]
         public static double[] CalculateOrbitalElements( double[] stateVector, double mu )
         {
@@ -319,6 +319,157 @@ namespace Miscellaneous
 
             // Return state vector
             return new double[] { positionVector[0], positionVector[1], positionVector[2], velocityVector[0], velocityVector[1], velocityVector[2] };
+        }*/
+
+        /*
+        [Obsolete( "Unconfirmed" )]
+        public static Vector3d CalculatePositionFromOrbitalElements( OrbitalElements elements, double time )
+        {
+            const double G = 6.6743e-11; // gravitational constant
+            const double massSun = 1.989e30; // mass of the sun
+            double meanAnomaly = elements.meanAnomalyAtEpoch + elements.meanMotion * (time - elements.epoch);
+            double eccentricAnomaly = meanAnomaly;
+            double eccentricity = elements.eccentricity;
+            for( int i = 0; i < 10; i++ ) // perform up to 10 iterations for accuracy
+            {
+                double nextEccentricAnomaly = meanAnomaly + eccentricity * Math.Sin( eccentricAnomaly );
+                if( Math.Abs( nextEccentricAnomaly - eccentricAnomaly ) < 1e-8 ) break;
+                eccentricAnomaly = nextEccentricAnomaly;
+            }
+            double trueAnomaly = 2 * Math.Atan( Math.Sqrt( (1 + eccentricity) / (1 - eccentricity) ) * Math.Tan( eccentricAnomaly / 2 ) );
+            double distanceFromFocus = elements.semiMajorAxis * (1 - eccentricity * eccentricity) / (1 + eccentricity * Math.Cos( trueAnomaly ));
+            double x = distanceFromFocus * (Math.Cos( elements.longitudeOfAscendingNode ) * Math.Cos( trueAnomaly + elements.argumentOfPeriapsis ) - Math.Sin( elements.longitudeOfAscendingNode ) * Math.Sin( trueAnomaly + elements.argumentOfPeriapsis ) * Math.Cos( elements.inclination ));
+            double y = distanceFromFocus * (Math.Sin( elements.longitudeOfAscendingNode ) * Math.Cos( trueAnomaly + elements.argumentOfPeriapsis ) + Math.Cos( elements.longitudeOfAscendingNode ) * Math.Sin( trueAnomaly + elements.argumentOfPeriapsis ) * Math.Cos( elements.inclination ));
+            double z = distanceFromFocus * Math.Sin( trueAnomaly + elements.argumentOfPeriapsis ) * Math.Sin( elements.inclination );
+            Vector3d position = new Vector3d( x, y, z );
+            return position;
+        }
+        */
+        [Obsolete( "Unconfirmed" )]
+        public static double CalculateMeanMotion( double semiMajorAxis, double centralMass )
+        {
+            // apparently, meanMotion = 2 * pi / period
+            // period = 2 * pi * sqrt(a * a * a / (G * M)) (is that true?)
+            const double G = 6.6743e-11; // gravitational constant
+            double period = 2 * Math.PI * Math.Sqrt( Math.Pow( semiMajorAxis, 3 ) / (G * centralMass) );
+            double meanMotion = 2 * Math.PI / period;
+            return meanMotion;
+        }
+
+
+        [Obsolete("Unconfirmed")]
+        public static double GetEccentricity( double semimajorAxis, double semiminorAxis )
+        {
+            double f = (semimajorAxis - semiminorAxis) / semimajorAxis;
+            return Math.Sqrt( 2 * f - Math.Pow( f, 2 ) );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetEccentricity2( double semiMajorAxis, double semiMinorAxis )
+        {
+            return Math.Sqrt( 1 - Math.Pow( semiMinorAxis / semiMajorAxis, 2 ) );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetOrbitalPeriod( double semiMajorAxis, double mass )
+        {
+            double G = 6.6743e-11;
+            double M = 1.9885e30;
+            double a = semiMajorAxis * 1000;
+            return 2 * Math.PI * Math.Sqrt( Math.Pow( a, 3 ) / (G * (M + mass)) ) / 86400;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetOrbitalPeriod2( double semiMajorAxis, double mass )
+        {
+            double G = 6.6743e-11;
+            double period = 2 * Math.PI * Math.Sqrt( Math.Pow( semiMajorAxis, 3 ) / (G * mass) );
+            return period;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetEscapeVelocity( double mass, double radius )
+        {
+            double G = 6.6743e-11;
+            return Math.Sqrt( 2 * G * mass / radius );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetApparentMagnitude( double absoluteMagnitude, double distance )
+        {
+            double pc = 3.085677581e16;
+            double luminosity = Math.Pow( 10, -0.4 * (absoluteMagnitude - 4.72) );
+            double distanceInParsecs = distance / pc;
+            return -2.5 * Math.Log10( luminosity / Math.Pow( distanceInParsecs, 2 ) );
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetStellarRadius( double luminosity, double temperature )
+        {
+            double bolometricCorrection = -0.05 * Math.Log10( luminosity );
+            double absoluteMagnitude = 4.74 - bolometricCorrection;
+            double radius = Math.Sqrt( luminosity / (4 * Math.PI * Math.Pow( 10, -0.4 * (absoluteMagnitude + 21.1) )) );
+            double sunRadius = 6.957e8;
+            return radius / sunRadius;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetHabitableZoneDistance( double stellarLuminosity, double stellarRadius )
+        {
+            double innerEdge = Math.Sqrt( stellarLuminosity / 1.1 );
+            double outerEdge = Math.Sqrt( stellarLuminosity / 0.53 );
+            double sunRadius = 6.957e8;
+            double astronomicalUnit = 1.496e11;
+            return 0.5 * (innerEdge + outerEdge) * sunRadius / astronomicalUnit;
+        }
+
+        /*
+        [Obsolete( "Unconfirmed" )]
+        public static double GetSunrise( DateTime date, double latitude, double longitude )
+        {
+            double siderealTime = GetSiderealTime( date, longitude );
+            double declination = GetSunDeclination( date );
+            double hourAngle = GetSunHourAngle( latitude, declination );
+            double sunriseTime = 12.0 - hourAngle / 15.0 - siderealTime;
+            if( sunriseTime < 0 )
+            {
+                sunriseTime += 24.0;
+            }
+            return sunriseTime;
+        }*/
+
+        [Obsolete( "Unconfirmed, probably wrong" )]
+        public static double GetRightAscension( double eclipticLongitude, double eclipticLatitude, double obliquity )
+        {
+            double eclipticLongitudeRadians = eclipticLongitude;
+            double eclipticLatitudeRadians = eclipticLatitude;
+            double obliquityRadians = obliquity;
+
+            double sinAlpha = Math.Sin( eclipticLongitudeRadians ) * Math.Cos( obliquityRadians ) - Math.Tan( eclipticLatitudeRadians ) * Math.Sin( obliquityRadians );
+            double alpha = Math.Atan2( Math.Sin( eclipticLongitudeRadians ) * Math.Cos( obliquityRadians ) + Math.Tan( eclipticLatitudeRadians ) * Math.Sin( obliquityRadians ), Math.Cos( eclipticLongitudeRadians ) );
+
+            return alpha; // rads
+        }
+
+        [Obsolete( "Unconfirmed, at least kinda wrong" )]
+        public static double GetAtmosphereDensity( double altitude )
+        {
+            double _atmosphereDensity = 90; // surface density
+            double _atmosphereHeight = 50000; // height in meters. Altitude in meters.
+
+            if( altitude <= 0 ) // wrong, actually. density would increase below sea level.
+            {
+                return _atmosphereDensity;
+            }
+            else if( altitude >= _atmosphereHeight )
+            {
+                return 0;
+            }
+            else
+            {
+                double scaleHeight = _atmosphereHeight / Math.Log( _atmosphereDensity / (_atmosphereDensity * Math.Exp( -_atmosphereHeight / _atmosphereHeight )) );
+                return _atmosphereDensity * Math.Exp( -altitude / scaleHeight );
+            }
         }
     }
 }

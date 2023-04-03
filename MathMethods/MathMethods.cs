@@ -18,14 +18,14 @@ namespace RandomUsefulThings.Math
 
         public static int Sqrt( int x ) // Returns the floor of the square root of the specified integer. Newton-Raphson method.
         {
-            double Prev = 0;
-            double Cur = x;
-            while( (int)Prev != (int)Cur )
+            double previous = 0;
+            double current = x;
+            while( (int)previous != (int)current )
             {
-                Prev = Cur;
-                Cur = Cur - ((Cur * Cur) - x) / (2 * Cur);
+                previous = current;
+                current = current - ((current * current) - x) / (2 * current);
             }
-            return (int)(Cur - (Cur % 1));
+            return (int)(current - (current % 1));
         }
 
         // erf(x) for x > 0
@@ -38,7 +38,10 @@ namespace RandomUsefulThings.Math
             // Negative values of range wrap into [-range..0]
             // Positive values of range wrap into [0-..range]
 
-            return x - range * (float)System.Math.Floor( x / range );
+            // The modulo operation is equivalent to the bitwise AND when the divisor is a power of 2
+            // mod(x, 1) = fract(x)
+
+            return x - range * (float)System.Math.Floor( x / range ); // without the floor it will equal zero at all points.
         }
 
         public static double Modulo( double x, double range )
@@ -46,13 +49,14 @@ namespace RandomUsefulThings.Math
             return x - range * System.Math.Floor( x / range );
         }
 
-        [Obsolete( "Don't use this. For educational purposes only." )]
-        public static int Fract( float n )
+        [Obsolete( "Don't use this. This is buggy because of range issues. For educational purposes only." )]
+        public static int Floor( float n )
         {
             // you can technically get the fractional part of a number by incrementing an integer until it's larger than the desired number.
             // - if you don't have access to any sort of function that can return the fractional part of a number.
 
             // Maybe a better way with repeated division by 10?
+            // Maybe could also work with binary search starting at sign(n) * int.MaxValue/2
 
             int x = 0; // ignore the fact this returns the integer part.
             if( n < 0 )
@@ -72,6 +76,12 @@ namespace RandomUsefulThings.Math
                 return x + 1;
             }
             return 0;
+        }
+
+        [Obsolete( "Don't use this. This is buggy because of range issues. For educational purposes only." )]
+        public static float Fract( float n )
+        {
+            return n = (float)Floor( n );
         }
 
         [Obsolete( "unconfirmed" )]
@@ -172,6 +182,11 @@ namespace RandomUsefulThings.Math
             // dot product between 2 vectors.
             return (v1x * v2x) + (v1y * v2y);
         }
+
+        // 1 * 10^n => 1 followed by n zeroes.
+        // 1.5 * 10^n => 15 followed by `n - number of decimal digits` zeroes. if number of decimal digits is greater or equal to the power of 10, the decimal point will still exist.
+
+        // 1 * 10^-n => 0.000...01, where total number of zeroes (including leading zero) = n.
 
         /// <summary>
         /// Mirrors the value across the specified point.
@@ -368,6 +383,13 @@ namespace RandomUsefulThings.Math
         {
             // Rounds the number to the closest integer in space where `multipleOfThis` = 1, then brings it back up to the correct range.
             return multipleOfThis * (float)System.Math.Round( value / multipleOfThis );
+        }
+
+        [Obsolete("Unconfirmed")]
+        public static double GetAngularDiameter( double distance, double radius )
+        {
+            double rad = System.Math.Atan2( radius, distance );
+            return rad;
         }
 
         /// <summary>
@@ -755,7 +777,7 @@ namespace RandomUsefulThings.Math
         {
             // gaussian distribution.
 
-            const double SqrtTwoPI = 2.50662827463;
+            const double SqrtTwoPI = 2.50662827463; // sqrt(pi*2)
 
             double squaredExp = (x - midpoint) / standardDeviation;
             squaredExp *= squaredExp;

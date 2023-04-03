@@ -40,5 +40,36 @@ namespace Geometry
             z = Math.Cos( phi );
         }
 
+        [Obsolete( "Unconfirmed" )]
+        public static double[] CartesianToSpherical( double[] cartesian )
+        {
+            double x = cartesian[0];
+            double y = cartesian[1];
+            double z = cartesian[2];
+            double r = Math.Sqrt( x * x + y * y + z * z );
+            double theta = Math.Atan2( y, x );
+            double phi = Math.Acos( z / r );
+            return new double[] { r, theta, phi };
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double[] SphericalToCartesian( double[] spherical )
+        {
+            double r = spherical[0];
+            double theta = spherical[1];
+            double phi = spherical[2];
+            double x = r * Math.Sin( phi ) * Math.Cos( theta );
+            double y = r * Math.Sin( phi ) * Math.Sin( theta );
+            double z = r * Math.Cos( phi );
+            return new double[] { x, y, z };
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetSphericalDistance( Vector3 point1, Vector3 point2 )
+        {
+            double cosDistance = Vector3.Dot( point1, point2 );
+            double distance = Math.Acos( cosDistance );
+            return distance;
+        }
     }
 }

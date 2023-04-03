@@ -256,7 +256,7 @@ namespace RandomUsefulThings.Misc
 			return solutionCount;
 		}
 
-
+		/*
 		/// <summary>
 		/// Calculate the maximum range that a ballistic projectile can be fired on given speed and gravity (and height above ground level).
 		/// </summary>
@@ -419,6 +419,6 @@ namespace RandomUsefulThings.Misc
 			}
 
 			return numSolutions;
-		}
+		}*/
 	}
 }

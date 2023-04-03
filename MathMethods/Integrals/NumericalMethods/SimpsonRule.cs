@@ -16,7 +16,7 @@ namespace RandomUsefulThings.Math.Integrals.NumericalMethods
         /// <param name="end">The end of the integrated interval.</param>
         /// <param name="slices">The number of sub-intervals (slices) to use. Must be a multiple of 2.</param>
         /// <returns>An approximation of the definite integral of the function f, in the interval [start..end].</returns>
-        [Obsolete( "Unconfirmed, it does something kinda fancy to make it faster." )]
+        [Obsolete( "The returned values seem right. Does something fancy with return values." )]
         public static double Integrate( Func<double, double> f, double start, double end, int slices )
         {
             // Simpson rule uses quadratic polynomials as the tops of the vertical slices. Usually more accurate than rectangles/trapezoids.
@@ -34,7 +34,7 @@ namespace RandomUsefulThings.Math.Integrals.NumericalMethods
                 sum += (i % 2 == 0) ? 2 * f( x ) : 4 * f( x );
             }
 
-            return (step / 3) * sum;
+            return (step / 3) * sum; // This does some fancy stuff with the sum too.
         }
     }
 }

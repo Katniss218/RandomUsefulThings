@@ -169,6 +169,14 @@ namespace Geometry
             return (float)Math.Acos( dotProduct / (aLength * bLength) );
         }
 
+        [Obsolete( "Unconfirmed" )]
+        public static double SignedAngle( Vector2 v1, Vector2 v2 )
+        {
+            double angle = Angle( v1, v2 );
+            double cross = Cross( v1, v2 );
+            return Math.Sign( cross ) * angle;
+        }
+
         /// <summary>
         /// Projects the vector onto a line defined by the direciton of the other vector.
         /// </summary>

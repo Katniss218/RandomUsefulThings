@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v3.1": {
       "TestConsole/1.0.0": {
         "dependencies": {
-          "DifferentialEquations": "1.0.0",
           "Noise": "1.0.0",
           "Pathfinding": "1.0.0",
           "RandomUsefulThings.Misc": "1.0.0",
@@ -17,11 +16,6 @@
         },
         "runtime": {
           "TestConsole.dll": {}
-        }
-      },
-      "DifferentialEquations/1.0.0": {
-        "runtime": {
-          "DifferentialEquations.dll": {}
         }
       },
       "Noise/1.0.0": {
@@ -70,11 +64,6 @@
   },
   "libraries": {
     "TestConsole/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "DifferentialEquations/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

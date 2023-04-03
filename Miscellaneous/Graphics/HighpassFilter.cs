@@ -7,6 +7,7 @@ namespace RandomUsefulThings.Misc.Graphics
 {
     public static class HighpassFilter
     {
+       /* [Obsolete( "Unconfirmed" )]
         public static Matrix Apply( Matrix input, double radius )
         {
             int kernelSize = (int)System.Math.Round( radius * 3.0 ) * 2 + 1;
@@ -19,8 +20,9 @@ namespace RandomUsefulThings.Misc.Graphics
             Matrix output = Matrix.SubtractElementwise( input, blurred );
 
             return output;
-        }
+        }*/
 
+        [Obsolete( "Unconfirmed" )]
         // Helper method to create a Gaussian kernel with the specified kernel size and standard deviation
         private static double[,] CreateGaussianKernel( int kernelSize, double sigma )
         {
@@ -42,6 +44,7 @@ namespace RandomUsefulThings.Misc.Graphics
             return kernel;
         }
 
+        [Obsolete( "Unconfirmed" )]
         // Helper method to normalize a kernel so that all weights sum to 1
         private static double[,] NormalizeKernel( double[,] kernel )
         {

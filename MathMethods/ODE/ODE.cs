@@ -24,7 +24,7 @@ namespace RandomUsefulThings.ODE
         {
             return new double[]
             {
-                // Note that neither of the variables depends on the position. They could, they just don't.
+                // Note that neither of the variables depends on the position. They absolutely could, they just don't.
                 -1 / t,                 // output[0] => dm/dt, input[0] => m
                 1 / input[0] / t,       // output[1] => dv/dt, input[1] => v
                 input[1] / t            // output[2] => dp/dt, input[2] => p

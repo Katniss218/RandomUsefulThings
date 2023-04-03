@@ -14,6 +14,13 @@ namespace TestConsole
         {
             float x;
 
+            double f1 = RandomUsefulThings.Math.Integrals.NumericalMethods.TrapezoidalRule.Integrate( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
+            double f2 = RandomUsefulThings.Math.Integrals.NumericalMethods.TrapezoidalRule.Integrate2( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
+            double f3 = RandomUsefulThings.Math.Integrals.NumericalMethods.SimpsonRule.Integrate( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
+
+            double e12 = f1 - f2;
+            double e13 = f1 - f3;
+
             x = Trigonometry.AsinTaylor( 0.5f );
             x = (float)Math.Tan( 4.7125f );
 
@@ -51,10 +58,6 @@ namespace TestConsole
             b.Add( "Custom fac(double)", ( x ) =>
             {
                 return MathMethods.ExpFunky( x );
-            } );
-            b.Add( "Custom fac(double)", ( x ) =>
-            {
-                return MathMethods.ExpInt( (int)x, 3 );
             } );
 
             b.Run();
