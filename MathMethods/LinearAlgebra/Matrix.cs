@@ -341,6 +341,8 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             // at the end, the matrix should be a triangular matrix, with its lower-left triangle all 0s.
             // apparently the determinant is equal to the main diagonal multiplied together, after the matrix is eliminated.
 
+            // Laplace expansion can also be used to compute determinants (albeit that's slow for large matrices).
+
             return U;
         }
 

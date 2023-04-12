@@ -12,23 +12,11 @@ namespace TestConsole
     {
         public static void Main( string[] args )
         {
-            float x;
+            string s = MathMethods.NumberToString( -12345, new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } );
+            string s2 = MathMethods.NumberToString( -12345, new[] { '0', '1' } );
 
-            double f1 = RandomUsefulThings.Math.Integrals.NumericalMethods.TrapezoidalRule.Integrate( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
-            double f2 = RandomUsefulThings.Math.Integrals.NumericalMethods.TrapezoidalRule.Integrate2( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
-            double f3 = RandomUsefulThings.Math.Integrals.NumericalMethods.SimpsonRule.Integrate( x => System.Math.Sin( x ), 0.0, 5.0, 50 );
-
-            double e12 = f1 - f2;
-            double e13 = f1 - f3;
-
-            x = Trigonometry.AsinTaylor( 0.5f );
-            x = (float)Math.Tan( 4.7125f );
-
-            double xd;
-
-            xd = MathMethods.BellCurve( 0, 0.4, 0 );
-            xd = MathMethods.BellCurve( 1, 0.4, 0 );
-            xd = MathMethods.BellCurve( 2, 0.4, 0 );
+            int i = MathMethods.NumberFromString( s, new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } );
+            int i2 = MathMethods.NumberFromString( s2, new[] { '0', '1' } );
 
             SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100, 1000 )
             {

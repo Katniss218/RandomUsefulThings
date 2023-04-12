@@ -55,5 +55,8 @@ namespace RandomUsefulThings.ODE
 
         // Symplectic integrators preserve some quantity.
         // They can be advanced forward, and then back and arrive at the same position.
+
+
+        // Picard iteration is a numerical method used to solve nonlinear equations and systems of equations. It is named after the French mathematician Charles Émile Picard.
     }
 }

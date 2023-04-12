@@ -1,18 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 
 namespace RandomUsefulThings.Math
 {
     public static class MathMethods
     {
-        // n*(n+1)/2
-        [Obsolete( "untested" )]
-        public static long SumOfNaturalNumbers( int lastElement )
+        public static string NumberToString( int n, char[] baseChars )
         {
-            // returns the sum of all natural numbers less than or equal to the parameter.
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+            if( n < 0 )
+            {
+                n = -n;
+                sb.Append( '-' );
+                index = 1; // insert after the negative sign.
+            }
+            int @base = baseChars.Length;
 
-            return (long)lastElement * ((long)lastElement + 1) / 2;
+            while( n > 0 )
+            {
+                int digit = n % @base; // get the current last digit.
+                sb.Insert( index, baseChars[digit] );
+                n /= @base; // divide the number, so the next digit will be retrieved next.
+            }
+
+            return sb.ToString();
+        }
+
+        public static int NumberFromString( string s, char[] baseChars )
+        {
+            int result = 0;
+            int @base = baseChars.Length;
+            int digitPositionalMultiplier = 1;
+            for( int i = s.Length - 1; i >= 0; i-- )
+            {
+                int digit = 0;
+                for( int j = 0; j < @base; j++ )
+                {
+                    if( baseChars[j] == s[i] )
+                    {
+                        digit = j;
+                        break; // will skip unknown symbols.
+                    }
+                }
+                result += digit * digitPositionalMultiplier;
+                digitPositionalMultiplier *= @base;
+            }
+            if( s[0] == '-' )
+            {
+                result = -result;
+            }
+            return result;
         }
 
 
@@ -81,32 +121,41 @@ namespace RandomUsefulThings.Math
         [Obsolete( "Don't use this. This is buggy because of range issues. For educational purposes only." )]
         public static float Fract( float n )
         {
-            return n = (float)Floor( n );
+            return n - (float)Floor( n );
         }
 
-        [Obsolete( "unconfirmed" )]
-        public static float CustomPow( float x, float y )
+        public static float FastPow( float a, int power )
         {
-            if( x == 0 || x == 1 || y == 1 )
-                return x;
+            // Fast Pow, or "Exponentiation by squaring" algorithm.
+            // This could also work with addition, producing multiplication, as well as normal exponentiation, producing tetration.
 
-            if( y == 0 )
+            if( a == 0 || a == 1 || power == 1 )
+                return a;
+
+            if( power == 0 )
                 return 1;
 
-            if( y < 0 )
+            // `a raised to negative power` == `1/a raised to positive power`.
+            if( power < 0 )
             {
-                x = 1 / x;
-                y = -y;
+                a = 1 / a;
+                power = -power;
             }
 
+            // Iterative version (it's faster).
             float result = 1;
-            while( y > 0 )
+            while( power > 0 )
             {
-                if( y % 2 == 1 )
-                    result *= x;
+                // x^y = (x^2)^(y/2) if y is even
+                // x^y = x*(x^2)^(y/2) if y is odd
+                if( power % 2 != 0 ) // make the odd case into the even case.
+                {
+                    power--;
+                    result *= a;
+                }
 
-                y /= 2;
-                x *= x;
+                power /= 2;
+                a *= a;
             }
 
             return result;
@@ -253,9 +302,12 @@ namespace RandomUsefulThings.Math
             return factors;
         }
 
-        // sum of first n numbers that are 1 or larger. Also the 3-sided figurate number.
+
         public static int Triangular( int n )
         {
+            // Returns the sum of all integers >= 1 && <= n
+            // sum of first n numbers that are 1 or larger. Also the 3-sided figurate number.
+
             if( n < 0 )
             {
                 throw new ArgumentException( "n must be a non-negative integer." );
@@ -263,9 +315,12 @@ namespace RandomUsefulThings.Math
             return n * (n + 1) / 2;
         }
 
-        // sum of Triangular called on numbers [1-n]
+
         public static int Tetrahedral( int n )
         {
+            // Equivalent to:
+            // - Triangular(x) on every x in [1..n] (inclusive), sum up the results.
+
             if( n < 0 )
             {
                 throw new ArgumentException( "n must be a non-negative integer." );
@@ -296,7 +351,7 @@ namespace RandomUsefulThings.Math
             return acc;
         }
 
-        [Obsolete("Unconfirmed")]
+        [Obsolete( "Unconfirmed" )]
         public static List<int> ContinuedFraction( double x )
         {
             // returns the continued fraction ? maybe idk
@@ -351,6 +406,7 @@ namespace RandomUsefulThings.Math
                 return 1;
             }
 
+            // Iterative method, it's faster and more stack efficient.
             long result = 1;
             for( ; value >= 2; --value )
             {
@@ -385,7 +441,7 @@ namespace RandomUsefulThings.Math
             return multipleOfThis * (float)System.Math.Round( value / multipleOfThis );
         }
 
-        [Obsolete("Unconfirmed")]
+        [Obsolete( "Unconfirmed" )]
         public static double GetAngularDiameter( double distance, double radius )
         {
             double rad = System.Math.Atan2( radius, distance );
@@ -414,7 +470,7 @@ namespace RandomUsefulThings.Math
             return fov;
         }
 
-        [Obsolete("Unconfirmed")]
+        [Obsolete( "Unconfirmed" )]
         public static double Exp( double x, double b )
         {
             // exp but with arbitrary base b.
