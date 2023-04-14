@@ -6,7 +6,7 @@ namespace RandomUsefulThings.Physics
 {
     class Astronomy
     {
-        // cepheid population I luminosity vs pulsation period:
+        // cepheid population I luminosity vs pulsation period (approx):
 
         // actually -2.43 +- 0.12
         // meanLuminosity = -2.43 * log10(periodDays - 1) - 4.05

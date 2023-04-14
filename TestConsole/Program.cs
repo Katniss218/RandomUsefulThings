@@ -12,17 +12,16 @@ namespace TestConsole
     {
         public static void Main( string[] args )
         {
-            string s = MathMethods.NumberToString( -12345, new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } );
-            string s2 = MathMethods.NumberToString( -12345, new[] { '0', '1' } );
+            double d1 = System.Math.Sqrt( 9990 );
+            int s1 = MathMethods.SqrtInt( 9990 );
+            int s2 = MathMethods.SqrtIntFast( 5000 );
 
-            int i = MathMethods.NumberFromString( s, new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' } );
-            int i2 = MathMethods.NumberFromString( s2, new[] { '0', '1' } );
 
-            SweepBenchmarkMath<float, double> b = new SweepBenchmarkMath<float, double>( 100, 1000 )
+            SweepBenchmarkMath<float, float> b = new SweepBenchmarkMath<float, float>( 1000, 1000 )
             {
-                ParameterFunc = ( t ) => t * 100 - 50,
+                ParameterFunc = ( t ) => (t * 10000),
                 //Reference = ( x ) => Math.Sin( x ),
-                Reference = ( x ) => Math.Exp( x ),
+                Reference = ( x ) => (float)System.Math.Sqrt(x),
                 GetError = ( a, b ) => a - b
             };
 
@@ -35,17 +34,13 @@ namespace TestConsole
                 return Trigonometry.Sin( x );
             } );*/
 
-            b.Add( "Custom fac(double)", ( x ) =>
+            b.Add( "(float)System.Math.Sqrt(x)", ( x ) =>
             {
-                return Math.Exp( x );
+                return (float)System.Math.Sqrt( x );
             } );
-            b.Add( "Custom fac(double)", ( x ) =>
+            b.Add( "MathMethods.Sqrt", ( x ) =>
             {
-                return MathMethods.Exp( x );
-            } );
-            b.Add( "Custom fac(double)", ( x ) =>
-            {
-                return MathMethods.ExpFunky( x );
+                return MathMethods.Sqrt( x );
             } );
 
             b.Run();

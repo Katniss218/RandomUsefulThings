@@ -7,67 +7,6 @@ namespace RandomUsefulThings.Math
 {
     public static class MathMethods
     {
-        public static string NumberToString( int n, char[] baseChars )
-        {
-            StringBuilder sb = new StringBuilder();
-            int index = 0;
-            if( n < 0 )
-            {
-                n = -n;
-                sb.Append( '-' );
-                index = 1; // insert after the negative sign.
-            }
-            int @base = baseChars.Length;
-
-            while( n > 0 )
-            {
-                int digit = n % @base; // get the current last digit.
-                sb.Insert( index, baseChars[digit] );
-                n /= @base; // divide the number, so the next digit will be retrieved next.
-            }
-
-            return sb.ToString();
-        }
-
-        public static int NumberFromString( string s, char[] baseChars )
-        {
-            int result = 0;
-            int @base = baseChars.Length;
-            int digitPositionalMultiplier = 1;
-            for( int i = s.Length - 1; i >= 0; i-- )
-            {
-                int digit = 0;
-                for( int j = 0; j < @base; j++ )
-                {
-                    if( baseChars[j] == s[i] )
-                    {
-                        digit = j;
-                        break; // will skip unknown symbols.
-                    }
-                }
-                result += digit * digitPositionalMultiplier;
-                digitPositionalMultiplier *= @base;
-            }
-            if( s[0] == '-' )
-            {
-                result = -result;
-            }
-            return result;
-        }
-
-
-        public static int Sqrt( int x ) // Returns the floor of the square root of the specified integer. Newton-Raphson method.
-        {
-            double previous = 0;
-            double current = x;
-            while( (int)previous != (int)current )
-            {
-                previous = current;
-                current = current - ((current * current) - x) / (2 * current);
-            }
-            return (int)(current - (current % 1));
-        }
-
         // erf(x) for x > 0
         // 1-\ 6\ \frac{1}{2+\left(x+2\right)^{\left(x+2\right)}}
         // error: -0.05
@@ -254,55 +193,6 @@ namespace RandomUsefulThings.Math
             return max - (value - min) % range;
         }
 
-        [Obsolete( "untested" )]
-        public static int MySqrt( int x ) // floor of the square root of the specified integer.
-        {
-            // Newton method.
-            long res = x;
-            while( res * res > x )
-                res = (res + x / res) / 2;
-            return (int)res;
-        }
-
-        /// <summary>
-        /// Returns the greatest common divisor of two integers.
-        /// </summary>
-        public static int GCD( int a, int b )
-        {
-            while( b != 0 )
-            {
-                int temp = b;
-                b = a % b;
-                a = temp;
-            }
-            return a;
-        }
-
-        // least common multiple
-        [Obsolete( "Unconfirmed, but by looking at it, it makes sense" )]
-        public static int LCM( int a, int b )
-        {
-            return (a * b) / GCD( a, b );
-        }
-
-        [Obsolete( "Unconfirmed" )]
-        public static List<int> PrimeFactors( int n )
-        {
-            List<int> factors = new List<int>();
-            int i = 2;
-            while( n > 1 )
-            {
-                while( n % i == 0 )
-                {
-                    factors.Add( i );
-                    n /= i;
-                }
-                i++;
-            }
-            return factors;
-        }
-
-
         public static int Triangular( int n )
         {
             // Returns the sum of all integers >= 1 && <= n
@@ -314,7 +204,6 @@ namespace RandomUsefulThings.Math
             }
             return n * (n + 1) / 2;
         }
-
 
         public static int Tetrahedral( int n )
         {
@@ -349,47 +238,6 @@ namespace RandomUsefulThings.Math
                 acc += FigurateRing( sides, n );
             }
             return acc;
-        }
-
-        [Obsolete( "Unconfirmed" )]
-        public static List<int> ContinuedFraction( double x )
-        {
-            // returns the continued fraction ? maybe idk
-
-            List<int> terms = new List<int>();
-            int integerPart = (int)x;
-            double fractionPart = x - integerPart;
-            while( fractionPart != 0 )
-            {
-                int term = (int)(1 / fractionPart);
-                terms.Add( term );
-                fractionPart = 1 / fractionPart - term;
-            }
-            terms.Insert( 0, integerPart );
-            return terms;
-        }
-
-        [Obsolete( "Unconfirmed" )]
-        public static int Totient( int n )
-        {
-            // Supposed to be Euler's Totient function.
-            int result = n;
-            for( int p = 2; p * p <= n; p++ )
-            {
-                if( n % p == 0 )
-                {
-                    while( n % p == 0 )
-                    {
-                        n /= p;
-                    }
-                    result -= result / p;
-                }
-            }
-            if( n > 1 )
-            {
-                result -= result / n;
-            }
-            return result;
         }
 
         /// <summary>
@@ -781,7 +629,7 @@ namespace RandomUsefulThings.Math
                 s += a * y;
             }
 
-            s = System.Math.Pow( s, 200 ); // s to 200 power (integer, can be done without Math.Pow).
+            s = System.Math.Pow( s, 200 ); // s to 200 power (integer power, can be done without Math.Pow).
             return s;
         }
 
@@ -841,6 +689,31 @@ namespace RandomUsefulThings.Math
             return (1 / (standardDeviation * SqrtTwoPI)) * System.Math.Pow( System.Math.E, -0.5 * squaredExp );
         }
 
+        public static int SqrtInt( int x ) // Returns the floor of the square root of the specified integer.
+        {
+            //  Newton-Raphson method.
+            double previous = 0;
+            double current = x;
+            while( (int)previous != (int)current )
+            {
+                previous = current;
+                current = current - ((current * current) - x) / (2 * current);
+            }
+            return (int)(current - (current % 1));
+        }
+
+        public static int SqrtIntFast( int x ) // floor of the square root of the specified integer.
+        {
+            // Newton-Raphson method.
+            // This is faster than the other SqrtInt, at 70% of its runtime on average (for numbers [0..10000]).
+            long current = x;
+            while( current * current > x ) // current is greater than the square root of x.
+            {
+                current = (current + x / current) / 2;
+            }
+            return (int)current;
+        }
+
         public static float Sqrt( float x )
         {
             if( x < 0 ) // about 10x slower than Math.Sqrt for large numbers.
@@ -848,8 +721,7 @@ namespace RandomUsefulThings.Math
                 return float.NaN;
             }
 
-            // newton-raphson
-            // x_n+1 = x_n/2 + x/2x_n
+            // Initialize current to the initial guess.
             float current;
             if( x < 10000 )
             {
@@ -866,17 +738,27 @@ namespace RandomUsefulThings.Math
                 }
                 current = 1 << ((k >> 1) + (k % 2 == 1 ? 1 : 0));
             }
-            //float current = InitialGuess(x);
+
             const int ITERATIONS = 10;
             // Newton-Raphson
             for( int i = 0; i < ITERATIONS; i++ )
             {
+                // newton-raphson
+                // x_n+1 = x_n/2 + x/2x_n
                 current = (current + (x / current)) * 0.5f;
             }
-            // Halley's method
-            // x_n + 1 = x_n - (2x_n ^ 3 - 3x_n ^ 2 * x)/ (6x_n ^ 2 - 6x_n* x +x ^ 2)
-            // Householder's method:
-            // x_n + 1 = x_n + 2(x - x_n ^ 2) / (2x_n ^ 2 - x)
+            /*for( int i = 0; i < ITERATIONS; i++ )
+            {
+                // Halley's method
+                // x_n+1 = x_n - (2x_n ^ 3 - 3x_n ^ 2 * x)/ (6x_n ^ 2 - 6x_n* x +x ^ 2)
+                current = current - (2 * (current * current * current) - 3 * (current * current) * x) / (6 * (current * current) - 6 * current * x + x * x);
+            }
+            for( int i = 0; i < ITERATIONS; i++ )
+            {
+                // Householder's method:
+                // x_n+1 = x_n + 2(x - x_n ^ 2) / (2x_n ^ 2 - x)
+                current = current + (2 * (x - (current * current))) / (2 * (current * current) - x);
+            }*/
             return current;
         }
 
