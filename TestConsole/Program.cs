@@ -10,8 +10,17 @@ namespace TestConsole
 {
     public static class Program
     {
+        public static double CalculateDistance( double initialVelocity, double acceleration )
+        {
+            // returns the distance at which the object with a given velocity and acceleration will reach 0 velocity.
+            double distance = Math.Pow( initialVelocity, 2 ) / (2 * acceleration);
+            return distance;
+        }
+
         public static void Main( string[] args )
         {
+            double st = CalculateDistance( 170, 1.03 );
+
             double d1 = System.Math.Sqrt( 9990 );
             int s1 = MathMethods.SqrtInt( 9990 );
             int s2 = MathMethods.SqrtIntFast( 5000 );
