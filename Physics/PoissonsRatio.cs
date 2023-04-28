@@ -6,12 +6,27 @@ namespace RandomUsefulThings.Physics
 {
     public static class PoissonsRatio
     {
-        // Poisson's Ratio is the ratio transverseStrain / axialStrain
+        // Poisson's Ratio is the ratio -transverseStrain / axialStrain
         //      or in other words, the ratio of how much the material bulges out, to how much it's squished.
         //      When an object is stressed in a single direction (axially).
 
-        // Most materials have Poisson's ratios between 0.0 and 0.5.
+        /// <summary>
+        /// Calculate the possions ratio from a known displacement of an object with isotropic material properties under elastic deformation.
+        /// </summary>
+        /// <param name="axialStrain">The tensile axial <see cref="Strain"/> (should be positive).</param>
+        /// <param name="transverseStrain">The compressive transverse <see cref="Strain"/> (should be negative). The axis of the transverse strain is perpendicular to the axis of the <paramref name="axialStrain"/>.</param>
+        /// <returns>The possions ratio that satisfies the strain ratio.</returns>
+        public static double GetPossionsRatio( double axialStrain, double transverseStrain )
+        {
+            // This formula only really applies for isotropic materials, and elastic deformations.
+            return -transverseStrain / axialStrain;
+
+            // Non-isotropic materials would have different poissons ratios for different principal axes.
+        }
+
+        // Most materials have Poisson's ratios in [0..0.5]. Most metals are around 0.3. Theoretical range goes in [-1..0.5]
         // Softer materials tend to have higher values, brittle materials tend to have lower.
+        // Materials with the poisson's ratio of 0.5 are incompressible. Their volume doesn't change in response to stress.
         /*
         rubber	            0.4999
         gold	            0.42 – 0.44
@@ -30,6 +45,7 @@ namespace RandomUsefulThings.Physics
         metallic glass	    0.276 – 0.409
         foam	            0.10 – 0.50
         cork	            0.0
+        cheese              0.45 (?)
         */
 
         public static float Steel_Mild() => 0.3f;

@@ -4,8 +4,111 @@ using System.Text;
 
 namespace Physics
 {
-    public class Stresses
+    public static class Stress
     {
+        // Stress is a quantity that describes the distribution of internal forces within a body.
+        // Stress = internalForce/area (unit [N/m^2] i.e. [Pa] (metric) or [lb/in^2] (US))
+
+        // A body like a bar will fail if its maximum allowable stress is smaller than the actual stress.
+        // uniaxial-loaded bar => `sigmaYield = const`, and `sigmaNormal = Force / CrossSectionalArea`
+
+        // convention: tensile stresses are positive, compressive stresses are negative.
+
+
+
+
+
+        // "3 principal stresses" are the three stresses that occur on the 3 principal axes.
+        // they are related to the eigenvalues of the stress tensor.
+
+        // yielding is only caused by stresses that cause shape distortion.
+
+        // triaxialStress = hydrostaticStress + deviatoricStress
+
+        // - "deviatoric" because it causes the shape to deviate from the original?
+
+
+        // sigma1, sigma2, sigma3 are the principled stress axes.
+        // by convention, sigma1 >= sigma2 >= sigma3
+        // Convention: shear stress is `tau`, normal stress is `sigma`
+
+        /// <summary>
+        /// Decent for brittle. Don't use for ductile.
+        /// </summary>
+        public static class Rankine // "Maximum principal stress theory"
+        {
+            // sigma1 = sigmaYield, sigmaUltimate
+            // sigma3 = -sigmaYield, -sigmaUltimate
+
+            // sigma1 is maxStress
+            // sigma3 is minStress
+        }
+
+        /// <summary>
+        /// Good for ductiles, easier to apply than <see cref="VonMises"/>.
+        /// </summary>
+        public static class Tresca // "Maximum shear stress theory"
+        {
+            // tauMax = tauYield
+            // tauMax = (sigmaMax - sigmaMin) / 2
+
+            // sigmaMax - sigmaMin = sigmaYield
+
+
+            // special case of CoulombMohr?
+        }
+
+        /// <summary>
+        /// Very good for ductiles.
+        /// </summary>
+        public static class VonMises // "Maximum distortion energy theory"
+        {
+           /// "Yielding occurs when the `maximum distortion energy` is equal to the distortion energy at yielding in a uniaxial tensile test.
+
+            // sigmaYield = sqrt(0.5 *((sigma1 - sigma2)^2 + (sigma2 - sigma3)^2 + (sigma3 - sigma1)^2))
+
+            // VonMises equivalent stress can be returned as an output from static analysis, and used to identify areas at risk of yielding
+        }
+
+        // brittles typically have 2 different ultimate strengths - for tension and compression.
+        // - strain at fracture < 5% is often considered brittle.
+        // elastic materials typically have the same (or very similar) values for tensile and compressive strengths.
+        
+        /// <summary>
+        /// Decent for brittle.
+        /// </summary>
+        public static class CoulombMohr
+        {
+
+        }
+
+        /// <summary>
+        /// Good for brittle.
+        /// </summary>
+        public static class ModifiedMohr
+        {
+
+        }
+
+        public static double GetYieldStrength( double referenceStress, double kY, double avgGrainDiameter )
+        {
+            // Hall-Petch Equation
+            // sigma0 + ky * d^-0.5
+            return referenceStress + kY * (1.0 / System.Math.Sqrt( avgGrainDiameter ));
+        }
+
+
+        // stress tensor @D
+        // [ sigmaX, TauXY  ]
+        // [ TauYX,  SigmaY ]
+
+
+        // stress tensor 3D
+        // [ sigmaX, TauXY ,  TauXZ  ]
+        // [ TauYX,  SigmaY, TauYZ   ]
+        // [ TauZX,  TauZY ,  SigmaZ ]
+
+
         // other useful things to have include:
 
         // - way to calculate the failure stress on a thin skin of material that's held rigidly between infinitely strong members (aircraft skin, etc).

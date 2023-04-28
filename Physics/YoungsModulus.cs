@@ -7,10 +7,27 @@ namespace RandomUsefulThings.Physics
     public static class YoungsModulus
     {
         // Young's modulus is the slope of the elastic deformation region of the stress-strain curve.
-        // The tendency of an object to deform along an axis when opposing forces are applied along that axis
+        // It represents the tendency of an object to deform along a given axis when opposing forces are applied along that same axis.
         //      or, how much stress (force) for an amount of strain (deformation) - per unit area/volume/etc ofc.
         //      stress / strain
 
+        /// <summary>
+        /// Calculates the youngs modulus from a known stress and strain.
+        /// </summary>
+        public static double GetYoungsModulus( double stress, double strain )
+        {
+            // Stress and strain should be along the same axis. The axis that is loaded by a force.
+            return stress / strain;
+        }
+
+        [Obsolete( "Unconfirmed" )]
+        public static double GetBulkModulus( double stressX, double stressY, double stressZ, double strainX, double strainY, double strainZ )
+        {
+            // Compute the bulk modulus, which is a measure of a material's resistance to compression.
+            double deltaVolume = (strainX + strainY + strainZ);
+            double avgStress = (stressX + stressY + stressZ) / 3.0;
+            return -avgStress / deltaVolume;
+        }
 
         // Young's moduli are typically so large that they are expressed in gigapascals (GPa).
 
