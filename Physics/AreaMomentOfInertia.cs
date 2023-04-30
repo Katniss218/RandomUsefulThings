@@ -48,6 +48,30 @@ namespace RandomUsefulThings.Physics
         }
 
 
+        public static double GetMomentOfInertiaHollowCylinder( double radius, double thickness )
+        {
+            // x-sections around axis of load:
+            // filled circle
+            //      pi/2 * r^4                          (torsional)
+            //      pi/4 * r^4                          (perpendicular)
+            // hollow circle
+            //      pi/2 * (rOuter^4 - rInner^4)        (torsional)
+            //      pi/4 * (rOuter^4 - rInner^4)        (perpendicular)
+            // thin-walled circle
+            //      pi * r^4 * thickness                (perpendicular)
+
+            // moment of inertia describes the resistance to bending/torsional twisting of a shape.
+
+            double innerRadius = radius - thickness;
+
+            // 2nd moment of area (moment of inertia) I
+            double momentOfInertia = System.Math.PI * ((radius * radius * radius * radius) - (innerRadius * innerRadius * innerRadius * innerRadius)) / 4.0;
+
+            return momentOfInertia;
+        }
+
+
+
         // centroid = geometric center of a shape (its center of mass).
 
         public static double GetAreaMomentOfInertia_Rectangle( double lengthParallel, double heightPerpendicular ) // bending axis is centroidal
@@ -57,7 +81,8 @@ namespace RandomUsefulThings.Physics
 
         public static double GetAreaMomentOfInertia_Circle( double radius ) // bending axis is centroidal
         {
-            return (radius * radius * radius * radius) / 4.0;
+            // area moment valid for e.g. compressive load inline with normal of the cross-section plane.
+            return System.Math.PI * (radius * radius * radius * radius) / 4.0;
         }
 
         /// <summary>

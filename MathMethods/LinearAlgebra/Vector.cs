@@ -62,7 +62,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
         /// <returns>The squared magnitude.</returns>
         public double GetSquaredMagnitude()
         {
-            // |v1| = sqrt( v1.x^2 + v1.y^2 + v1.z^2 + ... )
+            // |v1|^2 = v1.x^2 + v1.y^2 + v1.z^2 + ...
 
             double acc = 0;
             for( int i = 0; i < this.Rows; i++ )
@@ -84,18 +84,23 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return System.Math.Sqrt( GetSquaredMagnitude() );
         }
 
-        public static Vector LinearCombination( (double s, Vector v)[] elements )
+        /// <summary>
+        /// Performs a linear combination on a list of (scalar, vector) terms.
+        /// </summary>
+        /// <returns>The vector containing the result of the operation `s1*v1 + s2*v2 + s3*v3 + ...`.</returns>
+        public static Vector LinearCombination( (double s, Vector v)[] terms )
         {
-            // Linear combination of scalars and matrices:
-            // - Needs the same number of scalars as matrices.
-            // - Multiply the matrices by their corresponding scalars, then add the matrices together.
-            if( elements == null || elements.Length < 1 )
+            // Linear combination of scalars and vectors:
+            // - Needs the same number of scalars as vectors.
+            // - Multiply the vectors by their corresponding scalars, then add the vectors together.
+            if( terms == null || terms.Length < 1 )
             {
                 throw new InvalidOperationException( "Can't do linear combination of less than 2 elements." );
             }
 
-            int rows = elements[0].v.Rows;
-            foreach( var (s, v) in elements )
+            // Check if the number of elements in each vector term is the same.
+            int rows = terms[0].v.Rows;
+            foreach( var (s, v) in terms )
             {
                 if( v.Rows != rows )
                 {
@@ -103,20 +108,19 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                 }
             }
 
+            // We will multiply and add at the same time.
+            // We can do that because vector*scalar is element-wise, and vector+vector is also element-wise.
+            // I.e. the result for each element of the vector is independent from the other elements.
             Vector result = new Vector( rows );
-            foreach( var (s, v) in elements )
+            foreach( var (s, v) in terms )
             {
                 for( int i = 0; i < rows; i++ )
                 {
-                    result[i] += s * v[i]; // multiply element by scalar, and add to the accumulated value. We can do that because addition and multiplication are element-wise.
+                    result[i] += s * v[i];
                 }
             }
             return result;
         }
-
-        // Linear combination of scalars and vectors:
-        // - Needs the same number of scalars as vectors.
-        // - Multiply the vectors by their corresponding scalars, then add the vectors together.
 
         public static double Dot( Vector v1, Vector v2 )
         {

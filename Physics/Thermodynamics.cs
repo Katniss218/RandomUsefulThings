@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RandomUsefulThings.Math
+namespace RandomUsefulThings.Physics
 {
     // pressure / Math.Pow(density, gamma) = constant
 

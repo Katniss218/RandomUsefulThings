@@ -11,10 +11,6 @@ namespace RandomUsefulThings.Math
         /// </summary>
         public const double G = 0.00000000006674;
 
-        /// <summary>
-        /// Stephan boltzmann constant
-        /// </summary>
-        public const double SIGMA = 0.00000005670374419;
 
         public const double MASS_SUN = 1898000000000000000000000000000.0; // kg, I think
         public const double MASS_JUPITER = 1898000000000000000000000000.0; // kg, I think
@@ -90,11 +86,6 @@ namespace RandomUsefulThings.Math
             double Ks = SIGMA * (starTemperature * starTemperature * starTemperature * starTemperature) * radioSq;
 
             return Ks;
-        }
-
-        public static double GetLuminosity( double temperature, double surfaceArea ) // total energy emitted by a blackbody, Watts
-        {
-            return SIGMA * (temperature * temperature * temperature * temperature) * surfaceArea;
         }
 
         /// "Energy Intercepted" is the amount of energy potentially available to a body, if it was perfectly absorbant.
