@@ -66,7 +66,7 @@ namespace Geometry
         public void ToAngleAxis( out float angle, out Vector3 axis )
         {
             angle = this.Length;
-            axis = this / angle; // divide by magnitude, essentially the same as normalize but doesn't recompute the magnitude.
+            axis = this / angle; // Normalize the vector (but without calling normalize, which would recalculate the magnitude).
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace Geometry
             // v1, v2, v3, ... - vectors
             // s1, s2, s3, ... - scalars
             // anti-commutative property:       v1 X v2 = -v2 X v1
-            // associative property:            (s1*v1) X (s1*v2) = (a*b*(v1 X v2)   
+            // associative property:            (s1*v1) X (s2*v2) = (s1*s2*(v1 X v2)   
             // distributive property:           v1 X (v2 + v3) = v1 X v2 + v1 X v3
             // distributive property:           (v1 + v2) X v3 = v1 X v3 + v2 X v3
 
-            // v1 X v2 = 0, only when v1 and v2 are parallel
+            // v1 X v2 = 0, only when v1 and v2 are parallel, or when v1 or v2 = 0
 
             float x = (v1.Y * v2.Z) - (v1.Z * v2.Y);
             float y = (v1.Z * v2.X) - (v1.X * v2.Z);
@@ -111,6 +111,12 @@ namespace Geometry
 
             // Return the result as a new Vector3 object
             return new Vector3( x, y, z );
+        }
+
+        public static float TripleProduct( Vector3 v1, Vector3 v2, Vector3 v3 )
+        {
+            // Returns the volume of a parallelepiped with the following side lengths.
+            return Dot( v1, Cross( v2, v3 ) );
         }
 
         /// <summary>
@@ -225,10 +231,10 @@ namespace Geometry
             return lineDirection * Dot( this, lineDirection ) / lineDirection.LengthSquared;
         }
 
-        [Obsolete("??")]
         public static Vector3 Exclude( Vector3 sourceVector, Vector3 vectorToExclude )
         {
             // Leaves the sourceVector without the component that lied along the vectorToExclude.
+
             // This is somewhat equivalent to the ProjectOntoPlane, except that projectOntoPlane is expected to take in unit vectors.
             return sourceVector - sourceVector.Project( vectorToExclude );
         }

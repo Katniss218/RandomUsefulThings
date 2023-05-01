@@ -31,7 +31,36 @@ namespace RandomUsefulThings.Math.DifferentialEquations
                 float k3 = stepSize * equation( t + stepSize / 2, v + k2 / 2 );
                 float k4 = stepSize * equation( t + stepSize, v + k3 );
 
-                float dv = (1.0f / 6.0f) * (k1 + 2 * k2 + 2 * k3 + k4); // RK4 formula
+                float dv = (1.0f / 6.0f) * ((k1) + (2 * k2) + (2 * k3) + (k4)); // RK4 formula
+
+                v += dv;
+                t += stepSize;
+            }
+        }
+
+        [Obsolete("I think that's right, but not confirmed.")]
+        public void Integrate3over8( float stepSize, int steps, Func<float, float, float> equation ) // independent variable first, then the rest.
+        {
+            // 3/8 rule.
+            /*
+            reading the buthers tableau left to right, top to bottom:
+
+            - k1 uses t +   0,  and v (implicitly)
+            - k2 uses t + 1/3,  and v (implicitly),  1/3 * k1
+            - k3 uses t + 2/3,  and v (implicitly), -1/3 * k1,  1 * k2
+            - k4 uses t +   1,  and v (implicitly),    1 * k1, -1 * k2,  1 * k3
+
+            = dv uses 1/8 * k1, 3/8 * k2, 3/8 * k3, and 1/8 * k4
+            */
+
+            for( int i = 0; i < steps; i++ )
+            {
+                float k1 = stepSize * equation( t,                       v );
+                float k2 = stepSize * equation( t + stepSize * (1f / 3), v + k1 / 3 );
+                float k3 = stepSize * equation( t + stepSize * (2f / 3), v - k1 / 3 + k2 );
+                float k4 = stepSize * equation( t + stepSize,            v + k1     - k2 + k3 );
+
+                float dv = (1.0f / 8.0f) * ((k1) + (3 * k2) + (3 * k3) + (k4));
 
                 v += dv;
                 t += stepSize;

@@ -428,6 +428,27 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return output;
         }
 
+        // To find eigenvalues of a square NxN matrix, we can solve an N-dimensional polynomial.
+        // there will be at most N eigenvalues/vectors, but can be as little as 0 in some cases.
+
+
+        // Invariant of a matrix M is a value that doesn't change after the change of basis.
+        // change of basis for a matrix/tensor M => M' = Q * M * transpose(Q)            invariants of M and M' are the same. Q is a coordinate transformation matrix
+
+        // Principal invariants of a tensor (this case matrix):
+        // 1. = Trace(M) (sum of main diagonals)
+        // 2. = (Trace(M)^2 - Trace(M^2)) / 2
+        // 3. = Determinant(M).
+
+        // Tensor Q is orthogonal when `Q * Transpose(Q) = Identity`
+        // - determinant is 1 or -1     (if 1 - rotation, if -1 - reflection)
+        // - Transpose(Q) = Inverse(Q)
+
+        // Tensor is symmetric if:
+        // - Transpose(Q) = Q           (Q_ij = Q_ji)
+        // property: dot(Q*v1, v2) = dot(v1, Q*v2)
+        // property: every NxN symmetric tensor always has N real eigenvalues/eigenvectors.
+
         public bool Equals( Matrix other )
         {
             if( other.Rows != this.Rows || other.Cols != this.Cols )
