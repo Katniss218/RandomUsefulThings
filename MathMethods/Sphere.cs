@@ -71,5 +71,25 @@ namespace Geometry
             double distance = Math.Acos( cosDistance );
             return distance;
         }
+
+
+        /// <summary>
+        /// Calculates the height of a truncated unit sphere with the given volume as a [0..1] percentage of the unit sphere's volume.
+        /// </summary>
+        public static float SolveHeightOfTruncatedSphere( float volumePercent )
+        {
+            // https://math.stackexchange.com/questions/2364343/height-of-a-spherical-cap-from-volume-and-radius
+
+            const float UnitSphereVolume = 4.18879020479f; // 4/3 * pi     -- radius=1
+            const float TwoPi = 6.28318530718f;            // 2 * pi       -- radius=1
+            const float Sqrt3 = 1.73205080757f;
+
+            float Volume = UnitSphereVolume * volumePercent;
+
+            float A = 1.0f - ((3.0f * Volume) / TwoPi); // A is a coefficient, [-1..1] for volumePercent in [0..1]
+            float OneThirdArccosA = 0.333333333f * (float)Math.Acos( A );
+            float height = Sqrt3 * (float)Math.Sin( OneThirdArccosA ) - (float)Math.Cos( OneThirdArccosA ) + 1.0f;
+            return height;
+        }
     }
 }

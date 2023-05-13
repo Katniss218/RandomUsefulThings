@@ -6,10 +6,24 @@ namespace RandomUsefulThings.Math.LinearAlgebra
 {
     public struct Matrix3x3
     {
+        public float M00 { get; }
+        public float M01 { get; }
+        public float M02 { get; }
+
+        public float M10 { get; }
+        public float M11 { get; }
+        public float M12 { get; }
+
+        public float M20 { get; }
+        public float M21 { get; }
+        public float M22 { get; }
+
         [Obsolete("Untested but looks okay")]
-        public static double Determinant3x3Sarrus( double[,] matrix )
+        public double Determinant()
         {
-            double det = (matrix[0, 0] * matrix[1, 1] * matrix[2, 2]) + (matrix[1, 0] * matrix[2, 1] * matrix[0, 2]) + (matrix[2, 0] * matrix[0, 1] * matrix[1, 2]) - (matrix[0, 2] * matrix[1, 1] * matrix[2, 0]) - (matrix[1, 2] * matrix[2, 1] * matrix[0, 0]) - (matrix[2, 2] * matrix[0, 1] * matrix[1, 0]);
+            // Sarrus' rule.
+            double det = (M00 * M11 * M22) + (M10 * M21 * M02) + (M20 * M01 * M12)
+                       - (M02 * M11 * M20) - (M12 * M21 * M00) - (M22 * M01 * M10);
             return det;
         }
     }
