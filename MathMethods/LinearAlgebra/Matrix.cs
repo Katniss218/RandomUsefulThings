@@ -428,6 +428,45 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             return output;
         }
 
+        /// <summary>
+        /// Check for the |A[i, i]| >= sum(j!=i)|Aij|
+        /// </summary>
+        /// <returns>True, if A[i, i] is greater or equal than other elements.</returns>
+        [Obsolete( "untested" )]
+        public bool IsDiagonallyDominant()
+        {
+            // A matrix is diagonally dominant if every element on the main diagonal is greater or equal than any non-diagonal element.
+
+            // https://github.com/3approx4/Numerical-Methods/blob/master/Numerical-Methods.Libs/Matrix.cs
+            bool dominant = true;
+            for( int i = 0; i < this.Rows; i++ )
+            {
+                dominant &= CheckRowDominance( i );
+            }
+
+            return dominant;
+        }
+
+        /// <summary>
+        /// Check row for the dominance of the rowIndex located value
+        /// </summary>
+        /// <param name="rowIndex">Row number</param>
+        /// <returns>True, if A[i, i] is  greater or equal than other elements in the row.</returns>
+        [Obsolete( "untested" )]
+        private bool CheckRowDominance( int rowIndex )
+        {
+            // https://github.com/3approx4/Numerical-Methods/blob/master/Numerical-Methods.Libs/Matrix.cs
+            double diagValue = System.Math.Abs( this[rowIndex, rowIndex] );
+            double sum = 0;
+            for( int j = 0; j < this.Cols; j++ )
+            {
+                if( j != rowIndex )
+                    sum += System.Math.Abs( this[rowIndex, j] );
+            }
+
+            return diagValue >= sum;
+        }
+
         // To find eigenvalues of a square NxN matrix, we can solve an N-dimensional polynomial.
         // there will be at most N eigenvalues/vectors, but can be as little as 0 in some cases.
 

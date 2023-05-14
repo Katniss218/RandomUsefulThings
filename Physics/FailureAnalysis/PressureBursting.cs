@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Physics
+namespace RandomUsefulThings.Physics.FailureAnalysis
 {
     public class PressureBursting
     {

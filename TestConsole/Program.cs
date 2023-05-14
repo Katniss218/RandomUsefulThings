@@ -1,6 +1,7 @@
 ﻿using Geometry;
 using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
+using RandomUsefulThings.Math.LinearAlgebra.NumericalMethods;
 using RandomUsefulThings.Misc;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace TestConsole
 
         public static void Main( string[] args )
         {
+            
             double st = CalculateDistance( 170, 1.03 );
 
             double d1 = System.Math.Sqrt( 9990 );
@@ -26,7 +28,7 @@ namespace TestConsole
             int s2 = MathMethods.SqrtIntFast( 5000 );
 
 
-            SweepBenchmarkMath<float, float> b = new SweepBenchmarkMath<float, float>( 1000, 1000 )
+            SweepBenchmarkMath<float, float> bn = new SweepBenchmarkMath<float, float>( 1000, 1000 )
             {
                 ParameterFunc = ( t ) => (t * 10000),
                 //Reference = ( x ) => Math.Sin( x ),
@@ -43,16 +45,16 @@ namespace TestConsole
                 return Trigonometry.Sin( x );
             } );*/
 
-            b.Add( "(float)System.Math.Sqrt(x)", ( x ) =>
+            bn.Add( "(float)System.Math.Sqrt(x)", ( x ) =>
             {
                 return (float)System.Math.Sqrt( x );
             } );
-            b.Add( "MathMethods.Sqrt", ( x ) =>
+            bn.Add( "MathMethods.Sqrt", ( x ) =>
             {
                 return MathMethods.Sqrt( x );
             } );
 
-            b.Run();
+            bn.Run();
         }
     }
 }

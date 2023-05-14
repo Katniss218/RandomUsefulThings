@@ -30,7 +30,7 @@ namespace RandomUsefulThings.Math.Integrals
             return 1.0 / (1 - n - sinTheta * sinTheta) * System.Math.Sqrt( 1 - (k * k) * (sinTheta * sinTheta) );
         }
 
-        [Obsolete( "Incomplete, see comment." )]
+        [Obsolete( "Incomplete, see comment inside." )]
         public static double FirstKind( double phi, double k )
         {
             // integral of the function: F(φ,k) = ∫[0,φ] 1 / sqrt(1 - k^2 * sin^2θ) * dθ       --for k^2 between 0 and 1
@@ -41,7 +41,7 @@ namespace RandomUsefulThings.Math.Integrals
             double deltaTheta = 0.0f;
 
             // Two ways of writing this. either `(1.0 / denom) * deltaTheta` or `deltaTheta / denom`.
-            return FirstKindIntegrand( theta, phi ) * deltaTheta; // integral of this from 0 to phi is equal to the value of F(phi,k)
+            return FirstKindIntegrand( theta, phi ) * deltaTheta; // FIXME: integral of this from 0 to phi is equal to the value of F(phi,k)
         }
 
         // 2nd kind

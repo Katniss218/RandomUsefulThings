@@ -21,7 +21,7 @@ namespace RandomUsefulThings.Math.Integrals.NumericalMethods
             return step * totalHeight; // convert to area.
         }
 
-        public static double Integrate2( Func<double, double> f, double start, double end, int slices )
+        public static double Integrate_Slow( Func<double, double> f, double start, double end, int slices )
         {
             double step = (end - start) / slices; // deltaInput
             double sum = 0.0;
@@ -37,13 +37,6 @@ namespace RandomUsefulThings.Math.Integrals.NumericalMethods
 
             return sum;
         }
-
-        // There is also a rectangle method, which can either be forward, central, or backward (kind of analogous to 1st order derivatives, BUT ONLY KIND OF).
-        // - Central has half-width slices at the start and end.
-        // forward rectangle is left riemann sum
-        // backward rectangle is right riemann sum
-        // central rectangle is central riemann sum
-
 
         // Trapezoid method only has one variant, because its forward/central/backwards would be equivalent, just with different slice count/positions.
     }

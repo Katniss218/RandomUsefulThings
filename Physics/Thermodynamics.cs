@@ -26,6 +26,7 @@ namespace RandomUsefulThings.Physics
         private const double RHO = 1.293;
 
         // returns the conditions at the exit for subsonic flow
+        [Obsolete( "unconfirmed" )]
         public static FluidData CompressibleSubsonic( double areaInlet, double areaOutlet, FluidData inlet )
         {
             double machInlet = inlet.Velocity / CalculateSpeedOfSound( inlet.Temperature );
@@ -45,6 +46,7 @@ namespace RandomUsefulThings.Physics
         }
 
         // returns the conditions at the exit for supersonic flow
+        [Obsolete("unconfirmed")]
         public static FluidData CompressibleSupersonic( double areaInlet, double areaOutlet, FluidData inlet )
         {
             double machInlet = inlet.Velocity / System.Math.Sqrt( GAMMA * inlet.Pressure / RHO ); // seems correct too.
@@ -64,6 +66,7 @@ namespace RandomUsefulThings.Physics
         }
 
         // Helper method to calculate the speed of sound for air
+        [Obsolete( "unconfirmed" )]
         private static double CalculateSpeedOfSound( double temperature )
         {
             // sqrt(kRT) correct for isentropic flow
@@ -71,6 +74,7 @@ namespace RandomUsefulThings.Physics
         }
 
         // Helper method to calculate the exit Mach number
+        [Obsolete( "unconfirmed" )]
         private static double CalculateMachNumber( double areaInlet, double areaOutlet, double machInlet )
         {
             return System.Math.Sqrt( (1 / ((areaOutlet / areaInlet) * (1 / System.Math.Pow( machInlet, 2 ))) + (GAMMA - 1) / (2 * GAMMA)) ) / System.Math.Sqrt( (GAMMA - 1) / (2 * GAMMA) );
@@ -170,6 +174,7 @@ namespace RandomUsefulThings.Physics
             }
         }
 
+        [Obsolete( "unconfirmed" )]
         public static NozzleSegment CalculateExitProperties( NozzleSegment inletSegment )
         {
             // Calculate the exit area based on the given diameters

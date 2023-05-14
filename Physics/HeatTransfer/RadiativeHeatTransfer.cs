@@ -7,7 +7,7 @@ namespace RandomUsefulThings.Physics.HeatTransfer
     public class RadiativeHeatTransfer
     {
         /// <summary>
-        /// Stephan boltzmann constant
+        /// Stephan boltzmann constant `sigma`
         /// </summary>
         public const double StefanBoltzmannConstant = 0.00000005670374419;
 

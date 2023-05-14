@@ -83,7 +83,7 @@ namespace RandomUsefulThings.Math
             double radioSq = (4.0 * System.Math.PI * starRadius) / (4.0 * System.Math.PI * planetSma);
             radioSq *= radioSq;
 
-            double Ks = SIGMA * (starTemperature * starTemperature * starTemperature * starTemperature) * radioSq;
+            double Ks = /*SIGMA * */ (starTemperature * starTemperature * starTemperature * starTemperature) * radioSq;
 
             return Ks;
         }

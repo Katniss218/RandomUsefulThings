@@ -4,50 +4,47 @@ using System.Text;
 
 namespace RandomUsefulThings.Math.LinearAlgebra.NumericalMethods
 {
+    // other potentially useful stuff: https://github.com/parvezmrobin/Numerical-Methods/tree/master/Numerical%20Methods
+
     public static class GaussSeidel
     {
-        [Obsolete( "Unconfirmed" )]
-        public static double[] Run( double[][] A, double[] b, double[] x0, int maxIterations, double tolerance )
+        // Seems to work on [ 2, 1 ][ 1 ] equation
+        //                  [ 1, 1 ][ 2 ]
+        public static double[] Solve( double[,] A, double[] b, double[] initialGuess, double tolerance = 0.0001, int maxIterations = 1000 )
         {
-            // A is a two-dimensional array representing the coefficients of the linear system (matrix form)
-            // b is a one-dimensional array representing the constants (vector of constants i.e. the right side)
-            // x0 is the initial guess for the solution
-            // maxIterations is the maximum number of iterations to perform
-            // tolerance is the convergence criterion
-            // The method returns an array x representing the solution to the linear system.
+            // matrix needs to be diagonally dominant (every diagonal element >= any non-diagonal element)
+            // apparently also has to be symmetric (M == transpose(M)) and positive definite (all eigenvalues are positive).
 
             int n = b.Length;
             double[] x = new double[n];
-            x0.CopyTo( x, 0 );
+            initialGuess.CopyTo( x, 0 );
+            int i = 0;
+            double error = tolerance + 1;
 
-            for( int k = 0; k < maxIterations; k++ )
+            while( i < maxIterations && error > tolerance )
             {
-                double maxError = 0.0;
-                for( int i = 0; i < n; i++ )
+                error = 0;
+                for( int j = 0; j < n; j++ )
                 {
-                    double sigma = 0.0;
-                    for( int j = 0; j < n; j++ )
+                    double sum = 0;
+                    for( int k = 0; k < n; k++ )
                     {
-                        if( j != i )
+                        if( k != j )
                         {
-                            sigma += A[i][j] * x[j];
+                            sum += A[j, k] * x[k];
                         }
                     }
-                    double xi = (b[i] - sigma) / A[i][i];
-                    double error = System.Math.Abs( xi - x[i] );
-                    if( error > maxError )
-                    {
-                        maxError = error;
-                    }
-                    x[i] = xi;
+                    double xiNew = (b[j] - sum) / A[j, j];
+                    error += System.Math.Abs( xiNew - x[j] );
+                    x[j] = xiNew;
                 }
-                if( maxError < tolerance )
-                {
-                    return x;
-                }
+                i++;
             }
-
-            throw new Exception( "Gauss-Seidel failed to converge" );
+            if( error > tolerance )
+            {
+                throw new Exception( "Failed to converge within maximum iterations." );
+            }
+            return x;
         }
     }
 }

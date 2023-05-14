@@ -6,7 +6,7 @@ namespace RandomUsefulThings.Physics
 {
     class Moment
     {
-        // Moment describes how much a given force causes the object to turn.
+        // A `Moment` (in physics) describes how much a given force causes the object to rotate.
 
         // Unit: [N*m] or [ft*lb]     ie newton-meter or foot-pound
 

@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Physics
+namespace RandomUsefulThings.Physics.FailureAnalysis
 {
     public class ThickWalledPressureCylinder
     {
         // A thin-walled pressure vessel is one with its radius less than 10x its wall thickness.
-        static bool IsThickWalled( float radius, float thickness ) => radius / 10.0f < thickness;
+        public static bool IsThickWalled( float radius, float thickness ) => radius / 10.0f < thickness;
 
         public double Pressure { get; set; }
 
