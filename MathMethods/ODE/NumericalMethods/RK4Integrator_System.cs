@@ -35,6 +35,7 @@ namespace RandomUsefulThings.Math.DifferentialEquations
             };
         };
 
+
         public void Integrate( float stepSize, int steps, Func<float, float[], float[]> systemOfEquations )
         {
             for( int i = 0; i < steps; i++ )
@@ -46,6 +47,9 @@ namespace RandomUsefulThings.Math.DifferentialEquations
                 // Each element in the array is calculated using other corresponding elements.
 
                 // TODO: This could be much improved to make it clearer (corresponding to the butcher's tableau more directly).
+                //  float k3 = stepSize * equation( t + stepSize / 2, v + k2 / 2 );
+                // float[] k3 = Mul( stepSize, equation( t + stepSize / 2, v.AddScaled( k2, (1f / 2) ) );
+
 
                 float[] k1 = systemOfEquations( t, _variables );
                 MultiplyInPlace( ref k1, stepSize );

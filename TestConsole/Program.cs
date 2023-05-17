@@ -21,16 +21,27 @@ namespace TestConsole
 
         public static void Main( string[] args )
         {
-            Euler2D.Incompressible fsim = new Euler2D.Incompressible( 50, 50, 0.1f );
-            fsim.fluidAccelerationRelativeToContainer = new Vector2( 0, -9.8f );
-            fsim.OverrelaxationFactor = 1.9f;
+
+            double[,] M = new double[,]
+            {
+                { 2, 1 },
+                { 1, 1 },
+            };
+            double[] v = new double[]
+                { 1, 2 };
+
+            double[] s = GaussSeidel.SolveFast( M, v, new double[] { 0.1, 0.1 } );
+
+            Euler2DReference fsim = new Euler2DReference( 1000.0f, 50, 50, 0.1f );
+            //fsim.fluidAccelerationRelativeToContainer = new Vector2( 0, -9.8f );
+           // fsim.OverrelaxationFactor = 1.9f;
 
             for( int i = 0; i < 10; i++ )
             {
-                fsim.Step( 0.02f );
+           //     fsim.Simulate( 0.02f, -9.81f, 50 );
             }
 
-            fsim.Print();
+           // fsim.Print();
 
 
             double st = CalculateDistance( 170, 1.03 );
@@ -39,7 +50,50 @@ namespace TestConsole
             int s1 = MathMethods.SqrtInt( 9990 );
             int s2 = MathMethods.SqrtIntFast( 5000 );
 
+            UnscaledTimeBenchmark bu = new UnscaledTimeBenchmark();
 
+            double[,] M1 = new double[,]
+            {
+                { 2, 1 },
+                { 1, 1 },
+            };
+            double[] v1 = new double[]
+                { 1, 2 };
+
+            double[] res;
+
+            bu.Add( "Jacobi", () =>
+            {
+                res = Jacobi.Solve2( M1, v1, 1e-6f, 1000 );
+            } );
+            bu.Add( "GaussSeidel Fast", () =>
+            {
+                res = GaussSeidel.SolveFast( M1, v1, null, 1e-6f, 1000 );
+            } );
+            bu.Add( "GaussSeidel", () =>
+            {
+                res = GaussSeidel.Solve2( M1, v1, 1e-6f, 1000 );
+            } );
+            bu.Add( "SOR 1.1", () =>
+            {
+                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.1, 1e-6f, 1000 );
+            } );
+            bu.Add( "SOR 1.1 Fast-ish", () =>
+            {
+                res = SuccessiveOverRelaxation.SolveFastIsh( M1, v1, 1.1, 1e-6f, 1000 );
+            } );
+            bu.Add( "SOR 1.5", () =>
+            {
+                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.5, 1e-6f, 1000 );
+            } );
+            bu.Add( "SOR 1.9", () =>
+            {
+                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.9, 1e-6f, 1000 );
+            } );
+
+            bu.Run( UnscaledTimeBenchmark.Mode.Nanosecond );
+
+            /*
             SweepBenchmarkMath<float, float> bn = new SweepBenchmarkMath<float, float>( 1000, 1000 )
             {
                 ParameterFunc = ( t ) => (t * 10000),
@@ -48,25 +102,16 @@ namespace TestConsole
                 GetError = ( a, b ) => a - b
             };
 
-            /*b.Add( "Math.Sin(double)", ( x ) =>
-            {
-                return Math.Sin( x );
-            } );
-            b.Add( "Custom Sin(float)", ( x ) =>
-            {
-                return Trigonometry.Sin( x );
-            } );*/
-
-            bn.Add( "(float)System.Math.Sqrt(x)", ( x ) =>
+            bn.Add( "Solve", ( x ) =>
             {
                 return (float)System.Math.Sqrt( x );
             } );
-            bn.Add( "MathMethods.Sqrt", ( x ) =>
+            bn.Add( "Solve2", ( x ) =>
             {
                 return MathMethods.Sqrt( x );
             } );
 
-            bn.Run();
+            bn.Run();*/
         }
     }
 }

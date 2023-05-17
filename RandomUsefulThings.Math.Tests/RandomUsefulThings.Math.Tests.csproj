@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MathMethods\RandomUsefulThings.Math.csproj" />
+    <ProjectReference Include="..\Miscellaneous\RandomUsefulThings.Misc.csproj" />
   </ItemGroup>
 
 </Project>

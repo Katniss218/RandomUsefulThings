@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using RandomUsefulThings.Math.LinearAlgebra;
 
-namespace RandomUsefulThings.Math.Tests
+namespace RandomUsefulThings.Math.Tests.LinearAlgebra
 {
     public class MatrixTests
     {

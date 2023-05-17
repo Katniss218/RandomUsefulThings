@@ -19,18 +19,24 @@ namespace RandomUsefulThings.Misc
             UnscaledTimeUnit
         }
 
-        public List<(string, Action)> actions = new List<(string, Action)>();
-        public int iterations = 10000; // iterations per repeats.
-        public int repeats = 200; // repeats per run.
+        public List<(string, Action)> _actions = new List<(string, Action)>();
+        public int _iterations = 10000; // iterations per repeats.
+        public int _repeats = 200; // repeats per run.
+
+        public UnscaledTimeBenchmark( int iterations = 10000, int repeats = 200 )
+        {
+            this._iterations = iterations;
+            this._repeats = repeats;
+        }
 
         public void Add( string name, Action action )
         {
-            actions.Add( (name, action) );
+            _actions.Add( (name, action) );
         }
 
         public void Run( Mode timeMode )
         {
-            actions.Insert( 0, ("__baseline", () => // some baseline. This will set the value of U.
+            _actions.Insert( 0, ("__baseline", () => // some baseline. This will set the value of U.
             {
                 int a = 5;
                 int b = 7;
@@ -38,27 +44,27 @@ namespace RandomUsefulThings.Misc
                 float f = 50.0f * (float)c;
             }
             ) );
-            actions.Insert( 1, ("__empty i.e. () => { }", () => // I found that empty lambdas and empty methods have the same running time of approx. 0.9 U.
+            _actions.Insert( 1, ("__empty i.e. () => { }", () => // I found that empty lambdas and empty methods have the same running time of approx. 0.9 U.
             {
             }
             ) );
 
-            double[] total = new double[actions.Count];
+            double[] total = new double[_actions.Count];
             for( int i = 0; i < total.Length; i++ )
             {
                 total[i] = 0.0;
             }
 
-            for( int a = 0; a < repeats; a++ )
+            for( int a = 0; a < _repeats; a++ )
             {
                 for( int i = 0; i < total.Length; i++ )
                 {
-                    var ac = actions[i];
+                    var ac = _actions[i];
                     var del = ac.Item2;
 
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
-                    for( int j = 0; j < iterations; j++ )
+                    for( int j = 0; j < _iterations; j++ )
                     {
                         del();
                     }
@@ -69,7 +75,7 @@ namespace RandomUsefulThings.Misc
 
             // const int TIME_UNIT_MULTIPLIER = 1_000_000; // 1000 * seconds taken
 
-            double baseline = (total[0] / repeats) * 1000 / iterations; // multiplying by 1000 prevents accumulating rounding issues since numbers are generally small.
+            double baseline = (total[0] / _repeats) * 1000 / _iterations; // multiplying by 1000 prevents accumulating rounding issues since numbers are generally small.
 
             Console.WriteLine( $"__baseline = {RS( baseline, 2 ).ToString( CultureInfo.InvariantCulture )} ticks" );
             Console.WriteLine( $"__1/baseline = {(1 / baseline).ToString( CultureInfo.InvariantCulture )} ticks" );
@@ -79,23 +85,23 @@ namespace RandomUsefulThings.Misc
             for( int i = 1; i < total.Length; i++ )
             {
                 double totalClamped = i == 1 ? total[i] : total[i] - total[1]; // Don't take into account the running time of the lambda call.
-                Console.WriteLine( $"{actions[i].Item1} AVG" );
+                Console.WriteLine( $"{_actions[i].Item1} AVG" );
 
                 if( timeMode == Mode.Milisecond )
                 {
-                    Console.WriteLine( $"-- {System.Math.Round( (totalClamped / repeats) / iterations, 2 )} ms" );
+                    Console.WriteLine( $"-- {System.Math.Round( (totalClamped / _repeats) / _iterations, 2 )} ms" );
                 }
                 else if( timeMode == Mode.Microsecond )
                 {
-                    Console.WriteLine( $"-- {System.Math.Round( ((totalClamped / repeats) * 1000) / iterations, 2 )} μs" );
+                    Console.WriteLine( $"-- {System.Math.Round( ((totalClamped / _repeats) * 1000) / _iterations, 2 )} μs" );
                 }
                 else if( timeMode == Mode.Nanosecond )
                 {
-                    Console.WriteLine( $"-- {System.Math.Round( (((totalClamped / repeats) * 1000) / iterations) * 1000, 2 )} ns" );
+                    Console.WriteLine( $"-- {System.Math.Round( (((totalClamped / _repeats) * 1000) / _iterations) * 1000, 2 )} ns" );
                 }
                 else if( timeMode == Mode.UnscaledTimeUnit )
                 {
-                    double timeTaken = (totalClamped / repeats) * 1000 / iterations; // multiplying by 1000 prevents accumulating rounding issues since numbers are generally small.
+                    double timeTaken = (totalClamped / _repeats) * 1000 / _iterations; // multiplying by 1000 prevents accumulating rounding issues since numbers are generally small.
                     Console.WriteLine( $"-- {RS( timeTaken / baseline, 2 ).ToString( CultureInfo.InvariantCulture )} U" );
                 }
 

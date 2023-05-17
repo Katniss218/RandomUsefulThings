@@ -6,6 +6,48 @@ namespace RandomUsefulThings.Math.LinearAlgebra.NumericalMethods
 {
     public static class Jacobi
     {
+        // Seems to work on [ 2, 1 ][ 1 ] equation
+        //                  [ 1, 1 ][ 2 ]
+        public static double[] Solve2( double[,] A, double[] b, double tolerance = 1e-6, int maxIterations = 1000 )
+        {
+            int n = b.Length;
+            double[] x = new double[n];
+            double[] prevX = new double[n];
+            double error = double.MaxValue;
+            int iterations = 0;
+
+            while( error > tolerance && iterations < maxIterations )
+            {
+                Array.Copy( x, prevX, n );
+
+                for( int i = 0; i < n; i++ )
+                {
+                    double sum = b[i];
+
+                    for( int j = 0; j < n; j++ )
+                    {
+                        if( j != i )
+                        {
+                            sum -= A[i, j] * prevX[j];
+                        }
+                    }
+
+                    x[i] = sum / A[i, i];
+                }
+
+                error = GaussSeidel.CalculateError( x, prevX );
+                iterations++;
+            }
+
+            if( iterations >= maxIterations )
+            {
+                throw new Exception( "Jacobi method did not converge within the specified number of iterations." );
+            }
+
+            return x;
+        }
+
+
         /// <summary>
         /// Calculate the row value using the specified x values from xValues
         /// </summary>

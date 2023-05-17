@@ -6,38 +6,56 @@ namespace RandomUsefulThings.Math.LinearAlgebra.NumericalMethods
 {
     public static class SuccessiveOverRelaxation
     {
-        [Obsolete( "Unconfirmed, seems buggy??? I'm not sure" )]
-        public static double[] Solve( double[,] M, double[] b, double relaxation, int maxIterations = 100 )
+        // https://ijmttjournal.org/2018/Volume-56/number-4/IJMTT-V56P531.pdf
+        // SOR is a variant of Gauss-Seidel.
+
+        // Seems to work on [ 2, 1 ][ 1 ] equation
+        //                  [ 1, 1 ][ 2 ]
+        public static double[] Solve2( double[,] A, double[] b, double omega, double tolerance = 1e-6, int maxIterations = 1000 )
         {
             // matrix needs to be diagonally dominant (every diagonal element >= any non-diagonal element)
             // https://stackoverflow.com/questions/11719704/projected-gauss-seidel-for-lcp
 
-            // Validation omitted
-            var x = b;
-            double delta;
+            int n = b.Length;
+            double[] x = new double[n];
+            double[] prevX = new double[n];
+            double error = double.MaxValue;
+            int iterations = 0;
 
-            // Gauss-Seidel with Successive OverRelaxation Solver
-            for( int k = 0; k < maxIterations; ++k )
+            while( error > tolerance && iterations < maxIterations )
             {
-                for( int i = 0; i < b.Length; ++i )
+                Array.Copy( x, prevX, n );
+
+                for( int i = 0; i < n; i++ )
                 {
-                    delta = 0.0f;
+                    double sum = b[i];
 
-                    for( int j = 0; j < i; ++j )
-                        delta += M[i, j] * x[j];
-                    for( int j = i + 1; j < b.Length; ++j )
-                        delta += M[i, j] * x[j];
+                    for( int j = 0; j < n; j++ )
+                    {
+                        if( j != i )
+                        {
+                            sum -= A[i, j] * x[j];
+                        }
+                    }
 
-                    delta = (b[i] - delta) / M[i, i];
-                    x[i] += relaxation * (delta - x[i]);
+                    x[i] = (1 - omega) * prevX[i] + (omega / A[i, i]) * sum;
                 }
+
+                error = GaussSeidel.CalculateError( x, prevX );
+                iterations++;
+            }
+
+            if( iterations >= maxIterations )
+            {
+                throw new Exception( "SOR method did not converge within the specified number of iterations." );
             }
 
             return x;
         }
 
-        [Obsolete( "Unconfirmed, untested" )]
-        public static double[] Solve2( double[,] M, double[] b, double relaxation, double tolerance = 0.0001, int maxIterations = 100 )
+        // Seems to work on [ 2, 1 ][ 1 ] equation
+        //                  [ 1, 1 ][ 2 ]
+        public static double[] SolveFastIsh( double[,] M, double[] b, double relaxation, double tolerance = 1e-6, int maxIterations = 1000 )
         {
             int problemSize = b.Length;
             double[] x = new double[problemSize];
