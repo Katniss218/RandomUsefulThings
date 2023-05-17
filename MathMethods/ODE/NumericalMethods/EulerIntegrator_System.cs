@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace RandomUsefulThings.Math.DifferentialEquations
 {
-    public class EulerIntegratorBetter // euler integrator for systems of differential equations
+    public class EulerIntegrator_System // euler integrator for systems of differential equations
     {
         // First order method - halve the step size, halve the error.
         public float[] _variables;
         public float t;
 
-        public EulerIntegratorBetter( float[] initialVariables, float t )
+        public EulerIntegrator_System( float[] initialVariables, float t )
         {
             this._variables = initialVariables.ToArray();
             this.t = t;

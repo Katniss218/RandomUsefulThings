@@ -50,7 +50,7 @@ namespace Physics.FluidSim.Incompressible2D
             densityAvg /= count;
 
 #warning TODO - incomplete
-            float newDensity = densityCurrent; // we need to know the future value. We can get it using the gauss-sidel method or matrix elimination with backsubstitution.
+            float newDensity = densityCurrent; // we need to know the future value. We can get it by solving a system of linear equations using gauss-seidel or matrix elimination with backsubstitution.
         }
 
         public void Step( float dt )

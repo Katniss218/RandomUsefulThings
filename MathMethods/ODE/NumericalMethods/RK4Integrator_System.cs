@@ -10,15 +10,13 @@ namespace RandomUsefulThings.Math.DifferentialEquations
 
     // number of evaluations of the slope = the order of the integrator.
 
-
-    public class RK4IntegratorBetter
+    public class RK4Integrator_System
     {
-
         // Fourth order method - half the step size, 1/16th the error.
         public float[] _variables;
         public float t;
 
-        public RK4IntegratorBetter( float[] initialVariables, float t )
+        public RK4Integrator_System( float[] initialVariables, float t )
         {
             this._variables = initialVariables.ToArray();
             this.t = t;
@@ -43,7 +41,11 @@ namespace RandomUsefulThings.Math.DifferentialEquations
             {
                 float dt = stepSize;
 
-                // it calculates the k-coefficients, then it calculates the parameters using the formula `variables[] + k1[] / 2` which it passes to the system of differential equations.
+                // It calculates the k-coefficients, then it calculates the parameters using the formula `variables[] + k1[] / 2` which it passes to the system of differential equations.
+                // Calculation of coefficients is the same as in the normal RK4, except that it operates on arrays of values, instead of individual values.
+                // Each element in the array is calculated using other corresponding elements.
+
+                // TODO: This could be much improved to make it clearer (corresponding to the butcher's tableau more directly).
 
                 float[] k1 = systemOfEquations( t, _variables );
                 MultiplyInPlace( ref k1, stepSize );

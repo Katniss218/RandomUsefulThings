@@ -3,6 +3,7 @@ using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
 using RandomUsefulThings.Math.LinearAlgebra.NumericalMethods;
 using RandomUsefulThings.Misc;
+using RandomUsefulThings.Physics.FluidSim;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +21,18 @@ namespace TestConsole
 
         public static void Main( string[] args )
         {
-            
+            Euler2D.Incompressible fsim = new Euler2D.Incompressible( 50, 50, 0.1f );
+            fsim.fluidAccelerationRelativeToContainer = new Vector2( 0, -9.8f );
+            fsim.OverrelaxationFactor = 1.9f;
+
+            for( int i = 0; i < 10; i++ )
+            {
+                fsim.Step( 0.02f );
+            }
+
+            fsim.Print();
+
+
             double st = CalculateDistance( 170, 1.03 );
 
             double d1 = System.Math.Sqrt( 9990 );
