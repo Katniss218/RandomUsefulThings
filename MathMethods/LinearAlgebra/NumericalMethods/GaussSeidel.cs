@@ -82,7 +82,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra.NumericalMethods
 
             while( error > tolerance && iterations < maxIterations )
             {
-                Array.Copy( x, prevX, n );
+                Array.Copy( x, prevX, n ); // used to calc error
 
                 for( int i = 0; i < n; i++ )
                 {

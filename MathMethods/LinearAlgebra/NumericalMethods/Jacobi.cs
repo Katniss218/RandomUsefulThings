@@ -47,7 +47,6 @@ namespace RandomUsefulThings.Math.LinearAlgebra.NumericalMethods
             return x;
         }
 
-
         /// <summary>
         /// Calculate the row value using the specified x values from xValues
         /// </summary>
