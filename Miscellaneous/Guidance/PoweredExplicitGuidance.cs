@@ -147,11 +147,13 @@ namespace RandomUsefulThings.Misc.Guidance
             {
                 // `r_thrust(t_f)` is position change at burnout due to thrust.
                 // r_thrust(t_f) = r_inj - r_0 - (v_0 * t_f) - r_grav(t_f)
+                throw new NotImplementedException();
             }
 
             static float GetLambdaDot()
             {
                 // lambda_dot = (r_thrust(t_f) - S(t_f) * lambda_v) / (Q(t_f) - t_lambda * S(t_f))
+                throw new NotImplementedException();
             }
 
         }

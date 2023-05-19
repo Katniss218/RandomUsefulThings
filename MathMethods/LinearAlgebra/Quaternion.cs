@@ -189,6 +189,35 @@ namespace Geometry
             // result.Z = cosX * cosY * sinZ - sinX * sinY * cosZ;
             // result.W = cosX * cosY * cosZ + sinX * sinY * sinZ;
 
+
+            /*
+               [untested seems consistent] XYZ (Roll-Pitch-Yaw)
+            q.x = sin(roll/2)*cos(pitch/2)*cos(yaw/2) - cos(roll/2)*sin(pitch/2)*sin(yaw/2)
+            q.y = cos(roll/2)*sin(pitch/2)*cos(yaw/2) + sin(roll/2)*cos(pitch/2)*sin(yaw/2)
+            q.z = cos(roll/2)*cos(pitch/2)*sin(yaw/2) - sin(roll/2)*sin(pitch/2)*cos(yaw/2)
+            q.w = cos(roll/2)*cos(pitch/2)*cos(yaw/2) + sin(roll/2)*sin(pitch/2)*sin(yaw/2)
+            
+                [untested seems consistent] ZYX (Yaw-Pitch-Roll)
+            q.x = cos(yaw/2)*cos(pitch/2)*sin(roll/2) - sin(yaw/2)*sin(pitch/2)*cos(roll/2)
+            q.y = cos(yaw/2)*sin(pitch/2)*cos(roll/2) + sin(yaw/2)*cos(pitch/2)*sin(roll/2)
+            q.z = sin(yaw/2)*cos(pitch/2)*cos(roll/2) - cos(yaw/2)*sin(pitch/2)*sin(roll/2)
+            q.w = cos(yaw/2)*cos(pitch/2)*cos(roll/2) + sin(yaw/2)*sin(pitch/2)*sin(roll/2)
+
+                [untested] YXZ (Pitch-Roll-Yaw)
+            q.x = sin(pitch/2)*cos(roll/2)*cos(yaw/2) + cos(pitch/2)*sin(roll/2)*sin(yaw/2)
+            q.y = cos(pitch/2)*sin(roll/2)*cos(yaw/2) + sin(pitch/2)*cos(roll/2)*sin(yaw/2)
+            q.z = cos(pitch/2)*cos(roll/2)*sin(yaw/2) - sin(pitch/2)*sin(roll/2)*cos(yaw/2)
+            q.w = cos(pitch/2)*cos(roll/2)*cos(yaw/2) - sin(pitch/2)*sin(roll/2)*sin(yaw/2)
+
+                [untested] ZXY (Yaw-Roll-Pitch)
+            q.x = cos(yaw/2)*sin(roll/2)*cos(pitch/2) + sin(yaw/2)*cos(roll/2)*sin(pitch/2)
+            q.y = cos(yaw/2)*cos(roll/2)*sin(pitch/2) + sin(yaw/2)*sin(roll/2)*cos(pitch/2)
+            q.z = sin(yaw/2)*cos(roll/2)*cos(pitch/2) - cos(yaw/2)*sin(roll/2)*sin(pitch/2)
+            q.w = cos(yaw/2)*cos(roll/2)*cos(pitch/2) - sin(yaw/2)*sin(roll/2)*sin(pitch/2)
+
+
+            */
+
             // Return the calculated quaternion
             return new Quaternion( qx, qy, qz, qw ); // possibly needs normalizing??
         }

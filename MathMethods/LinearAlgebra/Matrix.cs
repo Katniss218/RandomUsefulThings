@@ -488,6 +488,65 @@ namespace RandomUsefulThings.Math.LinearAlgebra
         // property: dot(Q*v1, v2) = dot(v1, Q*v2)
         // property: every NxN symmetric tensor always has N real eigenvalues/eigenvectors.
 
+        [Obsolete("unconfirmed")]
+        public void ApplyCompletePivoting( int rowIndex, int colIndex )
+        {
+            int numRows = this.Rows;
+            int numCols = this.Cols;
+            int maxRow = rowIndex;
+            int maxCol = colIndex;
+
+            // Find the maximum value in the submatrix
+            for( int i = rowIndex; i < numRows; i++ )
+            {
+                for( int j = colIndex; j < numCols; j++ )
+                {
+                    if( System.Math.Abs( this[i, j] ) > System.Math.Abs( this[maxRow, maxCol] ) )
+                    {
+                        maxRow = i;
+                        maxCol = j;
+                    }
+                }
+            }
+
+            // Swap the rows if needed
+            if( maxRow != rowIndex )
+            {
+                this.SwapRows( maxRow, rowIndex );
+            }
+
+            // Swap the columns if needed
+            if( maxCol != colIndex )
+            {
+                this.SwapColumns( maxCol, colIndex );
+            }
+        }
+
+        [Obsolete("unconfirmed")]
+        public void ApplyPartialPivoting( int rowIndex )
+        {
+            int numRows = this.Rows;
+            int numCols = this.Cols;
+            int maxRow = rowIndex;
+
+            // Find the row with the maximum value in the current column
+            for( int i = rowIndex + 1; i < numRows; i++ )
+            {
+                if( System.Math.Abs( this[i, rowIndex] ) > System.Math.Abs( this[maxRow, rowIndex] ) )
+                {
+                    maxRow = i;
+                }
+            }
+
+            // Swap the rows if needed
+            if( maxRow != rowIndex )
+            {
+                throw new NotImplementedException();
+                //this.SwapRows( maxRow, rowIndex, numCols ); // ?
+            }
+        }
+
+
         public bool Equals( Matrix other )
         {
             if( other.Rows != this.Rows || other.Cols != this.Cols )
