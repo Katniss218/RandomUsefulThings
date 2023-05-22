@@ -141,6 +141,24 @@ namespace Physics.Pumps
             return pressureHead - vaporPressureHead - velocityHead - inletDiameterRatio;
         }
 
+        public static double CalculateSuctionHead( double staticpressureInlet, double specificWeightLiquid, double fluidvelocity, double gravityMagn )
+        {
+            // specific weight is `density * accelerationRelativeToContainer`
+
+            return staticpressureInlet / specificWeightLiquid + (fluidvelocity * fluidvelocity) / (2 * gravityMagn);
+        }
+
+        public static double CalculateVaporHead( double vaporPressure, double vaporSpecificWeight )
+        {
+            return vaporPressure / vaporSpecificWeight;
+        }
+
+        //public static double CalculateNPSH()
+        //{
+        //    // should work, commented out because i'm lazy.
+        //    return CalculateSuctionHead() - CalculateVaporHead();
+        //}
+
         public static double CalculatePumpSpecificSpeed( double flowRate, double head, double rotationalSpeed )
         {
             // The specific speed is a dimensionless parameter that characterizes the geometry and performance of the pump.

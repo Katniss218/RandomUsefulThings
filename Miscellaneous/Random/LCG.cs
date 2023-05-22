@@ -48,7 +48,7 @@ namespace Miscellaneous.Random
         /// <summary>
         /// Returns the next integer.
         /// </summary>
-        public int NextInt(int min, int maxExclusive)
+        public int NextInt( int min, int maxExclusive )
         {
             if( min >= maxExclusive )
             {
