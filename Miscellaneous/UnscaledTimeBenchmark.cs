@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace RandomUsefulThings.Misc
@@ -23,16 +24,28 @@ namespace RandomUsefulThings.Misc
         public int _iterations = 10000; // iterations per repeats.
         public int _repeats = 200; // repeats per run.
 
+        List<string> _actionsToSubtractOut = new List<string>() { EMPTY_NAME };
+
         public UnscaledTimeBenchmark( int iterations = 10000, int repeats = 200 )
         {
             this._iterations = iterations;
             this._repeats = repeats;
         }
 
+        /// <summary>
+        /// Will subtract the running time of the action with the specified name from every other action.
+        /// </summary>
+        public void SetSubtract( string name )
+        {
+            _actionsToSubtractOut.Add( name );
+        }
+
         public void Add( string name, Action action )
         {
             _actions.Add( (name, action) );
         }
+
+        const string EMPTY_NAME = "__empty i.e. `() => { }`";
 
         public void Run( Mode timeMode )
         {
@@ -44,7 +57,7 @@ namespace RandomUsefulThings.Misc
                 float f = 50.0f * (float)c;
             }
             ) );
-            _actions.Insert( 1, ("__empty i.e. () => { }", () => // I found that empty lambdas and empty methods have the same running time of approx. 0.9 U.
+            _actions.Insert( 1, (EMPTY_NAME, () => // I found that empty lambdas and empty methods have the same running time of approx. 0.9 U.
             {
             }
             ) );
@@ -80,11 +93,28 @@ namespace RandomUsefulThings.Misc
             Console.WriteLine( $"__baseline = {RS( baseline, 2 ).ToString( CultureInfo.InvariantCulture )} ticks" );
             Console.WriteLine( $"__1/baseline = {(1 / baseline).ToString( CultureInfo.InvariantCulture )} ticks" );
 
-            Console.WriteLine( $"\nRESULTS, scaled so __baseline = 1 tick (1 U)\n ----------------------------------\n" );
+            Console.WriteLine( $"\nRESULTS, scaled so __baseline = 1 tick (1 U)\nEmpty is subtracted out.\n ----------------------------------\n" );
 
             for( int i = 1; i < total.Length; i++ )
             {
-                double totalClamped = i == 1 ? total[i] : total[i] - total[1]; // Don't take into account the running time of the lambda call.
+                double totalClamped = total[i];
+                if( i > 1 ) // don't touch the empty lambda call.
+                {
+                    foreach( var s in _actionsToSubtractOut )
+                    {
+                        int index = _actions.FindIndex( a => a.Item1 == s );
+                        if( index == i ) // don't subtract from itself.
+                            continue;
+
+                        // Empty lambda running time is included in the running time of the subtracted thing. So if we are not currently subtracting the empty directly, we need to re-add it.
+                        if( index != 1 )
+                            totalClamped += total[1];
+
+                        totalClamped -= total[index];
+                    }
+                }
+
+                //double totalClamped = i == 1 ? total[i] : total[i] - total[1]; // Don't take into account the running time of the lambda call.
                 Console.WriteLine( $"{_actions[i].Item1} AVG" );
 
                 if( timeMode == Mode.Milisecond )

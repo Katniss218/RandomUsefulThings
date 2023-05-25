@@ -8,22 +8,14 @@
     ".NETCoreApp,Version=v3.1": {
       "TestConsole/1.0.0": {
         "dependencies": {
-          "Noise": "1.0.0",
           "Pathfinding": "1.0.0",
           "RandomUsefulThings.Misc": "1.0.0",
           "RandomUsefulThings.Physics": "1.0.0",
+          "Shaders": "1.0.0",
           "WaveFunctionCollapse": "1.0.0"
         },
         "runtime": {
           "TestConsole.dll": {}
-        }
-      },
-      "Noise/1.0.0": {
-        "dependencies": {
-          "RandomUsefulThings.Math": "1.0.0"
-        },
-        "runtime": {
-          "Noise.dll": {}
         }
       },
       "Pathfinding/1.0.0": {
@@ -55,6 +47,14 @@
           "RandomUsefulThings.Physics.dll": {}
         }
       },
+      "Shaders/1.0.0": {
+        "dependencies": {
+          "RandomUsefulThings.Math": "1.0.0"
+        },
+        "runtime": {
+          "Shaders.dll": {}
+        }
+      },
       "WaveFunctionCollapse/1.0.0": {
         "runtime": {
           "WaveFunctionCollapse.dll": {}
@@ -64,11 +64,6 @@
   },
   "libraries": {
     "TestConsole/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Noise/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -89,6 +84,11 @@
       "sha512": ""
     },
     "RandomUsefulThings.Physics/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Shaders/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

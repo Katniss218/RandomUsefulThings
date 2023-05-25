@@ -30,7 +30,7 @@ namespace TestConsole
             double[] v = new double[]
                 { 1, 2 };
 
-            double[] s = GaussSeidel.SolveFast( M, v, new double[] { 0.1, 0.1 } );
+          //  double[] s = GaussSeidel.SolveFast( M, v, new double[] { 0.1, 0.1 } );
 
             Euler2DReference fsim = new Euler2DReference( 1000.0f, 50, 50, 0.1f );
             //fsim.fluidAccelerationRelativeToContainer = new Vector2( 0, -9.8f );
@@ -46,11 +46,11 @@ namespace TestConsole
 
             double st = CalculateDistance( 170, 1.03 );
 
-            double d1 = System.Math.Sqrt( 9990 );
+            double d333 = System.Math.Sqrt( 9990 );
             int s1 = MathMethods.SqrtInt( 9990 );
             int s2 = MathMethods.SqrtIntFast( 5000 );
 
-            UnscaledTimeBenchmark bu = new UnscaledTimeBenchmark();
+            UnscaledTimeBenchmark bu = new UnscaledTimeBenchmark( 10000, 10000 );
 
             double[,] M1 = new double[,]
             {
@@ -62,33 +62,67 @@ namespace TestConsole
 
             double[] res;
 
-            bu.Add( "Jacobi", () =>
+            float fr;
+            float f1 = 50f;
+            float f2 = 5063452352534563543f;
+            double dr;
+            double d1 = 50f;
+            double d2 = 5063452352534563543f;
+
+            bu.Add( "assign float 4x", () =>
             {
-                res = Jacobi.Solve2( M1, v1, 1e-6f, 1000 );
+                fr = f1;
+                fr = f1;
+                fr = f1;
+                fr = f1;
             } );
-            bu.Add( "GaussSeidel Fast", () =>
+
+            bu.Add( "assign add float 4x", () =>
             {
-                res = GaussSeidel.SolveFast( M1, v1, null, 1e-6f, 1000 );
+                fr = f1 + f2;
+                fr = f1 + f2;
+                fr = f1 + f2;
+                fr = f1 + f2;
             } );
-            bu.Add( "GaussSeidel", () =>
+            
+            bu.Add( "assign add double 4x", () =>
             {
-                res = GaussSeidel.Solve2( M1, v1, 1e-6f, 1000 );
+                dr = d1 + d2;
+                dr = d1 + d2;
+                dr = d1 + d2;
+                dr = d1 + d2;
             } );
-            bu.Add( "SOR 1.1", () =>
+            
+            bu.Add( "assign `(float)System.Math.Sqrt( (implicit double)float )` 4x", () =>
             {
-                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.1, 1e-6f, 1000 );
+                fr = (float)System.Math.Sqrt( f1 );
+                fr = (float)System.Math.Sqrt( f1 );
+                fr = (float)System.Math.Sqrt( f1 );
+                fr = (float)System.Math.Sqrt( f1 );
             } );
-            bu.Add( "SOR 1.1 Fast-ish", () =>
+            
+            bu.Add( "assign `(float)System.Math.Sqrt( double )` 4x", () =>
             {
-                res = SuccessiveOverRelaxation.SolveFastIsh( M1, v1, 1.1, 1e-6f, 1000 );
+                fr = (float)System.Math.Sqrt( d1 );
+                fr = (float)System.Math.Sqrt( d1 );
+                fr = (float)System.Math.Sqrt( d1 );
+                fr = (float)System.Math.Sqrt( d1 );
             } );
-            bu.Add( "SOR 1.5", () =>
+            
+            bu.Add( "assign `System.Math.Sqrt( (implicit double)float )` 4x", () =>
             {
-                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.5, 1e-6f, 1000 );
+                dr = System.Math.Sqrt( f1 );
+                dr = System.Math.Sqrt( f1 );
+                dr = System.Math.Sqrt( f1 );
+                dr = System.Math.Sqrt( f1 );
             } );
-            bu.Add( "SOR 1.9", () =>
+
+            bu.Add( "assign `System.Math.Sqrt( double )` 4x", () =>
             {
-                res = SuccessiveOverRelaxation.Solve2( M1, v1, 1.9, 1e-6f, 1000 );
+                dr = System.Math.Sqrt( d1 );
+                dr = System.Math.Sqrt( d1 );
+                dr = System.Math.Sqrt( d1 );
+                dr = System.Math.Sqrt( d1 );
             } );
 
             bu.Run( UnscaledTimeBenchmark.Mode.Nanosecond );
