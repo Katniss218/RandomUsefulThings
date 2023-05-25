@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Physics", "Physics\RandomUsefulThings.Physics.csproj", "{E98BAB91-419D-420D-8644-42BEC66680D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noise", "Noise\Noise.csproj", "{CD603091-3EAC-4662-AD49-113D9A6E4AE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shaders", "Noise\Shaders.csproj", "{CD603091-3EAC-4662-AD49-113D9A6E4AE4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pathfinding", "Pathfinding\Pathfinding.csproj", "{F5A98768-D711-4837-9216-11E6F0B6FA85}"
 EndProject

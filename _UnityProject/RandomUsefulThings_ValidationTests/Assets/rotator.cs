@@ -65,7 +65,6 @@ public class rotator : MonoBehaviour
         {
             angVel = Vector3.zero;
         }
-
         prevRot = this.transform.rotation;
     }
 }
