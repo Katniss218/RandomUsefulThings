@@ -1,4 +1,7 @@
-﻿using Geometry;
+﻿using BenchmarkDotNet.Running;
+using Benchmarking;
+using Geometry;
+using Newtonsoft.Json.Linq;
 using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
 using RandomUsefulThings.Math.LinearAlgebra.NumericalMethods;
@@ -7,6 +10,9 @@ using RandomUsefulThings.Physics.FluidSim;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using UnityPlus.Serialization;
+using UnityPlus.Serialization.Json;
 
 namespace TestConsole
 {
@@ -21,131 +27,30 @@ namespace TestConsole
 
         public static void Main( string[] args )
         {
+            string json = "{ \"test\": \"Hello \\\" world!\", \"val2\": -4.1543E+5 }";
+            string json2 = "[ 5.2342, 342, -4372.11 ]";
 
-            double[,] M = new double[,]
-            {
-                { 2, 1 },
-                { 1, 1 },
-            };
-            double[] v = new double[]
-                { 1, 2 };
+            int _pos = 18;
+            string _s = json;
 
-          //  double[] s = GaussSeidel.SolveFast( M, v, new double[] { 0.1, 0.1 } );
+            json2 = File.ReadAllText( "c:/test/testjson.json" );
 
-            Euler2DReference fsim = new Euler2DReference( 1000.0f, 50, 50, 0.1f );
-            //fsim.fluidAccelerationRelativeToContainer = new Vector2( 0, -9.8f );
-           // fsim.OverrelaxationFactor = 1.9f;
+            SerializedObject serobject = new UnityPlus.Serialization.Json.JsonReader( System.IO.File.ReadAllText( "c:/test/testjson.json" ) ).Parse();
 
-            for( int i = 0; i < 10; i++ )
-            {
-           //     fsim.Simulate( 0.02f, -9.81f, 50 );
-            }
+            EasyBenchmarkTool.RootObject deserializedObject = System.Text.Json.JsonSerializer.Deserialize<EasyBenchmarkTool.RootObject>( json2, new System.Text.Json.JsonSerializerOptions() );
 
-           // fsim.Print();
+            bool b = _s[_pos] != '"' && _s[_pos - 1] != '\\';
 
+            var xxxx = JObject.Parse( json2 );
+            JsonReader reader2 = new JsonReader( json2 );
 
-            double st = CalculateDistance( 170, 1.03 );
+            //var obj = reader.EatObject();
+            var j2 = reader2.Parse();
 
-            double d333 = System.Math.Sqrt( 9990 );
-            int s1 = MathMethods.SqrtInt( 9990 );
-            int s2 = MathMethods.SqrtIntFast( 5000 );
+            //var x = new Vector3( (float)j[0], (float)j[1], (float)j[2] );
 
-            UnscaledTimeBenchmark bu = new UnscaledTimeBenchmark( 10000, 10000 );
-
-            double[,] M1 = new double[,]
-            {
-                { 2, 1 },
-                { 1, 1 },
-            };
-            double[] v1 = new double[]
-                { 1, 2 };
-
-            double[] res;
-
-            float fr;
-            float f1 = 50f;
-            float f2 = 5063452352534563543f;
-            double dr;
-            double d1 = 50f;
-            double d2 = 5063452352534563543f;
-
-            bu.Add( "assign float 4x", () =>
-            {
-                fr = f1;
-                fr = f1;
-                fr = f1;
-                fr = f1;
-            } );
-
-            bu.Add( "assign add float 4x", () =>
-            {
-                fr = f1 + f2;
-                fr = f1 + f2;
-                fr = f1 + f2;
-                fr = f1 + f2;
-            } );
-            
-            bu.Add( "assign add double 4x", () =>
-            {
-                dr = d1 + d2;
-                dr = d1 + d2;
-                dr = d1 + d2;
-                dr = d1 + d2;
-            } );
-            
-            bu.Add( "assign `(float)System.Math.Sqrt( (implicit double)float )` 4x", () =>
-            {
-                fr = (float)System.Math.Sqrt( f1 );
-                fr = (float)System.Math.Sqrt( f1 );
-                fr = (float)System.Math.Sqrt( f1 );
-                fr = (float)System.Math.Sqrt( f1 );
-            } );
-            
-            bu.Add( "assign `(float)System.Math.Sqrt( double )` 4x", () =>
-            {
-                fr = (float)System.Math.Sqrt( d1 );
-                fr = (float)System.Math.Sqrt( d1 );
-                fr = (float)System.Math.Sqrt( d1 );
-                fr = (float)System.Math.Sqrt( d1 );
-            } );
-            
-            bu.Add( "assign `System.Math.Sqrt( (implicit double)float )` 4x", () =>
-            {
-                dr = System.Math.Sqrt( f1 );
-                dr = System.Math.Sqrt( f1 );
-                dr = System.Math.Sqrt( f1 );
-                dr = System.Math.Sqrt( f1 );
-            } );
-
-            bu.Add( "assign `System.Math.Sqrt( double )` 4x", () =>
-            {
-                dr = System.Math.Sqrt( d1 );
-                dr = System.Math.Sqrt( d1 );
-                dr = System.Math.Sqrt( d1 );
-                dr = System.Math.Sqrt( d1 );
-            } );
-
-            bu.Run( UnscaledTimeBenchmark.Mode.Nanosecond );
-
-            /*
-            SweepBenchmarkMath<float, float> bn = new SweepBenchmarkMath<float, float>( 1000, 1000 )
-            {
-                ParameterFunc = ( t ) => (t * 10000),
-                //Reference = ( x ) => Math.Sin( x ),
-                Reference = ( x ) => (float)System.Math.Sqrt(x),
-                GetError = ( a, b ) => a - b
-            };
-
-            bn.Add( "Solve", ( x ) =>
-            {
-                return (float)System.Math.Sqrt( x );
-            } );
-            bn.Add( "Solve2", ( x ) =>
-            {
-                return MathMethods.Sqrt( x );
-            } );
-
-            bn.Run();*/
+             BenchmarkRunner.Run<EasyBenchmarkTool>();
+           // BenchmarkRunner.Run( new Type[] { typeof( FloatBenchmark ), typeof( DoubleBenchmark ) } );
         }
     }
 }

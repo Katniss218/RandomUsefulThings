@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Miscellaneous\RandomUsefulThings.Misc.csproj" />
     <ProjectReference Include="..\Noise\Shaders.csproj" />
     <ProjectReference Include="..\Pathfinding\Pathfinding.csproj" />

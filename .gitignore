@@ -8,3 +8,7 @@ _UnityProject/RandomUsefulThings_ValidationTests/Temp
 _UnityProject/RandomUsefulThings_ValidationTests/Logs
 _UnityProject/RandomUsefulThings_ValidationTests/Library
 _UnityProject/RandomUsefulThings_ValidationTests/UserSettings
+
+\packages
+\bin
+\obj

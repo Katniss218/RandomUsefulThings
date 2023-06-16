@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RandomUsefulThings.Math.Tests", "RandomUsefulThings.Math.Tests\RandomUsefulThings.Math.Tests.csproj", "{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarking", "Benchmarking\Benchmarking.csproj", "{83F5511F-B45F-40AA-91F4-61C59821532A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B10A14A-84EA-478B-8E76-BC811F2E7BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F5511F-B45F-40AA-91F4-61C59821532A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F5511F-B45F-40AA-91F4-61C59821532A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F5511F-B45F-40AA-91F4-61C59821532A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F5511F-B45F-40AA-91F4-61C59821532A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
