@@ -205,8 +205,10 @@ namespace UnityPlus.Serialization
 
         public static bool operator ==( SerializedValue v1, SerializedValue v2 )
         {
-            if( (object)v1 == null ) return (object)v2 == null;
-            if( (object)v2 == null ) return (object)v1 == null;
+            if( (object)v1 == null )
+                return (object)v2 == null;
+            if( (object)v2 == null ) 
+                return (object)v1 == null;
 
             // larger or equal to string.
             if( v1._valueType >= DataType.String ) // reference types > 128

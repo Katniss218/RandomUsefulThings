@@ -28,6 +28,8 @@ namespace TestConsole
         public JObject jobject = JObject.Parse( System.IO.File.ReadAllText( "c:/test/testjson.json" ) );
         public SerializedObject serobject = new UnityPlus.Serialization.Json.JsonReader( System.IO.File.ReadAllText( "c:/test/testjson.json" ) ).Parse();
 
+        public UnityPlus2.Serialization.SerializedObject serobject2 = (UnityPlus2.Serialization.SerializedObject)new UnityPlus2.Serialization.Json.JsonStringReader( File.ReadAllText( "c:/test/testjson.json" ) ).Read();
+
         [GlobalSetup]
         public void Setup()
         {
@@ -92,84 +94,43 @@ namespace TestConsole
         public float Float_Add6() => x + a + b + c + d + e + f;
 
 
-        /* [Benchmark]
-         public RootObject Deserialize_SystemTextjson()
-         {
-             RootObject deserializedObject = System.Text.Json.JsonSerializer.Deserialize<RootObject>( json, new System.Text.Json.JsonSerializerOptions() );
-             return deserializedObject;
-         }
-
-         [Benchmark]
-         public RootObject Deserialize_Newtonsoft()
-         {
-             return JsonConvert.DeserializeObject<RootObject>( json );
-         }
-
-         [Benchmark]
-         public JObject Deserialize_NewtonsoftLinq()
-         {
-             return JObject.Parse( json );
-         }
-
-         [Benchmark]
-         public UnityPlus.Serialization.SerializedObject Deserialize_Custom()
-         {
-             UnityPlus.Serialization.Json.JsonReader r = new UnityPlus.Serialization.Json.JsonReader( json );
-
-             return r.Parse();
-         }
-        */
         [Benchmark]
+        public JObject Deserialize_NewtonsoftLinq()
+        {
+            return JObject.Parse( json );
+        }
+
+        [Benchmark]
+        public UnityPlus2.Serialization.SerializedData Deserialize_Custom_string()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var x = new UnityPlus2.Serialization.Json.JsonStringReader( json ).Read();
+            return x;
+        }
+
+        [Benchmark( Baseline = true )]
         public string Serialize_NewtonsoftLinq()
         {
             return JsonConvert.SerializeObject( jobject );
         }
 
-        [Benchmark( Baseline = true )]
+        [Benchmark]
         public string Serialize_Custom()
         {
             using( MemoryStream s = new MemoryStream() )
             {
-                serobject.WriteJson( s );
+                new UnityPlus2.Serialization.Json.JsonStreamWriter( serobject2, s ).Write();
                 return Encoding.UTF8.GetString( s.ToArray() );
             }
         }
 
         [Benchmark]
-        public string Serialize_Custom2()
-        {
-            using( MemoryStream s = new MemoryStream() )
-            {
-                UnityPlus.Serialization2.Json.JsonWriter.WriteJson( serobject, s );
-                return Encoding.UTF8.GetString( s.ToArray() );
-            }
-        }
-
-        [Benchmark]
-        public string Serialize_Custom4()
-        {
-            using( MemoryStream s = new MemoryStream() )
-            {
-                new UnityPlus.Serialization4.Json.JsonStreamWriter( serobject, s ).Write();
-                return Encoding.UTF8.GetString( s.ToArray() );
-            }
-        }
-
-        public MemoryStream s = new MemoryStream();
-
-        [Benchmark]
-        public void Serialize_Custom4_OnlyStream()
-        {
-            new UnityPlus.Serialization4.Json.JsonStreamWriter( serobject, s ).Write();
-            //return Encoding.UTF8.GetString( s.ToArray() );
-        }
-
-        [Benchmark]
-        public string Serialize_Custom3_stringbuilder()
+        public string Serialize_Custom_string()
         {
             StringBuilder sb = new StringBuilder();
 
-            UnityPlus.Serialization3.Json.JsonWriter.WriteJson( serobject, sb );
+            new UnityPlus2.Serialization.Json.JsonStringWriter( serobject2, sb ).Write();
             return sb.ToString();
         }
 
