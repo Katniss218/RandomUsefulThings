@@ -11,7 +11,7 @@ namespace Benchmarking
     {
         static void Main( string[] args )
         {
-            BenchmarkRunner.Run<FloatBenchmark>();
+            BenchmarkRunner.Run<TypeBenchmark>();
         }
     }
 }

@@ -7,27 +7,49 @@ namespace RandomUsefulThings.Math.Derivatives.NumericalMethods
     public static class FiniteDifference
     {
         // first derivative can be approximated by rise over run of a function.
+        // (f(x + delta_x) - f(x)) / delta_x
 
-        // (f(x + deltaX) - f(x)) / deltaX
-
+        /// <summary>
+        /// The classic "rise over run" approximation.
+        /// </summary>
+        /// <param name="f">The function `f(x)` to evaluate.</param>
+        /// <param name="x">The value of `x` to evaluate.</param>
+        /// <param name="step">The change `Δx` between the 2 inputs to the evaluated function.</param>
+        /// <returns>The approximation of the derivative.</returns>
         public static double FirstDerivative_Forward( Func<double, double> f, double x, double step = 1e-7 )
         {
-            // The classic "rise over run" approximation - Forward Difference.
-            // Forward Difference = df/dx =~ (f[i + 1] - f[i]) / deltaX  
+            // Forward Difference = df/dx =~ (f[i + 1] - f[i]) / Δx  
             return (f( x + step ) - f( x )) / step;
         }
 
+        /// <summary>
+        /// The classic "rise over run" approximation, but it goes backwards.
+        /// </summary>
+        /// <param name="f">The function `f(x)` to evaluate.</param>
+        /// <param name="x">The value of `x` to evaluate.</param>
+        /// <param name="step">The change `Δx` between the 2 inputs to the evaluated function.</param>
+        /// <returns>The approximation of the derivative.</returns>
         public static double FirstDerivative_Backwards( Func<double, double> f, double x, double step = 1e-7 )
         {
-            // Backwards Difference = df/dx =~ (f[i] - f[i - 1]) / deltaX
+            // Backwards Difference = df/dx =~ (f[i] - f[i - 1]) / Δx
             return (f( x ) - f( x - step )) / step;
         }
 
+        /// <summary>
+        /// The classic "rise over run" approximation, but it goes both backwards and forwards equally.
+        /// </summary>
+        /// <param name="f">The function `f(x)` to evaluate.</param>
+        /// <param name="x">The value of `x` to evaluate.</param>
+        /// <param name="step">The change `Δx` between <paramref name="x"/> and the 2 inputs to the evaluated function.</param>
+        /// <returns>The approximation of the derivative.</returns>
         public static double FirstDerivative_Central( Func<double, double> f, double x, double step = 1e-7 )
         {
-            // Central Difference = df/dx =~ (f[i + 1] - f[i - 1]) / (2*deltaX)
+            // Central Difference = df/dx =~ (f[i + 1] - f[i - 1]) / (2*Δx)
             return (f( x + step ) - f( x - step )) / (2 * step);
         }
+
+        // Higher order derivatives can be approximated by evaluating a number of points, fitting an order-n polynomial to them, and computing its n-th derivative,
+        // since derivatives of polynomials can be easily computed symbolically..
 
         [Obsolete("Unconfirmed")]
         public static double SecondDerivative_Central( Func<double, double> f, double x, double step = 1e-7 )
