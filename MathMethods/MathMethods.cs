@@ -35,7 +35,9 @@ namespace RandomUsefulThings.Math
             // - if you don't have access to any sort of function that can return the fractional part of a number.
 
             // Maybe a better way with repeated division by 10?
-            // Maybe could also work with binary search starting at sign(n) * int.MaxValue/2
+
+            // multiply by 2 until larger, then use binary search to get to the actual value.
+
 
             int x = 0; // ignore the fact this returns the integer part.
             if( n < 0 )
@@ -55,6 +57,28 @@ namespace RandomUsefulThings.Math
                 return x + 1;
             }
             return 0;
+        }
+
+        public static int NChoose2( int n )
+        {
+            return (n * (n - 1)) / 2;
+        }
+
+        public static int NChoose4( int n )
+        {
+            return (n * (n - 1) * (n - 2) * (n - 3)) / /* factorial(4) */ 24;
+        }
+
+        [Obsolete( "untested, but should work I think" )]
+        public static int NChooseM( int n, int m )
+        {
+            int acc = 1;
+            for( int i = 0; i < m; i++ )
+            {
+                acc *= n - i;
+            }
+            acc /= (int)Factorial( m );
+            return acc;
         }
 
         [Obsolete( "Don't use this. This is buggy because of range issues. For educational purposes only." )]
@@ -103,6 +127,7 @@ namespace RandomUsefulThings.Math
         /// <param name="x">The value to sample.</param>
         public static double Sinc( double x )
         {
+            // sin(x) / x
             // https://en.wikipedia.org/wiki/Sinc_function
             if( x == 0 )
             {
@@ -148,7 +173,7 @@ namespace RandomUsefulThings.Math
             // This is related to linear interpolation.
 
             // First shift the value so that the original range now starts at 0.
-            // Then divide to get normalized range and multiply to map onto the new range.
+            // Then divide to get normalized range (i.e. [0..1]) and multiply to map onto the new range.
             // And lastly, unshift the value so that the new range starts at `outMin`.
             return (((value - inMin) / (inMax - inMin)) * (outMax - outMin)) + outMin;
         }
@@ -243,22 +268,22 @@ namespace RandomUsefulThings.Math
         /// <summary>
         /// Returns the factorial of a given number (the product of all the natural numbers less than or equal to it).
         /// </summary>
-        public static long Factorial( int value )
+        public static long Factorial( int n )
         {
-            if( value < 0 )
+            if( n < 0 )
             {
                 throw new ArgumentException( "Factorial of a negative number is not defined." );
             }
-            if( value == 0 )
+            if( n == 0 )
             {
                 return 1;
             }
 
-            // Iterative method, it's faster and more stack efficient.
+            // Iterative method. It's faster and more stack efficient.
             long result = 1;
-            for( ; value >= 2; --value )
+            for( ; n >= 2; --n ) // input param `n` is passed by value.
             {
-                result *= value;
+                result *= n;
             }
             return result;
         }
@@ -335,7 +360,7 @@ namespace RandomUsefulThings.Math
         /// <summary>
         /// Computes e raised to the power of x.
         /// </summary>
-        public static double Exp( double x ) // Reasonably accurate around x < 10.
+        public static double ExpLookup( double x ) // Reasonably accurate around x < 10.
         {
             // exp(x+y) = exp(x)*exp(y)
             // so we can precompute a table with values for the integer part (the full 64-bit precision only has range x in [-745..710]).
@@ -599,7 +624,7 @@ namespace RandomUsefulThings.Math
                 1.039061509,
                 1.039837792,
                 1.040618648
-            };
+            }; // honestly, with a lookup table this big, we probably could just lerp.
 
             long tmp = (long)(1512775 * x + 1072632447);
             int index = (int)(tmp >> 12) & 0xFF;
@@ -611,7 +636,7 @@ namespace RandomUsefulThings.Math
             // maclaurin expansion for e^x
             // e^x =~ 1 + x + (x^2)/2! + (x^3)/3! + (x^4)/4! + ...
 
-            // taylor series, 7 terms. Accurate in [-2.4..2.4]
+            // taylor series, 7 terms. Accurate for x in [-2.4..2.4]
             return (362880 + x * (362880 + x * (181440 + x * (60480 + x * (15120 + x * (3024 + x * (504 + x * (72 + x * (9 + x))))))))) * 2.75573192e-6;
         }
 
@@ -651,16 +676,16 @@ namespace RandomUsefulThings.Math
             }
 
             // Confine x to a sensible range
-            int power_adjust = 0;
+            int powerAdjust = 0;
             while( x > 1.0 )
             {
                 x /= E;
-                power_adjust++;
+                powerAdjust++;
             }
             while( x < .25 )
             {
                 x *= E;
-                power_adjust--;
+                powerAdjust--;
             }
 
             // Now use the Taylor series to calculate the logarithm
@@ -673,8 +698,8 @@ namespace RandomUsefulThings.Math
                 s = -s;
             }
 
-            // Combine the result with the power_adjust value and return
-            return t + power_adjust;
+            // Combine the result with the powerAdjust value and return
+            return t + powerAdjust;
         }
 
         public static double BellCurve( double x, double standardDeviation, double midpoint )
@@ -705,7 +730,7 @@ namespace RandomUsefulThings.Math
         public static int SqrtIntFast( int x ) // floor of the square root of the specified integer.
         {
             // Newton-Raphson method.
-            // This is faster than the other SqrtInt, at 70% of its runtime on average (for numbers [0..10000]).
+            // This is faster than the other SqrtInt (tested for numbers [0..10000]).
             long current = x;
             while( current * current > x ) // current is greater than the square root of x.
             {
@@ -716,7 +741,7 @@ namespace RandomUsefulThings.Math
 
         public static float Sqrt( float x )
         {
-            if( x < 0 ) // about 10x slower than Math.Sqrt for large numbers.
+            if( x < 0 )
             {
                 return float.NaN;
             }
