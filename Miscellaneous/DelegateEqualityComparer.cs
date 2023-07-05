@@ -23,5 +23,4 @@ namespace RandomUsefulThings.Misc
             return a.GetHashCode();
         }
     }
-
 }

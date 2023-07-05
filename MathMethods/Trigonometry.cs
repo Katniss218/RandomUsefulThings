@@ -27,6 +27,7 @@ namespace RandomUsefulThings.Math
         const float HalfPI = 1.570796326794f;
         const float PI = 3.141592653589f;
         const float TwoPI = 6.283185307179f;
+        const float PISquared = 9.86960440109f;
 
         // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
 
@@ -58,7 +59,7 @@ namespace RandomUsefulThings.Math
                 newX += 2 * (-HalfPI - newX);
             }
 
-            // Small values of pi.
+            // For small values of x, sin(x) ~= x.
             if( newX < 0.0175f && newX > -0.0175f )
             {
                 return newX;
@@ -79,6 +80,18 @@ namespace RandomUsefulThings.Math
                 + (x9 / 362880);
         }
 
+        public static float CosBhaskara( float x )
+        {
+            if( x < -HalfPI || x > HalfPI )
+                throw new ArgumentOutOfRangeException( $"For now, we don't do range reduction or flipping." );
+
+            // Bhāskara's approximation
+            // (pi^2 - 4x^2) / (pi^2 + x^2)
+            // error range [-0.0013..00016]
+            float xSquared = x * x;
+            return (PISquared - 4 * xSquared) / (PISquared + xSquared);
+        }
+
         /// <summary>
         /// Calculates the approximation of the cosine of the specified angle in radians.
         /// </summary>
@@ -86,6 +99,8 @@ namespace RandomUsefulThings.Math
         public static float Cos( float x )
         {
             // Taylor Series approximation: Cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
+
+            // also cos(x) = sin(x + pi/2)
 
             x = ((x + PI) % TwoPI) - PI;
 
