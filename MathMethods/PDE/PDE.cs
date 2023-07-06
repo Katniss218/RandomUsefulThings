@@ -83,9 +83,17 @@ namespace RandomUsefulThings.Math.PDE
         public static class FiniteVolumeMethod
         {
             // Finite volume can be used for fluid dynamics (or really any kind of problem that is equivalent to something flowing between "control volumes").
+            // Mostly used for equations that conserve a property, like continuity equations.
 
-            // it approximates the continuum using a number of control volumes, which are connected to each other to form an arbitrary graph structure.
+
+            // it approximates the continuum using a number of control volumes, which are connected to each other to form a graph.
             // the edges of that graph represent connections through which stuff can flow.
+            // - Fluxes at these boundaries are computed by the discretization step.
+            // Approximate the fluxes across the surfaces of each control volume using a suitable numerical scheme, such as the upwind, central, or hybrid scheme.
+
+            // Integrate the equation over each control volume.
+            // Apply the divergence theorem to convert the volume integral to a surface integral.
+
         }
     }
 }

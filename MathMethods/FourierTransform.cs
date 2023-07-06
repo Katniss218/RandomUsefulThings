@@ -6,17 +6,11 @@ namespace RandomUsefulThings.Math
 {
     public static class FourierTransform
     {
-        public struct ComplexNumber
-        {
-            public float X;
-            public float Y;
-        }
-
         /// <summary>
         /// This computes an in-place complex-to-complex FFT 
         /// x and y are the real and imaginary arrays of 2^m points.
         /// </summary>
-        public static void FFT( bool forward, int m, ComplexNumber[] data )
+        public static void FFT( bool forward, int m, (float X, float Y)[] data )
         {
             // Calculate the number of points
             int n = 1;

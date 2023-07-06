@@ -7,6 +7,12 @@ namespace Noise
 {
     public static class Hash
     {
+        internal static float Dot( float v1x, float v1y, float v2x, float v2y )
+        {
+            // dot product between 2 vectors.
+            return (v1x * v2x) + (v1y * v2y);
+        }
+
         public static float Hash1( float n )
         {
             return n - (float)Math.Floor( Math.Sin( n ) * 43758.5453 );
@@ -14,8 +20,8 @@ namespace Noise
 
         public static (float x, float y) Hash2( float x, float y )
         {
-            float dot1 = MathMethods.Dot( x, y, 127.1f, 311.7f );
-            float dot2 = MathMethods.Dot( x, y, 269.5f, 183.3f );
+            float dot1 = Dot( x, y, 127.1f, 311.7f );
+            float dot2 = Dot( x, y, 269.5f, 183.3f );
 
             float sinD1 = (float)(Math.Sin( dot1 ) * 43758.5453);
             float sinD2 = (float)(Math.Sin( dot2 ) * 43758.5453);

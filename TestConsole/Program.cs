@@ -1,6 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
-using Benchmarking;
-using Geometry;
 using Newtonsoft.Json.Linq;
 using RandomUsefulThings.Math;
 using RandomUsefulThings.Math.LinearAlgebra;
@@ -11,8 +9,37 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using UnityPlus.Serialization;
-using UnityPlus.Serialization.Json;
+using System.Numerics;
+
+public class Triangle
+{
+    public Vector3 Vertex1 { get; set; }
+    public Vector3 Vertex2 { get; set; }
+    public Vector3 Vertex3 { get; set; }
+}
+
+public class Mesh
+{
+    public List<Triangle> Triangles { get; set; }
+
+    [Obsolete("unconfirmed, but seems to work on a 2x2x2 cube with a corner at the origin, and with the origin outside of the cube completely")]
+    public float CalculateVolume()
+    {
+        float volume = 0;
+
+        foreach( var triangle in Triangles )
+        {
+            volume += SignedVolumeOfFaceTetrahedron( triangle.Vertex1, triangle.Vertex2, triangle.Vertex3 );
+        }
+
+        return Math.Abs( volume );
+    }
+
+    private float SignedVolumeOfFaceTetrahedron( Vector3 v1, Vector3 v2, Vector3 v3 )
+    {
+        return Vector3.Dot( v1, Vector3.Cross( v2, v3 ) ) / 6.0f;
+    }
+}
 
 namespace TestConsole
 {
@@ -25,32 +52,72 @@ namespace TestConsole
             return distance;
         }
 
+
+
         public static void Main( string[] args )
         {
-            string json = "{ \"test\": \"Hello \\\" world!\", \"val2\": -4.1543E+5 }";
-            string json2 = "[ 5.2342, 342, -4372.11 ]";
+            List<Triangle> triangles = new List<Triangle>
+            {
+                // Front face
+                new Triangle { Vertex1 = new Vector3(0, 0, 0), Vertex2 = new Vector3(2, 0, 0), Vertex3 = new Vector3(0, 2, 0) },
+                new Triangle { Vertex1 = new Vector3(2, 0, 0), Vertex2 = new Vector3(2, 2, 0), Vertex3 = new Vector3(0, 2, 0) },
 
-            int _pos = 18;
-            string _s = json;
+                // Back face
+                new Triangle { Vertex1 = new Vector3(0, 0, 2), Vertex2 = new Vector3(0, 2, 2), Vertex3 = new Vector3(2, 0, 2) },
+                new Triangle { Vertex1 = new Vector3(2, 0, 2), Vertex2 = new Vector3(0, 2, 2), Vertex3 = new Vector3(2, 2, 2) },
 
-            json2 = File.ReadAllText( "c:/test/testjson.json" );
+                // Left face
+                new Triangle { Vertex1 = new Vector3(0, 0, 0), Vertex2 = new Vector3(0, 2, 0), Vertex3 = new Vector3(0, 0, 2) },
+                new Triangle { Vertex1 = new Vector3(0, 2, 0), Vertex2 = new Vector3(0, 2, 2), Vertex3 = new Vector3(0, 0, 2) },
 
-            SerializedObject serobject = new UnityPlus.Serialization.Json.JsonReader( System.IO.File.ReadAllText( "c:/test/testjson.json" ) ).Parse();
+                // Right face
+                new Triangle { Vertex1 = new Vector3(2, 0, 0), Vertex2 = new Vector3(2, 0, 2), Vertex3 = new Vector3(2, 2, 0) },
+                new Triangle { Vertex1 = new Vector3(2, 0, 2), Vertex2 = new Vector3(2, 2, 2), Vertex3 = new Vector3(2, 2, 0) },
 
-            EasyBenchmarkTool.RootObject deserializedObject = System.Text.Json.JsonSerializer.Deserialize<EasyBenchmarkTool.RootObject>( json2, new System.Text.Json.JsonSerializerOptions() );
+                // Top face
+                new Triangle { Vertex1 = new Vector3(0, 2, 0), Vertex2 = new Vector3(2, 2, 0), Vertex3 = new Vector3(0, 2, 2) },
+                new Triangle { Vertex1 = new Vector3(2, 2, 0), Vertex2 = new Vector3(2, 2, 2), Vertex3 = new Vector3(0, 2, 2) },
 
-            bool b = _s[_pos] != '"' && _s[_pos - 1] != '\\';
+                // Bottom face
+                new Triangle { Vertex1 = new Vector3(0, 0, 0), Vertex2 = new Vector3(0, 0, 2), Vertex3 = new Vector3(2, 0, 0) },
+                new Triangle { Vertex1 = new Vector3(2, 0, 0), Vertex2 = new Vector3(0, 0, 2), Vertex3 = new Vector3(2, 0, 2) }
+            };
 
-            var xxxx = JObject.Parse( json2 );
-            JsonReader reader2 = new JsonReader( json2 );
+            triangles = new List<Triangle>
+            {
+                // Front face
+                new Triangle { Vertex1 = new Vector3(4, 4, 4), Vertex2 = new Vector3(6, 4, 4), Vertex3 = new Vector3(4, 5, 4) },
+                new Triangle { Vertex1 = new Vector3(6, 4, 4), Vertex2 = new Vector3(6, 5, 4), Vertex3 = new Vector3(4, 5, 4) },
 
-            //var obj = reader.EatObject();
-            var j2 = reader2.Parse();
+                // Back face
+                new Triangle { Vertex1 = new Vector3(4, 4, 6), Vertex2 = new Vector3(4, 5, 6), Vertex3 = new Vector3(6, 4, 6) },
+                new Triangle { Vertex1 = new Vector3(6, 4, 6), Vertex2 = new Vector3(4, 5, 6), Vertex3 = new Vector3(6, 5, 6) },
 
-            //var x = new Vector3( (float)j[0], (float)j[1], (float)j[2] );
+                // Left face
+                new Triangle { Vertex1 = new Vector3(4, 4, 4), Vertex2 = new Vector3(4, 5, 4), Vertex3 = new Vector3(4, 4, 6) },
+                new Triangle { Vertex1 = new Vector3(4, 5, 4), Vertex2 = new Vector3(4, 5, 6), Vertex3 = new Vector3(4, 4, 6) },
 
-             BenchmarkRunner.Run<EasyBenchmarkTool>();
-           // BenchmarkRunner.Run( new Type[] { typeof( FloatBenchmark ), typeof( DoubleBenchmark ) } );
+                // Right face
+                new Triangle { Vertex1 = new Vector3(6, 4, 4), Vertex2 = new Vector3(6, 5, 6), Vertex3 = new Vector3(6, 5, 4) },
+                new Triangle { Vertex1 = new Vector3(6, 4, 6), Vertex2 = new Vector3(6, 5, 6), Vertex3 = new Vector3(6, 5, 4) },
+
+                // Top face
+                new Triangle { Vertex1 = new Vector3(4, 5, 4), Vertex2 = new Vector3(6, 5, 4), Vertex3 = new Vector3(4, 5, 6) },
+                new Triangle { Vertex1 = new Vector3(6, 5, 4), Vertex2 = new Vector3(6, 5, 6), Vertex3 = new Vector3(4, 5, 6) },
+
+                // Bottom face
+                new Triangle { Vertex1 = new Vector3(4, 4, 4), Vertex2 = new Vector3(4, 4, 6), Vertex3 = new Vector3(6, 4, 4) },
+                new Triangle { Vertex1 = new Vector3(6, 4, 4), Vertex2 = new Vector3(4, 4, 6), Vertex3 = new Vector3(6, 4, 6) }
+            };
+
+            Mesh m = new Mesh()
+            {
+                Triangles = triangles
+            };
+
+            float v = m.CalculateVolume();
+
+            BenchmarkRunner.Run<EasyBenchmarkTool>();
         }
     }
 }

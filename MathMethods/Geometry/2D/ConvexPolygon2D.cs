@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Geometry;
+using System;
 using System.Collections.Generic;
 
-namespace Geometry
+namespace RandomUsefulThings.Math
 {
-    public class ConvexPolygon2D
+    public class ConvexPolygon2D : Polygon2D
     {
         // A list to store the vertices of the polygon
         private List<Vector2> _vertices;
@@ -49,7 +50,7 @@ namespace Geometry
             }
 
             // Calculate the area of the polygon using the Shoelace theorem
-            float area = 0.5f * Math.Abs( sum1 - sum2 );
+            float area = 0.5f * System.Math.Abs( sum1 - sum2 );
 
             // Return the calculated area
             return area;
@@ -87,8 +88,8 @@ namespace Geometry
                 foreach( Vector2 vertex in vertices1 )
                 {
                     float dot = Vector2.Dot( vertex, normal );
-                    min1 = Math.Min( min1, dot );
-                    max1 = Math.Max( max1, dot );
+                    min1 = System.Math.Min( min1, dot );
+                    max1 = System.Math.Max( max1, dot );
                 }
 
                 // Calculate the minimum and maximum dot products for the second polygon
@@ -97,8 +98,8 @@ namespace Geometry
                 foreach( Vector2 vertex in vertices2 )
                 {
                     float dot = Vector2.Dot( vertex, normal );
-                    min2 = Math.Min( min2, dot );
-                    max2 = Math.Max( max2, dot );
+                    min2 = System.Math.Min( min2, dot );
+                    max2 = System.Math.Max( max2, dot );
                 }
 
                 // If the minimum and maximum dot products for the polygons do not overlap,
@@ -145,8 +146,8 @@ namespace Geometry
                 foreach( Vector2 vertex in vertices1 )
                 {
                     float dot = Vector2.Dot( vertex, normal );
-                    min1 = Math.Min( min1, dot );
-                    max1 = Math.Max( max1, dot );
+                    min1 = System.Math.Min( min1, dot );
+                    max1 = System.Math.Max( max1, dot );
                 }
 
                 // Calculate the minimum and maximum dot products for the second polygon
@@ -155,12 +156,12 @@ namespace Geometry
                 foreach( Vector2 vertex in vertices2 )
                 {
                     float dot = Vector2.Dot( vertex, normal );
-                    min2 = Math.Min( min2, dot );
-                    max2 = Math.Max( max2, dot );
+                    min2 = System.Math.Min( min2, dot );
+                    max2 = System.Math.Max( max2, dot );
                 }
 
                 // Calculate the overlap between the polygons along the current axis
-                float overlap = Math.Min( max1, max2 ) - Math.Max( min1, min2 );
+                float overlap = System.Math.Min( max1, max2 ) - System.Math.Max( min1, min2 );
 
                 // If there is no overlap, then there is a separating axis and the polygons are not colliding
                 if( overlap <= 0 )

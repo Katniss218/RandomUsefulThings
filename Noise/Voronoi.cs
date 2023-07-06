@@ -7,6 +7,12 @@ namespace Noise
 {
     public static class Voronoi
     {
+        static float Length( float x, float y )
+        {
+            // length of a vector.
+            return (float)System.Math.Sqrt( (x * x) + (y * y) );
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -30,10 +36,10 @@ namespace Noise
                     float oy = Hash.Hash2( ngx, ngy ).y;
 
                     // distance to cell		
-                    float d = MathMethods.Length( gy - fx + ox, gx - fy - oy );
+                    float d = Length( gy - fx + ox, gx - fy - oy );
 
                     // cell color
-                    float value = Hash.Hash1( MathMethods.Dot( ngx, ngy, 5.9129015f, 188.73386f ) ); // the type of hash is important
+                    float value = Hash.Hash1( Hash.Dot( ngx, ngy, 5.9129015f, 188.73386f ) ); // the type of hash is important
 
                     // do the smooth min for colors and distances
                     float h = Easing.Smoothstep( -1.0f, 1.0f, (distance - d) / smoothness );

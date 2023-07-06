@@ -103,7 +103,6 @@ namespace RandomUsefulThings.Math.Regression
             return vector;
         }
 
-
         // Function to perform Gauss elimination for solving a system of linear equations
         static void GaussElimination( double[,] matrix, double[] vector )
         {

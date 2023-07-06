@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RandomUsefulThings.Math
 {
-    public struct Cone3D
+    public struct Cone
     {
         [Obsolete("Unconfirmed")]
         public static double GetConeAngle( double height, double radius )

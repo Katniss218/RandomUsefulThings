@@ -12,6 +12,23 @@ namespace RandomUsefulThings.Math
         //public const double TwoPI = 6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341359642961730265646132941876892191011644634507188162569622349005682054038770422111192892458979098607639;
 
 
+        /// <summary>
+        /// The circle constant.
+        /// </summary>
+        public static double PI = 3.1415926535897932384626433832795028841971693993751;
+
+        /// <summary>
+        /// One degree in radians.
+        /// </summary>
+        public static double DegToRad = PI / 180.0; // 0.017453292519943295769236907684886127134428718885417
+
+        /// <summary>
+        /// One radian in degrees.
+        /// </summary>
+        public static double RadToDeg = 180.0 / PI; // 57.295779513082320876798154814105170332405472466564 
+
+
+
         // 
         // 
 
@@ -24,10 +41,6 @@ namespace RandomUsefulThings.Math
         // CORDIC algorithm can be used to calculate approximate values of trig functions.
 
 
-        const float HalfPI = 1.570796326794f;
-        const float PI = 3.141592653589f;
-        const float TwoPI = 6.283185307179f;
-        const float PISquared = 9.86960440109f;
 
         // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
 
@@ -37,6 +50,10 @@ namespace RandomUsefulThings.Math
         /// <returns>The value of the sine. Maximum absolute value of error: 10^-6, median: 10^-8.</returns>
         public static float Sin( float x )
         {
+            const float HalfPI = 1.570796326794f;
+            const float PI = 3.141592653589f;
+            const float TwoPI = 6.283185307179f;
+
             // Taylor Series approximation: Sin(x) =~ x - (x^3)/3! + (x^5)/5! - (x^7)/7! + (x^9)/9! - ...
 
             // Range reduction.
@@ -82,6 +99,9 @@ namespace RandomUsefulThings.Math
 
         public static float CosBhaskara( float x )
         {
+            const float HalfPI = 1.570796326794f;
+            const float PISquared = 9.86960440109f;
+
             if( x < -HalfPI || x > HalfPI )
                 throw new ArgumentOutOfRangeException( $"For now, we don't do range reduction or flipping." );
 
@@ -98,6 +118,9 @@ namespace RandomUsefulThings.Math
         /// <returns>The value of the cosine. Maximum absolute value of error: 10^-4, median: 10^-7.</returns>
         public static float Cos( float x )
         {
+            const float PI = 3.141592653589f;
+            const float TwoPI = 6.283185307179f;
+
             // Taylor Series approximation: Cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
 
             // also cos(x) = sin(x + pi/2)
