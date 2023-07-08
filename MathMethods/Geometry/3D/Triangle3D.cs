@@ -20,7 +20,7 @@ namespace Geometry
         /// <summary>
         /// Returns the geometric middle of the triangle (the point where it would balance).
         /// </summary>
-        public Vector3 Midpoint { get => (P1 + P2 + P3) / 3.0f; }
+        public Vector3 Midpoint { get => (P1 + P2 + P3) * 0.33333333f; }
 
         public Triangle3D( Vector3 p1, Vector3 p2, Vector3 p3 )
         {
@@ -50,7 +50,7 @@ namespace Geometry
             Vector3 edge1 = P2 - P1;
             Vector3 edge2 = P3 - P1;
             Vector3 crossProduct = Vector3.Cross( edge1, edge2 );
-            float area = crossProduct.Length / 2.0f;
+            float area = crossProduct.Length * 0.5f;
             return area;
         }
     }
