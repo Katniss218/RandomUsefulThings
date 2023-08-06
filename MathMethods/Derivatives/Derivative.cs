@@ -43,5 +43,7 @@ namespace RandomUsefulThings.Math.Derivatives
             // d^2x/dt^2 = f''(x)
             // d^nx/dt^n = f'_n(x)   -- number of ' prime symbols equal to n
         }
+
+        // chain rule apparently has generalizations to n dimensions (variables)
     }
 }

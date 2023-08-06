@@ -48,8 +48,11 @@ namespace RandomUsefulThings.Math.Derivatives.NumericalMethods
             return (f( x + step ) - f( x - step )) / (2 * step);
         }
 
-        // Higher order derivatives can be approximated by evaluating a number of points, fitting an order-n polynomial to them, and computing its n-th derivative,
-        // since derivatives of polynomials can be easily computed symbolically..
+        // Higher order derivatives can be approximated by:
+        // - evaluating a number of inputs around point of interest, then
+        // - fitting an order-n polynomial to them, then
+        // - computing the polynomial's n-th derivative at the point of interest.
+        // Derivatives of polynomials can be computed easily.
 
         [Obsolete("Unconfirmed")]
         public static double SecondDerivative_Central( Func<double, double> f, double x, double step = 1e-7 )

@@ -6,6 +6,7 @@ namespace RandomUsefulThings.Physics.ClassicalMechanics
 {
     public static class LagrangianMechanics
     {
+        // lagrangian => L(t, f(t), f'(t))
 
     }
 }

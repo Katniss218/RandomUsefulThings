@@ -12,10 +12,12 @@ namespace RandomUsefulThings.Math.RootFinding
             int i = 0;
             while( i < maxIterations )
             {
+                // The fx and dx can be substituted and simplified for some specific known symbolic function f(x). This is a general case for an arbitrary function.
                 float fx = f( x );
-                float dx = (f( x + tolerance ) - fx) / tolerance; // approximate derivative using central difference
-                float xNew = x - fx / dx; // calculate new estimate
-                if( System.Math.Abs( xNew - x ) < tolerance ) // check for convergence
+                float dx = (f( x + tolerance ) - fx) / tolerance; // Approximate derivative using forward difference. Uses tolerance as a non-zero dx
+
+                float xNew = x - fx / dx; // Calculate the new estimate for the root.
+                if( System.Math.Abs( xNew - x ) < tolerance ) // Check for convergence.
                 {
                     return xNew;
                 }
