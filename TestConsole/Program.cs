@@ -56,6 +56,8 @@ namespace TestConsole
 
         public static void Main( string[] args )
         {
+            Console.WriteLine( "A" );
+            Main(null);
             List<Triangle> triangles = new List<Triangle>
             {
                 // Front face
