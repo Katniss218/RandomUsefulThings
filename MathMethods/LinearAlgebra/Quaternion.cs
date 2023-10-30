@@ -98,6 +98,15 @@ namespace Geometry
             return (q1.X * q2.X) + (q1.Y * q2.Y) + (q1.Z * q2.Z) + (q1.W * q2.W);
         }
 
+        public Quaternion Flip180() // 'up' points in the same direction, 'forward' points in the opposite direction.
+        {
+            return new Quaternion( W, Z, -Y, -X );
+        }
+        public Quaternion Flip180180() // 'up' points in the opposite direction, 'forward' points in the opposite direction.
+        {
+            return new Quaternion( -Z, W, X, -Y );
+        }
+
         /// <summary>
         /// Converts the quaternion back into Euler Angles (same rotation order as in Unity 2022.1).
         /// </summary>
@@ -189,6 +198,7 @@ namespace Geometry
             // result.Z = cosX * cosY * sinZ - sinX * sinY * cosZ;
             // result.W = cosX * cosY * cosZ + sinX * sinY * sinZ;
 
+            // in some cases, this 6x4 "matrix" of sin/cos simplifies to something else.
 
             /*
                [untested seems consistent] XYZ (Roll-Pitch-Yaw)
@@ -217,6 +227,12 @@ namespace Geometry
 
 
             */
+
+            // additional source for various specific rotation orders - https://www.astro.rug.nl/software/kapteyn-beta/_downloads/attitude.pdf
+            // https://ntrs.nasa.gov/api/citations/19770024290/downloads/19770024290.pdf
+
+            // quat to euler https://github.com/evbernardes/quaternion_to_euler
+
 
             // Return the calculated quaternion
             return new Quaternion( qx, qy, qz, qw ); // possibly needs normalizing??

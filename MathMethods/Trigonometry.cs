@@ -327,5 +327,50 @@ namespace RandomUsefulThings.Math
         // chord
         // Crd(x) = 2*Sin(x/2)
 
+        public static double ASinh( double x )
+        {
+            return Math.Log( x + Math.Sqrt( x * x + 1.0 ) );
+        }
+
+        public static double ACosh( double x )
+        {
+            return Math.Log( x + Math.Sqrt( x * x - 1.0 ) );
+        }
+
+        public static double ATanh( double x )
+        {
+            return Math.Log( (1.0 + x) / (1.0 - x) ) / 2.0;
+        }
+
+        public static double ACoth( double x )
+        {
+            return ATanh( 1.0 / x );
+        }
+
+        public static double ASech( double x )
+        {
+            return ACosh( 1.0 / x );
+        }
+
+        public static double ACsch( double x )
+        {
+            return ASinh( 1.0 / x );
+        }
+
+        public static double Sech( double x )
+        {
+            return 1.0 / Math.Cosh( x );
+        }
+
+        public static double Csch( double x )
+        {
+            return 1.0 / Math.Sinh( x );
+        }
+
+        public static double Coth( double x )
+        {
+            return Math.Cosh( x ) / Math.Sinh( x );
+        }
+
     }
 }

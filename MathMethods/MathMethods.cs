@@ -11,6 +11,8 @@ namespace RandomUsefulThings.Math
         // 1-\ 6\ \frac{1}{2+\left(x+2\right)^{\left(x+2\right)}}
         // error: -0.05
 
+        // curvature = Wedge(f', f'') / Magn(f')^3
+
         public static double Modulo( double x, double range ) // correct.
         {
             // Modulo, supports arbitrary floating point numbers in range [float.MinValue..float.MaxValue] for both parameters.
@@ -115,6 +117,19 @@ namespace RandomUsefulThings.Math
             if( value.CompareTo( min ) < 0 )
                 return min;
             return value;
+        }
+
+        public static bool IsDivisible( int n, int byN )
+        {
+            while( byN % 2 == 0 )
+            {
+                byN /= 2;
+            }
+            while( byN % 5 == 0 )
+            {
+                byN /= 5;
+            }
+            return n % byN == 0;
         }
 
         /// <summary>

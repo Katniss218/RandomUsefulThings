@@ -194,6 +194,14 @@ namespace Geometry
             return new Vector3( v.X * f, v.Y * f, v.Z * f );
         }
 
+        public static Quaternion Multiply( Vector3 v1, Vector3 v2 )
+        {
+            // https://youtu.be/htYh-Tq7ZBI
+
+            Vector3 cross = Cross( v1, v2 );
+            return new Quaternion( cross.X, cross.Y, cross.Z, Dot( v1, v2 ) );
+        }
+
         /// <summary>
         /// Divides each component of the vector by a scalar value.
         /// </summary>

@@ -91,12 +91,13 @@ namespace Geometry
         // or v = (v < 0) ? (v + 360) : v;
         // or v = (v < 0) ? (v + (2*PI)) : v;
 
-        public static float Cross( Vector2 v1, Vector2 v2 )
+        public static float Cross( Vector2 v1, Vector2 v2 ) // aka determinant, *WEDGE PRODUCT*, perpendicular dot product, exterior product, anti-symmetric product
         {
-            // The cross product of two vectors in two-dimensional space is a scalar value, rather than a vector. It is defined as follows:
+            // This is not a true cross product, but it's often called that.
 
             // It is equal to the product of the lengths of the input vectors and the sine of the angle between the input vectors.
             // Its sign indicates the "handedness" of the two vectors. If the cross product is positive, the two vectors are "counterclockwise"(as seen from the positive z - axis), and if the cross product is negative, the two vectors are "clockwise."
+            // - Does it show which side of the first vector, the second vector is on?
 
             return v1.X * v2.Y - v1.Y * v2.X;
         }
@@ -255,6 +256,14 @@ namespace Geometry
         private static Vector2 Multiply( Vector2 v, float scalar )
         {
             return new Vector2( v.X * scalar, v.Y * scalar );
+        }
+
+        public static Complex Multiply( Vector2 v1, Vector2 v2 )
+        {
+            // https://youtu.be/htYh-Tq7ZBI
+
+            float cross = Cross( v1, v2 );
+            return new Complex( cross, Dot( v1, v2 ) );
         }
 
         private static Vector2 Divide( Vector2 v, float scalar )
