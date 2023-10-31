@@ -9,7 +9,7 @@ namespace RandomUsefulThings.Math.LinearAlgebra
     {
         readonly double[] _values;
 
-        public int Rows { get; }
+        public int Rows { get => _values.Length; }
 
         public double this[int row]
         {
@@ -31,7 +31,6 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             }
 
             _values = new double[rows];
-            Rows = rows;
         }
 
         public Vector( double[] values ) : this( values.Length )
@@ -51,6 +50,12 @@ namespace RandomUsefulThings.Math.LinearAlgebra
             {
                 this[i] = original[i];
             }
+        }
+
+        public static Vector Inverse( Vector v )
+        {
+            // from geometric algebra v^-1 = v/(||v||^2)
+            return Divide( v, v.GetSquaredMagnitude() );
         }
 
         /// <summary>
@@ -138,6 +143,28 @@ namespace RandomUsefulThings.Math.LinearAlgebra
                 acc += v1[i] * v2[i];
             }
             return acc;
+        }
+
+        public static Vector Multiply( Vector v, double s )
+        {
+            Vector vnew = new Vector( v._values );
+            for( int i = 0; i < vnew._values.Length; i++ )
+                vnew._values[i] *= s;
+            return vnew;
+        }
+
+        public static Vector Divide( Vector v, double s )
+        {
+            Vector vnew = new Vector( v._values );
+            for( int i = 0; i < vnew._values.Length; i++ )
+                vnew._values[i] /= s;
+            return vnew;
+        }
+
+        public double Square()
+        {
+            // from geometric algebra https://www.youtube.com/watch?v=60z_hpEAtD8
+            return GetSquaredMagnitude();
         }
 
         public bool Equals( Vector other )

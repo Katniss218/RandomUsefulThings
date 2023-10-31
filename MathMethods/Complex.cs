@@ -6,6 +6,8 @@ namespace RandomUsefulThings.Math
 {
     public struct Complex
     {
+        // A complex number is a scalar + a 2D bivector
+
         public double R { get; }
         public double I { get; }
 

@@ -100,6 +100,7 @@ namespace Geometry
             // - Does it show which side of the first vector, the second vector is on?
 
             return v1.X * v2.Y - v1.Y * v2.X;
+            // in reality this gives a bivector with the area equal to the returned float.
         }
 
         /// <summary>

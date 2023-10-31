@@ -6,6 +6,9 @@ namespace Geometry
 {
     public struct Quaternion
     {
+        // A quaternion is a scalar + a 3D bivector
+        // A Rotor is a more general version of a quaternion from geometric algebra
+
         /// <summary>
         /// First imaginary coefficient ('b' from 'a + bi + cj + dk').
         /// </summary>
