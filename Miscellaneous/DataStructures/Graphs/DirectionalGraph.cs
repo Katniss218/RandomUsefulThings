@@ -4,46 +4,63 @@ using System.Text;
 
 namespace RandomUsefulThings.Misc.Graphs
 {
-    public class DirectionalGraph<TVertex, TEdge>
+    public class DirectedHashGraph<TKey, TValue> // instead of using hashsets, we could implement a resizable array ourselves, and manually resize the vertices, and the adjacency list. This would grant better cache locality.
     {
         private class Vertex
         {
-            public TVertex Data;
+            public HashSet<TKey> adjacent; // vertex points towards those.
+            public TValue value;
 
-            // maps each vertex to what it is connected to. Unidirectional, needs 2 entries to connect.
-            public List<(int, TEdge)> ConnectsTo;
 
-            public Vertex( TVertex data )
+            public Vertex( TValue value )
             {
-                this.Data = data;
+                this.adjacent = new HashSet<TKey>();
+                this.value = value;
             }
         }
 
-        List<Vertex> Vertices;
-        // maps indices in the list to vertices and 2 of those form an edge.
-        // triangular-array relation map of type TEdge could be used for bidirectional graphs.
+        private Dictionary<TKey, Vertex> _data; // TKey can be a string ID for example.
 
-        public DirectionalGraph()
+        public DirectedHashGraph()
         {
-
+            _data = new Dictionary<TKey, Vertex>();
         }
 
-        public int AddVertex( TVertex data )
+
+        /// Adds a disconnected vertex.
+        public void AddVertex( TKey key, TValue value )
         {
-            Vertices.Add( new Vertex( data ) );
-            return Vertices.Count - 1; // return index of the vertex.
+            _data.Add( key, new Vertex( value ) );
         }
 
-        public void Connect( int from, int to, TEdge data )
+
+        public void AddVertex( TKey key, TValue value, IEnumerable<TKey> adjacent )
         {
-            Vertices[from].ConnectsTo.Add( (to, data) );
+            Vertex vertex = new Vertex( value );
+            foreach( var adj in adjacent )
+            {
+                if( key.Equals( adj ) )
+                    throw new ArgumentException( "A vertex can't be adjacent to itself" );
+
+
+                vertex.adjacent.Add( adj );
+            }
+            _data.Add( key, vertex );
         }
 
-        public void ConnectBiDirectional( int v1, int v2, TEdge data )
+
+        public void AddEdge( TKey from, TKey to )
         {
-            Vertices[v1].ConnectsTo.Add( (v2, data) );
-            Vertices[v2].ConnectsTo.Add( (v1, data) );
+            if( from.Equals( to ) )
+                throw new ArgumentException( "A vertex can't be adjacent to itself" );
+
+
+            // guard when `to` is not in graph.
+
+
+            _data[from].adjacent.Add( to ); // HashSet.Add on adjacent won't add if it's already there.
         }
     }
+
 
 }
