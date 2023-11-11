@@ -171,6 +171,7 @@
     <Compile Include="FloatBenchmark.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DynamicDelegateBenchmark.cs" />
     <Compile Include="TypeBenchmark.cs" />
   </ItemGroup>
   <ItemGroup>

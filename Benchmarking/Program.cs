@@ -2,16 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Benchmarking
 {
-    static class Program
+    public static class Program
     {
         static void Main( string[] args )
         {
-            BenchmarkRunner.Run<TypeBenchmark>();
+            BenchmarkRunner.Run<DynamicDelegateBenchmark>();
+            Console.ReadKey();
         }
     }
 }

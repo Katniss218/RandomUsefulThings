@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RandomUsefulThings.Misc.Graphs
@@ -59,6 +60,49 @@ namespace RandomUsefulThings.Misc.Graphs
 
 
             _data[from].adjacent.Add( to ); // HashSet.Add on adjacent won't add if it's already there.
+        }
+
+        [Obsolete( "unconfirmed" )]
+        public List<TKey> TopologicalSort()
+        {
+            // Calculate in-degrees for all nodes
+            Dictionary<TKey, int> inDegrees = _data.Keys.ToDictionary( key => key, _ => 0 );
+            foreach( var vertex in _data.Values )
+            {
+                foreach( var node in vertex.adjacent )
+                {
+                    inDegrees[node]++;
+                }
+            }
+
+            // Enqueue nodes with in-degree 0
+            Queue<TKey> zeroDegreeNodes = new Queue<TKey>( inDegrees.Where( pair => pair.Value == 0 ).Select( pair => pair.Key ) );
+
+            List<TKey> result = new List<TKey>();
+
+            // Kahn's algorithm
+            while( zeroDegreeNodes.Count > 0 )
+            {
+                TKey node = zeroDegreeNodes.Dequeue();
+                result.Add( node );
+
+                foreach( var neighbor in _data[node].adjacent )
+                {
+                    inDegrees[neighbor]--;
+                    if( inDegrees[neighbor] == 0 )
+                    {
+                        zeroDegreeNodes.Enqueue( neighbor );
+                    }
+                }
+            }
+
+            if( result.Count != _data.Count )
+            {
+                // Graph has a cycle, topological sort is not possible
+                throw new InvalidOperationException( "The graph has a cycle!" );
+            }
+
+            return result;
         }
     }
 
