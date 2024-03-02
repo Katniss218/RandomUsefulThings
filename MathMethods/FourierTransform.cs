@@ -4,94 +4,186 @@ using System.Text;
 
 namespace RandomUsefulThings.Math
 {
-    public static class FourierTransform
-    {
-        /// <summary>
-        /// This computes an in-place complex-to-complex FFT 
-        /// x and y are the real and imaginary arrays of 2^m points.
-        /// </summary>
-        public static void FFT( bool forward, int m, (float X, float Y)[] data )
-        {
-            // Calculate the number of points
-            int n = 1;
-            for( int i = 0; i < m; i++ )
-            {
-                n *= 2; // TODO - this can be done without a loop.
-            }
+	public static class FourierTransform
+	{
+		// adpatation of
+		// https://github.com/Samson-Mano/Fast_Fourier_Transform/blob/main/Fast_fourier_transform/Fast_fourier_transform/process_data.cs#L84
 
-            // Do the bit reversal
-            int i2 = n >> 1;
-            int j2Acc = 0;
-            for( int i = 0; i < n - 1; i++ )
-            {
-                if( i < j2Acc )
-                {
-                    float tx = data[i].X;
-                    float ty = data[i].Y;
-                    data[i].X = data[j2Acc].X;
-                    data[i].Y = data[j2Acc].Y;
-                    data[j2Acc].X = tx;
-                    data[j2Acc].Y = ty;
-                }
+		public static Complex[] FFT1D( Complex[] input, bool inverse )
+		{
+			// only for input lengths of power of 2.
 
-                int k = i2;
-                while( k <= j2Acc )
-                {
-                    j2Acc -= k;
-                    k >>= 1;
-                }
+			if( input.Length == 1 )
+				return input;
 
-                j2Acc += k;
-            }
+			int N = input.Length;
 
-            // Compute the FFT 
-            float c1 = -1.0f;
-            float c2 = 0.0f;
-            int l2Acc = 1;
-            for( int l = 0; l < m; l++ )
-            {
-                int l1 = l2Acc;
-                l2Acc <<= 1;
-                float u1 = 1.0f;
-                float u2 = 0.0f;
-                for( int j = 0; j < l1; j++ )
-                {
-                    for( int i = j; i < n; i += l2Acc )
-                    {
-                        int i1 = i + l1;
-                        float t1 = u1 * data[i1].X - u2 * data[i1].Y;
-                        float t2 = u1 * data[i1].Y + u2 * data[i1].X;
-                        data[i1].X = data[i].X - t1;
-                        data[i1].Y = data[i].Y - t2;
-                        data[i].X += t1;
-                        data[i].Y += t2;
-                    }
-                    float z = (u1 * c1) - (u2 * c2);
-                    u2 = (u1 * c2) + (u2 * c1);
-                    u1 = z;
-                }
+			// Even
+			Complex[] evenList = new Complex[N / 2];
+			Complex[] oddList = new Complex[N / 2];
+			for( int i = 0; i < (N / 2); i++ )
+			{
+				evenList[i] = input[2 * i];
+				oddList[i] = input[(2 * i) + 1];
+			}
+			evenList = FFT1D( evenList, inverse );
+			oddList = FFT1D( oddList, inverse );
 
-                if( forward )
-                {
-                    c2 = -((float)System.Math.Sqrt( (1.0f - c1) / 2.0f ));
-                }
-                else
-                {
-                    c2 = (float)System.Math.Sqrt( (1.0f - c1) / 2.0f );
-                }
+			// Result
+			Complex[] output = new Complex[N];
 
-                c1 = (float)System.Math.Sqrt( (1.0f + c1) / 2.0f );
-            }
+			for( int i = 0; i < (N / 2); i++ )
+			{
+				double w = (inverse ? 2 : -2) * System.Math.PI * i / N;
+				Complex twiddle = new Complex( System.Math.Cos( w ), System.Math.Sin( w ) ); // wk
+				Complex even = evenList[i];
+				Complex odd = oddList[i];
 
-            // Scaling for forward transform 
-            if( forward )
-            {
-                for( int i = 0; i < n; i++ )
-                {
-                    data[i].X /= n;
-                    data[i].Y /= n;
-                }
-            }
-        }
-    }
+				// Combine even and odd components using butterfly operation.
+				output[i] = even + (twiddle * odd);
+				output[i + (N / 2)] = even - (twiddle * odd);
+			}
+
+			// Instead of dividing by N only for inverse, we could divide by Sqrt(N) for both forward and inverse.
+			// Some people don't divide here at all. Not sure why.
+			if( inverse )
+			{
+				for( int i = 0; i < N; i++ )
+				{
+					output[i] /= N;
+				}
+			}
+
+			return output;
+		}
+
+		// chat gpt says this is a 2D fft.
+
+		public static Complex[,] FFT2D( Complex[,] input, bool inverse )
+		{
+			int rows = input.GetLength( 0 );
+			int cols = input.GetLength( 1 );
+
+			Complex[,] output = new Complex[rows, cols];
+
+			// Rows - Process along the rows
+			for( int r = 0; r < rows; r++ )
+			{
+				Complex[] row = new Complex[cols];
+				for( int c = 0; c < cols; c++ )
+				{
+					row[c] = input[r, c];
+				}
+
+				Complex[] transformedRow = FFT1D( row, inverse );
+
+				for( int c = 0; c < cols; c++ )
+				{
+					output[r, c] = transformedRow[c];
+				}
+			}
+
+			// Columns - Process along the columns
+			for( int c = 0; c < cols; c++ )
+			{
+				Complex[] col = new Complex[rows];
+				for( int r = 0; r < rows; r++ )
+				{
+					col[r] = output[r, c]; // Take signal already processed by `rows` section.
+				}
+
+				Complex[] transformedCol = FFT1D( col, inverse );
+
+				for( int r = 0; r < rows; r++ )
+				{
+					output[r, c] = transformedCol[r];
+				}
+			}
+
+			return output;
+		}
+
+
+		// chatgpt says this is a 3D FFT
+
+		public static Complex[,,] FFT3D( Complex[,,] input, bool inverse )
+		{
+			int dim1 = input.GetLength( 0 );
+			int dim2 = input.GetLength( 1 );
+			int dim3 = input.GetLength( 2 );
+
+			Complex[,,] output = new Complex[dim1, dim2, dim3];
+
+			// Process along the first dimension
+			for( int i = 0; i < dim1; i++ )
+			{
+				Complex[,] plane = new Complex[dim2, dim3];
+				for( int j = 0; j < dim2; j++ )
+				{
+					for( int k = 0; k < dim3; k++ )
+					{
+						plane[j, k] = input[i, j, k];
+					}
+				}
+
+				Complex[,] transformedPlane = FFT2D( plane, inverse );
+
+				for( int j = 0; j < dim2; j++ )
+				{
+					for( int k = 0; k < dim3; k++ )
+					{
+						output[i, j, k] = transformedPlane[j, k];
+					}
+				}
+			}
+
+			// Process along the second dimension
+			for( int j = 0; j < dim2; j++ )
+			{
+				Complex[,] plane = new Complex[dim1, dim3];
+				for( int i = 0; i < dim1; i++ )
+				{
+					for( int k = 0; k < dim3; k++ )
+					{
+						plane[i, k] = output[i, j, k];
+					}
+				}
+
+				Complex[,] transformedPlane = FFT2D( plane, inverse );
+
+				for( int i = 0; i < dim1; i++ )
+				{
+					for( int k = 0; k < dim3; k++ )
+					{
+						output[i, j, k] = transformedPlane[i, k];
+					}
+				}
+			}
+
+			// Process along the third dimension
+			for( int k = 0; k < dim3; k++ )
+			{
+				Complex[,] plane = new Complex[dim1, dim2];
+				for( int i = 0; i < dim1; i++ )
+				{
+					for( int j = 0; j < dim2; j++ )
+					{
+						plane[i, j] = output[i, j, k];
+					}
+				}
+
+				Complex[,] transformedPlane = FFT2D( plane, inverse );
+
+				for( int i = 0; i < dim1; i++ )
+				{
+					for( int j = 0; j < dim2; j++ )
+					{
+						output[i, j, k] = transformedPlane[i, j];
+					}
+				}
+			}
+
+			return output;
+		}
+	}
 }
