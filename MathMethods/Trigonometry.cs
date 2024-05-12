@@ -40,6 +40,40 @@ namespace RandomUsefulThings.Math
 
         // CORDIC algorithm can be used to calculate approximate values of trig functions.
 
+        /// <summary>
+        /// CORDIC algortihm
+        /// </summary>
+        public static (double sin, double cos, double tan) Trig( double theta )
+        {
+            // Initialise values
+            double x = 0.6072529350088812;
+            double y = 0;
+            double phi = theta;
+            int i = 0;
+            double change = 1;
+            int maxIterations = 99;
+
+            while( i < maxIterations && change > 0.0000001 )
+            {
+                double d = phi / System.Math.Abs( phi );
+
+                double xNext = x - (d * y * System.Math.Pow( 2, -i ));
+                double yNext = y + (d * x * System.Math.Pow( 2, -i ));
+                double phiNext = phi - (d * System.Math.Atan( System.Math.Pow( 2, -i ) ));
+                change = System.Math.Abs( xNext - x ) + System.Math.Abs( yNext - y );
+                x = xNext;
+                y = yNext;
+                phi = phiNext;
+
+                i++;
+            }
+
+            Console.WriteLine( "sin(" + theta + ") = " + y );
+            Console.WriteLine( "cos(" + theta + ") = " + x );
+            Console.WriteLine( "tan(" + theta + ") = " + (y / x) );
+
+            return (y, x, y / x);
+        }
 
 
         // https://github.com/lattera/glibc/blob/master/sysdeps/ieee754/dbl-64/s_sin.c
@@ -329,17 +363,17 @@ namespace RandomUsefulThings.Math
 
         public static double ASinh( double x )
         {
-            return Math.Log( x + Math.Sqrt( x * x + 1.0 ) );
+            return System.Math.Log( x + System.Math.Sqrt( x * x + 1.0 ) );
         }
 
         public static double ACosh( double x )
         {
-            return Math.Log( x + Math.Sqrt( x * x - 1.0 ) );
+            return System.Math.Log( x + System.Math.Sqrt( x * x - 1.0 ) );
         }
 
         public static double ATanh( double x )
         {
-            return Math.Log( (1.0 + x) / (1.0 - x) ) / 2.0;
+            return System.Math.Log( (1.0 + x) / (1.0 - x) ) / 2.0;
         }
 
         public static double ACoth( double x )
@@ -359,18 +393,17 @@ namespace RandomUsefulThings.Math
 
         public static double Sech( double x )
         {
-            return 1.0 / Math.Cosh( x );
+            return 1.0 / System.Math.Cosh( x );
         }
 
         public static double Csch( double x )
         {
-            return 1.0 / Math.Sinh( x );
+            return 1.0 / System.Math.Sinh( x );
         }
 
         public static double Coth( double x )
         {
-            return Math.Cosh( x ) / Math.Sinh( x );
+            return System.Math.Cosh( x ) / System.Math.Sinh( x );
         }
-
     }
 }
